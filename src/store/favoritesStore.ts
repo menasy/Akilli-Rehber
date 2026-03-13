@@ -1,6 +1,6 @@
 import { create } from "zustand"
-import { persist, createJSONStorage } from "zustand/middleware"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import { persist } from "zustand/middleware"
+import { mmkvStorage } from "../storage/mmkv"
 
 type FavoritesState = {
   favoriteIds: string[]
@@ -26,7 +26,8 @@ export const useFavoritesStore = create<FavoritesState>()(
     }),
     {
       name: "nasai-favorites",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: mmkvStorage,
+      partialize: (state) => ({ favoriteIds: state.favoriteIds }),
     }
   )
 )

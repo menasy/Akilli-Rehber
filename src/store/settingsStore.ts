@@ -1,8 +1,8 @@
 import { create } from "zustand"
-import { persist, createJSONStorage } from "zustand/middleware"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import { persist } from "zustand/middleware"
 import { ThemeName } from "../theme/colors"
 import { ContactSize } from "../types"
+import { mmkvStorage } from "../storage/mmkv"
 
 export type Language = "tr" | "ku"
 export type DefaultScreen = "index" | "favorites" | "voice"
@@ -39,7 +39,14 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: "nasai-settings",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: mmkvStorage,
+      partialize: (state) => ({
+        theme: state.theme,
+        language: state.language,
+        contactSize: state.contactSize,
+        defaultScreen: state.defaultScreen,
+        contactsBootstrapped: state.contactsBootstrapped,
+      }),
     }
   )
 )

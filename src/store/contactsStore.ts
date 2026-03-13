@@ -1,28 +1,29 @@
 import { create } from "zustand"
-import { persist, createJSONStorage } from "zustand/middleware"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import { persist } from "zustand/middleware"
 import { fetchContacts } from "../services/contactsService"
 import { Contact } from "../types"
+import { mmkvStorage } from "../storage/mmkv"
 
-export const useContactsStore = create(
+type ContactsState = {
+  contacts: Contact[]
+  loading: boolean
+  loadContacts: () => Promise<void>
+}
+
+export const useContactsStore = create<ContactsState>()(
   persist(
     (set) => ({
-      contacts: [] as Contact[],
+      contacts: [],
       loading: false,
-      loadContacts: async (): Promise<void> => {
+      loadContacts: async () => {
         set({ loading: true })
-
         const data = await fetchContacts()
-
-        set({
-          contacts: data,
-          loading: false,
-        })
+        set({ contacts: data, loading: false })
       },
     }),
     {
       name: "nasai-contacts",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: mmkvStorage,
       partialize: (state) => ({ contacts: state.contacts }),
     }
   )

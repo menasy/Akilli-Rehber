@@ -25,7 +25,7 @@ export async function fetchContacts(): Promise<Contact[]> {
       return {
         id: c.id ?? Math.random().toString(),
         name: c.name ?? "No Name",
-        phone: phoneNumber,
+        phone: phoneNumber ?? "",
         avatar: c.image?.uri ?? "",
         isFavorite: false,
       };

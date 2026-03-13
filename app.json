@@ -35,13 +35,13 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-sqlite",
       [
         "expo-contacts",
         {
           "contactsPermission": "Rehberinize erişmek için izin gerekiyor."
         }
-      ]
+      ],
+      "expo-font"
     ]
   }
 }
