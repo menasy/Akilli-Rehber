@@ -1,26 +1,41 @@
 import { create } from "zustand"
+import { persist, createJSONStorage } from "zustand/middleware"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { ThemeName } from "../theme/colors"
 import { ContactSize } from "../types"
 
 export type Language = "tr" | "ku"
+export type DefaultScreen = "index" | "favorites" | "voice"
 
 type SettingsState = {
   theme: ThemeName
   language: Language
   contactSize: ContactSize
+  defaultScreen: DefaultScreen
   setTheme: (theme: ThemeName) => void
   toggleTheme: () => void
   setLanguage: (language: Language) => void
   setContactSize: (size: ContactSize) => void
+  setDefaultScreen: (screen: DefaultScreen) => void
 }
 
-export const useSettingsStore = create<SettingsState>((set) => ({
-  theme: "light",
-  language: "tr",
-  contactSize: "large",
-  setTheme: (theme) => set({ theme }),
-  toggleTheme: () =>
-    set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
-  setLanguage: (language) => set({ language }),
-  setContactSize: (contactSize) => set({ contactSize }),
-}))
+export const useSettingsStore = create<SettingsState>()(
+  persist(
+    (set) => ({
+      theme: "light",
+      language: "tr",
+      contactSize: "large",
+      defaultScreen: "index",
+      setTheme: (theme) => set({ theme }),
+      toggleTheme: () =>
+        set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
+      setLanguage: (language) => set({ language }),
+      setContactSize: (contactSize) => set({ contactSize }),
+      setDefaultScreen: (defaultScreen) => set({ defaultScreen }),
+    }),
+    {
+      name: "nasai-settings",
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+)

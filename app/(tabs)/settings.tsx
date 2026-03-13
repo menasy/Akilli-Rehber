@@ -7,13 +7,22 @@ import { useSettingsStore } from "../../src/store/settingsStore"
 import SettingsThemeRow from "../../src/components/SettingsThemeRow"
 import SettingsLanguageRow from "../../src/components/SettingsLanguageRow"
 import SettingsContactSizeRow from "../../src/components/SettingsContactSizeRow"
+import SettingsDefaultScreenRow from "../../src/components/SettingsDefaultScreenRow"
 
 export default function Settings() {
   const colors = useTheme()
   const { t } = useI18n()
   const { scale, verticalScale, moderateScale } = useResponsive()
-  const { theme, toggleTheme, language, setLanguage, contactSize, setContactSize } =
-    useSettingsStore()
+  const {
+    theme,
+    toggleTheme,
+    language,
+    setLanguage,
+    contactSize,
+    setContactSize,
+    defaultScreen,
+    setDefaultScreen,
+  } = useSettingsStore()
 
   return (
     <ScrollView
@@ -46,6 +55,15 @@ export default function Settings() {
         moderateScale={moderateScale}
         contactSize={contactSize}
         setContactSize={setContactSize}
+      />
+      <SettingsDefaultScreenRow
+        colors={colors}
+        t={t}
+        scale={scale}
+        verticalScale={verticalScale}
+        moderateScale={moderateScale}
+        defaultScreen={defaultScreen}
+        setDefaultScreen={setDefaultScreen}
       />
     </ScrollView>
   )

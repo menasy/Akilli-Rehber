@@ -29,7 +29,11 @@
     "contactSize": "Mezinahiya Kesê",
     "small": "Biçûk",
     "medium": "Navîn",
-    "large": "Mezin"
+    "large": "Mezin",
+    "defaultScreen": "Rûpela Destpêkê",
+    "screenHome": "Sereke",
+    "screenFavorites": "Bijarte",
+    "screenVoice": "Dengî"
   },
   "search": {
     "placeholder": "Kesekî bigere..."

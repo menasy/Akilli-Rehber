@@ -29,7 +29,11 @@
     "contactSize": "Kişi Boyutu",
     "small": "Küçük",
     "medium": "Orta",
-    "large": "Büyük"
+    "large": "Büyük",
+    "defaultScreen": "Başlangıç Ekranı",
+    "screenHome": "Ana Sayfa",
+    "screenFavorites": "Favoriler",
+    "screenVoice": "Sesli"
   },
   "search": {
     "placeholder": "Kişi ara..."
