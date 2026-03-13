@@ -18,7 +18,6 @@ export default function TabLayout() {
       try {
         const NavigationBar = require("expo-navigation-bar")
         NavigationBar.setVisibilityAsync("hidden")
-        NavigationBar.setBehaviorAsync("overlay-swipe")
       } catch {}
     }
   }, [])

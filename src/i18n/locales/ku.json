@@ -6,8 +6,7 @@
     "settings": "Mîheng"
   },
   "home": {
-    "title": "NasAi Rehber",
-    "subtitle": "Rêbera zîrek bi wêneyên mezin",
+    "title": "NasAi Akıllı Rehber",
     "call": "BIGIRE",
     "noContacts": "Kes nehat dîtin"
   },
@@ -30,6 +29,8 @@
     "small": "Biçûk",
     "medium": "Navîn",
     "large": "Mezin",
+    "contacts": "Rehber",
+    "fetchContacts": "Rehberê Bikişîne",
     "defaultScreen": "Rûpela Destpêkê",
     "screenHome": "Sereke",
     "screenFavorites": "Bijarte",

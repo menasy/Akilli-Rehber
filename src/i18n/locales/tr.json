@@ -6,8 +6,7 @@
     "settings": "Ayarlar"
   },
   "home": {
-    "title": "NasAi Rehber",
-    "subtitle": "Büyük resimli akıllı rehber",
+    "title": "NasAi Akıllı Rehber",
     "call": "ARA",
     "noContacts": "Kişi bulunamadı"
   },
@@ -30,6 +29,8 @@
     "small": "Küçük",
     "medium": "Orta",
     "large": "Büyük",
+    "contacts": "Rehber",
+    "fetchContacts": "Rehberi Çek",
     "defaultScreen": "Başlangıç Ekranı",
     "screenHome": "Ana Sayfa",
     "screenFavorites": "Favoriler",

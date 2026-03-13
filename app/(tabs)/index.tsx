@@ -27,10 +27,4 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  title: {
-    fontWeight: "700",
-  },
-  subtitle: {
-    fontWeight: "600",
-  },
 })

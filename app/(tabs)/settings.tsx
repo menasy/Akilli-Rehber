@@ -8,6 +8,7 @@ import SettingsThemeRow from "../../src/components/SettingsThemeRow"
 import SettingsLanguageRow from "../../src/components/SettingsLanguageRow"
 import SettingsContactSizeRow from "../../src/components/SettingsContactSizeRow"
 import SettingsDefaultScreenRow from "../../src/components/SettingsDefaultScreenRow"
+import SettingsContactsSyncRow from "../../src/components/SettingsContactsSyncRow"
 
 export default function Settings() {
   const colors = useTheme()
@@ -55,6 +56,13 @@ export default function Settings() {
         moderateScale={moderateScale}
         contactSize={contactSize}
         setContactSize={setContactSize}
+      />
+      <SettingsContactsSyncRow
+        colors={colors}
+        t={t}
+        scale={scale}
+        verticalScale={verticalScale}
+        moderateScale={moderateScale}
       />
       <SettingsDefaultScreenRow
         colors={colors}

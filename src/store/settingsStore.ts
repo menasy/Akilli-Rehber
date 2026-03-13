@@ -12,11 +12,13 @@ type SettingsState = {
   language: Language
   contactSize: ContactSize
   defaultScreen: DefaultScreen
+  contactsBootstrapped: boolean
   setTheme: (theme: ThemeName) => void
   toggleTheme: () => void
   setLanguage: (language: Language) => void
   setContactSize: (size: ContactSize) => void
   setDefaultScreen: (screen: DefaultScreen) => void
+  setContactsBootstrapped: (value: boolean) => void
 }
 
 export const useSettingsStore = create<SettingsState>()(
@@ -26,12 +28,14 @@ export const useSettingsStore = create<SettingsState>()(
       language: "tr",
       contactSize: "large",
       defaultScreen: "index",
+      contactsBootstrapped: false,
       setTheme: (theme) => set({ theme }),
       toggleTheme: () =>
         set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
       setLanguage: (language) => set({ language }),
       setContactSize: (contactSize) => set({ contactSize }),
       setDefaultScreen: (defaultScreen) => set({ defaultScreen }),
+      setContactsBootstrapped: (contactsBootstrapped) => set({ contactsBootstrapped }),
     }),
     {
       name: "nasai-settings",
