@@ -1,0 +1,36 @@
+{
+  "tabs": {
+    "home": "Rûpela Sereke",
+    "favorites": "Bijarte",
+    "voice": "Dengî",
+    "settings": "Mîheng"
+  },
+  "home": {
+    "title": "NasAi Rehber",
+    "call": "BIGIRE",
+    "noContacts": "Kes nehat dîtin"
+  },
+  "favorites": {
+    "title": "Bijarte",
+    "empty": "Hîn bijarte nehatiye zêdekirin"
+  },
+  "voice": {
+    "title": "Axaftina Dengî",
+    "start": "Dest bi Axaftinê Bike",
+    "listening": "Tê guhdarîkirin..."
+  },
+  "settings": {
+    "title": "Mîheng",
+    "theme": "Tema",
+    "language": "Ziman",
+    "light": "Ronî",
+    "dark": "Tarî",
+    "contactSize": "Mezinahiya Kesê",
+    "small": "Biçûk",
+    "medium": "Navîn",
+    "large": "Mezin"
+  },
+  "search": {
+    "placeholder": "Kesekî bigere..."
+  }
+}

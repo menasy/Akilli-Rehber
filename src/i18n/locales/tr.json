@@ -1,0 +1,36 @@
+{
+  "tabs": {
+    "home": "Ana Sayfa",
+    "favorites": "Favoriler",
+    "voice": "Sesli",
+    "settings": "Ayarlar"
+  },
+  "home": {
+    "title": "NasAi Rehber",
+    "call": "ARA",
+    "noContacts": "Kişi bulunamadı"
+  },
+  "favorites": {
+    "title": "Favoriler",
+    "empty": "Henüz favori eklenmedi"
+  },
+  "voice": {
+    "title": "Sesli Konuşma",
+    "start": "Konuşmaya Başla",
+    "listening": "Dinleniyor..."
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "theme": "Tema",
+    "language": "Dil",
+    "light": "Açık",
+    "dark": "Koyu",
+    "contactSize": "Kişi Boyutu",
+    "small": "Küçük",
+    "medium": "Orta",
+    "large": "Büyük"
+  },
+  "search": {
+    "placeholder": "Kişi ara..."
+  }
+}
