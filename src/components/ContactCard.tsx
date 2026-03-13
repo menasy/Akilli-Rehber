@@ -12,7 +12,7 @@ import { useSettingsStore } from "../store/settingsStore"
 const SIZE_CONFIG = {
   small: { avatar: 100, buttonWRatio: 0.6, buttonH: 44, nameFont: 18, callFont: 16 },
   medium: { avatar: 150, buttonWRatio: 0.68, buttonH: 54, nameFont: 21, callFont: 18 },
-  large: { avatar: 200, buttonWRatio: 0.75, buttonH: 64, nameFont: 24, callFont: 20 },
+  large: { avatar: 220, buttonWRatio: 0.78, buttonH: 68, nameFont: 26, callFont: 22 },
 }
 
 interface ContactCardProps {
@@ -24,7 +24,7 @@ export default function ContactCard({ contact }: ContactCardProps) {
   const { scale, verticalScale, moderateScale, width } = useResponsive()
   const { t } = useI18n()
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite)
-  const isFavorite = useFavoritesStore((state) => state.isFavorite)
+  const isFavorite = useFavoritesStore((state) => state.favoriteIds.includes(contact.id))
   const contactSize = useSettingsStore((state) => state.contactSize)
 
   const cfg = SIZE_CONFIG[contactSize]
@@ -51,7 +51,7 @@ export default function ContactCard({ contact }: ContactCardProps) {
       {/* Favori butonu - sağ üst */}
       <View style={styles.favoriteWrapper}>
         <FavoriteButton
-          isFavorite={isFavorite(contact.id)}
+          isFavorite={isFavorite}
           onToggle={() => toggleFavorite(contact.id)}
         />
       </View>

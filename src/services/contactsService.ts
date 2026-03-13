@@ -14,7 +14,7 @@ export async function fetchContacts(): Promise<Contact[]> {
       ],
     });
 
-    console.log("Rehberden gelen ham veri adedi:", data.length);
+    console.log("Rehberden 1 gelen ham veri adedi:", data.length);
 
     const mapped: Contact[] = data.map((c) => {
       const phoneNumber = c.phoneNumbers && c.phoneNumbers.length > 0 

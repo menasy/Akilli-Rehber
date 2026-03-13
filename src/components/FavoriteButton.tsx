@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from "react"
+import React, { useRef, useCallback, useEffect } from "react"
 import { Pressable, Animated, View, StyleSheet } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { useResponsive } from "../theme/responsive"
@@ -22,32 +22,30 @@ interface FavoriteButtonProps {
 export default function FavoriteButton({ isFavorite, onToggle }: FavoriteButtonProps) {
   const { moderateScale, scale } = useResponsive()
 
-  const filledScale = useRef(new Animated.Value(isFavorite ? 1 : 0)).current
-  const outlineOpacity = useRef(new Animated.Value(isFavorite ? 0 : 1)).current
+  const favoriteProgress = useRef(new Animated.Value(isFavorite ? 1 : 0)).current
   const celebrateAnim = useRef(new Animated.Value(0)).current
   const celebrateOpacity = useRef(new Animated.Value(0)).current
+
+  useEffect(() => {
+    Animated.timing(favoriteProgress, {
+      toValue: isFavorite ? 1 : 0,
+      duration: 180,
+      useNativeDriver: true,
+    }).start()
+
+    if (!isFavorite) {
+      celebrateAnim.setValue(0)
+      celebrateOpacity.setValue(0)
+    }
+  }, [isFavorite, favoriteProgress, celebrateAnim, celebrateOpacity])
 
   const handlePress = useCallback(() => {
     if (!isFavorite) {
       // Becoming favorite — heart fill + celebrate
-      filledScale.setValue(0)
-      outlineOpacity.setValue(0)
       celebrateAnim.setValue(0)
       celebrateOpacity.setValue(1)
 
       Animated.parallel([
-        Animated.sequence([
-          Animated.timing(filledScale, {
-            toValue: 1.2,
-            duration: 250,
-            useNativeDriver: true,
-          }),
-          Animated.timing(filledScale, {
-            toValue: 1,
-            duration: 250,
-            useNativeDriver: true,
-          }),
-        ]),
         Animated.sequence([
           Animated.delay(100),
           Animated.parallel([
@@ -64,24 +62,23 @@ export default function FavoriteButton({ isFavorite, onToggle }: FavoriteButtonP
           ]),
         ]),
       ]).start()
-    } else {
-      // Removing favorite — heart shrink
-      Animated.sequence([
-        Animated.timing(filledScale, {
-          toValue: 0,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-        Animated.timing(outlineOpacity, {
-          toValue: 1,
-          duration: 150,
-          useNativeDriver: true,
-        }),
-      ]).start()
     }
 
     onToggle()
-  }, [isFavorite, onToggle, filledScale, outlineOpacity, celebrateAnim, celebrateOpacity])
+  }, [isFavorite, onToggle, celebrateAnim, celebrateOpacity])
+
+  const filledScale = favoriteProgress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  })
+  const filledOpacity = favoriteProgress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  })
+  const outlineOpacity = favoriteProgress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 0],
+  })
 
   const iconSize = moderateScale(28)
   const containerSize = scale(50)
@@ -99,7 +96,12 @@ export default function FavoriteButton({ isFavorite, onToggle }: FavoriteButtonP
       </Animated.View>
 
       {/* Filled heart */}
-      <Animated.View style={[styles.iconWrap, { transform: [{ scale: filledScale }] }]}>
+      <Animated.View
+        style={[
+          styles.iconWrap,
+          { transform: [{ scale: filledScale }], opacity: filledOpacity },
+        ]}
+      >
         <Ionicons name="heart" size={iconSize} color={HEART_COLOR} />
       </Animated.View>
 
