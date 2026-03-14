@@ -1187,7 +1187,7 @@ export function getLanguageConstants(lang: SupportedLanguage): LanguageConstants
 // ────────────────────────────────────────────────────────────────
 
 /** Fuzzy arama eşiği — düşüldükçe daha katı eşleşme */
-export const FUSE_THRESHOLD = 0.45;
+export const FUSE_THRESHOLD = 0.35;
 
 /** Güven skoru sınırları */
 export const CONFIDENCE = {
