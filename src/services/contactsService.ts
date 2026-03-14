@@ -1,5 +1,6 @@
 import * as Contacts from "expo-contacts";
 import { Contact } from "../types";
+import { phoneticNormalize } from "../ai/phoneticNormalizer";
 
 export async function fetchContacts(): Promise<Contact[]> {
   try {
@@ -21,13 +22,18 @@ export async function fetchContacts(): Promise<Contact[]> {
         ? c.phoneNumbers[0].number 
         : "";
 
-     
+      const name = c.name ?? "No Name";
+      const normalizedName = name.toLowerCase().trim();
+      const phoneticName = phoneticNormalize(name);
+
       return {
         id: c.id ?? Math.random().toString(),
-        name: c.name ?? "No Name",
+        name,
         phone: phoneNumber ?? "",
         avatar: c.image?.uri ?? "",
         isFavorite: false,
+        normalizedName,
+        phoneticName,
       };
     });
 

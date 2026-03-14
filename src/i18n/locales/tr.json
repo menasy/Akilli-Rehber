@@ -15,9 +15,31 @@
     "empty": "Henüz favori eklenmedi"
   },
   "voice": {
-    "title": "Sesli Konuşma",
+    "title": "Sesli Arama",
     "start": "Konuşmaya Başla",
-    "listening": "Dinleniyor..."
+    "listening": "Dinleniyor...",
+    "stop": "Kaydı bitirmek için tekrar dokunun",
+    "tapToStart": "Kaydı başlatmak için mikrofona bir kez dokunun",
+    "tapToStop": "Kayıt tamamlanınca aynı mikrofona tekrar dokunun",
+    "pleaseWait": "Bu adım tamamlanana kadar kısa bir süre bekleyin",
+    "processing": "İşleniyor...",
+    "call": "ARA",
+    "retry": "Tekrar Dene",
+    "notFound": "Kişi bulunamadı, tekrar deneyin",
+    "errorMessage": "Bir hata oluştu",
+    "micPermissionDenied": "Mikrofon izni reddedildi",
+    "recordingNotFound": "Kayıt bulunamadı",
+    "recordingFailed": "Kayıt başlatılamadı",
+    "processingFailed": "İşlem sırasında hata oluştu",
+    "modelLoading": "AI modeli yükleniyor...",
+    "modelLoadFailed": "AI modeli yüklenemedi",
+    "pressToTalk": "Aramak istediğiniz kişinin adını söyleyin",
+    "candidates": "Birden fazla kişi bulundu",
+    "transcript": "Algılanan metin",
+    "confidence": "Eşleşme güveni",
+    "high": "Yüksek",
+    "medium": "Orta",
+    "low": "Düşük"
   },
   "settings": {
     "title": "Ayarlar",

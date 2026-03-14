@@ -15,9 +15,31 @@
     "empty": "Hîn bijarte nehatiye zêdekirin"
   },
   "voice": {
-    "title": "Axaftina Dengî",
+    "title": "Lêgerîna Dengî",
     "start": "Dest bi Axaftinê Bike",
-    "listening": "Tê guhdarîkirin..."
+    "listening": "Tê guhdarîkirin...",
+    "stop": "Ji bo rawestandina tomarê careke din pê ve bixîne",
+    "tapToStart": "Ji bo destpêkirina tomarê carek li mîkrofonê bide",
+    "tapToStop": "Dema tomar qediya dîsa li heman mîkrofonê bide",
+    "pleaseWait": "Heta vê gavê were qedandin, kêmtir piçek bisekine",
+    "processing": "Tê xebitandin...",
+    "call": "BIGIRE",
+    "retry": "Dîsa Biceribîne",
+    "notFound": "Kes nehat dîtin, dîsa biceribîne",
+    "errorMessage": "Çewtiyeke çêbû",
+    "micPermissionDenied": "Destûra mîkrofonê hat redkirin",
+    "recordingNotFound": "Tomar nehat dîtin",
+    "recordingFailed": "Tomar dest pê nekir",
+    "processingFailed": "Di dema xebitandinê de çewtî çêbû",
+    "modelLoading": "Modela AI tê barkirin...",
+    "modelLoadFailed": "Modela AI nehat barkirin",
+    "pressToTalk": "Navê kesê ku hûn dixwazin lê bigerin bibêjin",
+    "candidates": "Zêdetir ji yek kes hat dîtin",
+    "transcript": "Nivîsara hatiye nasîn",
+    "confidence": "Baweriya lêhevhatinê",
+    "high": "Bilind",
+    "medium": "Navîn",
+    "low": "Nizm"
   },
   "settings": {
     "title": "Mîheng",

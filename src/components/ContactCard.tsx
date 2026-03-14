@@ -17,9 +17,15 @@ const SIZE_CONFIG = {
 
 interface ContactCardProps {
   contact: Contact
+  onCall?: (contact: Contact) => void
+  showFavoriteButton?: boolean
 }
 
-export default function ContactCard({ contact }: ContactCardProps) {
+export default function ContactCard({
+  contact,
+  onCall,
+  showFavoriteButton = true,
+}: ContactCardProps) {
   const colors = useTheme()
   const { scale, verticalScale, moderateScale, width } = useResponsive()
   const { t } = useI18n()
@@ -48,13 +54,14 @@ export default function ContactCard({ contact }: ContactCardProps) {
         },
       ]}
     >
-      {/* Favori butonu - sağ üst */}
-      <View style={styles.favoriteWrapper}>
-        <FavoriteButton
-          isFavorite={isFavorite}
-          onToggle={() => toggleFavorite(contact.id)}
-        />
-      </View>
+      {showFavoriteButton ? (
+        <View style={styles.favoriteWrapper}>
+          <FavoriteButton
+            isFavorite={isFavorite}
+            onToggle={() => toggleFavorite(contact.id)}
+          />
+        </View>
+      ) : null}
 
       <Image
         source={
@@ -87,7 +94,7 @@ export default function ContactCard({ contact }: ContactCardProps) {
       </Text>
 
       <Pressable
-        onPress={() => callNumber(contact.phone)}
+        onPress={() => (onCall ? onCall(contact) : callNumber(contact.phone))}
         style={({ pressed }) => [
           styles.callButton,
           {

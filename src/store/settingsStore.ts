@@ -1,3 +1,4 @@
+import { Appearance } from "react-native"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { ThemeName } from "../theme/colors"
@@ -21,10 +22,18 @@ type SettingsState = {
   setContactsBootstrapped: (value: boolean) => void
 }
 
+function getInitialTheme(): ThemeName {
+  if (typeof window !== "undefined" && typeof window.matchMedia === "function") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  }
+
+  return Appearance.getColorScheme() === "dark" ? "dark" : "light"
+}
+
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
-      theme: "light",
+      theme: getInitialTheme(),
       language: "tr",
       contactSize: "large",
       defaultScreen: "index",

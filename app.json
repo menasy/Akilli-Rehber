@@ -22,7 +22,8 @@
       "permissions": [
         "android.permission.READ_CONTACTS",
         "android.permission.WRITE_CONTACTS",
-        "android.permission.CALL_PHONE"
+        "android.permission.CALL_PHONE",
+        "android.permission.RECORD_AUDIO"
       ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -41,7 +42,14 @@
           "contactsPermission": "Rehberinize erişmek için izin gerekiyor."
         }
       ],
-      "expo-font"
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Sesli arama için mikrofon erişimi gerekiyor."
+        }
+      ],
+      "expo-font",
+      "expo-asset"
     ]
   }
 }
