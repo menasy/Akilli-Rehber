@@ -6,7 +6,7 @@
     "settings": "Ayarlar"
   },
   "home": {
-    "title": "NasAi Akıllı Rehber",
+    "title": "Akılı Rehber",
     "call": "ARA",
     "noContacts": "Kişi bulunamadı"
   },
@@ -15,9 +15,34 @@
     "empty": "Henüz favori eklenmedi"
   },
   "voice": {
-    "title": "Sesli Konuşma",
+    "title": "Sesli Arama",
     "start": "Konuşmaya Başla",
-    "listening": "Dinleniyor..."
+    "listening": "Dinleniyor...",
+    "stop": "Kaydı bitirmek için tekrar dokunun",
+    "tapToStart": "Kaydı başlatmak için mikrofona bir kez dokunun",
+    "tapToStop": "Kayıt tamamlanınca aynı mikrofona tekrar dokunun",
+    "pleaseWait": "Bu adım tamamlanana kadar kısa bir süre bekleyin",
+    "processing": "İşleniyor...",
+    "call": "ARA",
+    "retry": "Tekrar Dene",
+    "notFound": "Kişi bulunamadı, tekrar deneyin",
+    "errorMessage": "Bir hata oluştu",
+    "micPermissionDenied": "Mikrofon izni reddedildi",
+    "recordingNotFound": "Kayıt bulunamadı",
+    "recordingFailed": "Kayıt başlatılamadı",
+    "processingFailed": "İşlem sırasında hata oluştu",
+    "speechNotAvailable": "Sesli tanıma bu cihazda kullanılamıyor",
+    "speechModuleUnavailable": "Sesli tanıma modülü uygulamaya eklenmemiş. Uygulamayı yeniden derleyin.",
+    "speechServiceMissing": "Cihazda kullanılabilir bir konuşma tanıma servisi bulunamadı",
+    "pressToTalk": "Aramak istediğiniz kişinin adını söyleyin",
+    "examplePrompt": "\"Mehmet'i ara\" ya da sadece \"Mehmet\" deyin.",
+    "processingHint": "Söylediğiniz isim aranıyor.",
+    "candidates": "Birden fazla kişi bulundu",
+    "transcript": "Algılanan metin",
+    "confidence": "Eşleşme güveni",
+    "high": "Yüksek",
+    "medium": "Orta",
+    "low": "Düşük"
   },
   "settings": {
     "title": "Ayarlar",

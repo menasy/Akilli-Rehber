@@ -2,8 +2,9 @@ import { useSettingsStore } from "../store/settingsStore"
 import type { Language } from "../store/settingsStore"
 import tr from "./locales/tr.json"
 import ku from "./locales/ku.json"
+import ar from "./locales/ar.json"
 
-const translations: Record<Language, Record<string, any>> = { tr, ku }
+const translations: Record<Language, Record<string, any>> = { tr, ku, ar }
 
 function resolve(obj: Record<string, any>, key: string): string {
   const parts = key.split(".")

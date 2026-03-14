@@ -12,5 +12,5 @@ export interface Settings {
     theme: "light" | "dark"
     contactSize: ContactSize
     defaultScreen: "home" | "favorites"
-    language: "tr" | "ku"
+    language: "tr" | "ku" | "ar"
 }

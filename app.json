@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "NasAi Akıllı Rehber",
+    "name": "Akılı Rehber",
     "slug": "nasAi",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,7 +14,11 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.nasAi"
+      "bundleIdentifier": "com.anonymous.nasAi",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Sesli arama için mikrofon erişimi gerekli",
+        "NSSpeechRecognitionUsageDescription": "Sesli komutları tanımak için gerekli"
+      }
     },
     "android": {
       "package": "com.anonymous.nasAi",
@@ -22,7 +26,8 @@
       "permissions": [
         "android.permission.READ_CONTACTS",
         "android.permission.WRITE_CONTACTS",
-        "android.permission.CALL_PHONE"
+        "android.permission.CALL_PHONE",
+        "android.permission.RECORD_AUDIO"
       ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -41,7 +46,8 @@
           "contactsPermission": "Rehberinize erişmek için izin gerekiyor."
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-speech-recognition"
     ]
   }
 }

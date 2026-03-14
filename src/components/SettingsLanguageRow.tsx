@@ -100,6 +100,28 @@ export default function SettingsLanguageRow({
           }}
           labelStyle={{ marginTop: 0 }}
         />
+        <SelectedMenu
+          isSelected={language === "ar"}
+          label="العربية"
+          onPress={() => setLanguage("ar")}
+          colors={colors}
+          scale={scale}
+          verticalScale={verticalScale}
+          moderateScale={moderateScale}
+          labelSize={moderateScale(15)}
+          activeTextColor="#FFFFFF"
+          inactiveTextColor={colors.textSecondary}
+          activeBgColor={colors.primary}
+          inactiveBgColor={colors.tabBarItemBg}
+          pressableStyle={styles.langChip}
+          innerStyle={{
+            borderRadius: scale(10),
+            paddingVertical: verticalScale(10),
+            paddingHorizontal: scale(18),
+            width: "100%",
+          }}
+          labelStyle={{ marginTop: 0 }}
+        />
       </View>
     </View>
   )
