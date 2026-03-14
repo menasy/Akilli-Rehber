@@ -31,7 +31,7 @@
     "recordingNotFound": "Kayıt bulunamadı",
     "recordingFailed": "Kayıt başlatılamadı",
     "processingFailed": "İşlem sırasında hata oluştu",
-    "modelLoading": "AI modeli yükleniyor...",
+    "modelLoading": "AI ses modeli hazırlanıyor...",
     "modelLoadFailed": "AI modeli yüklenemedi",
     "pressToTalk": "Aramak istediğiniz kişinin adını söyleyin",
     "candidates": "Birden fazla kişi bulundu",

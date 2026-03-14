@@ -6,20 +6,25 @@ export interface WhisperResult {
   language?: string
 }
 
-const TRANSCRIBE_OPTIONS = {
-  language: "auto",
-  maxThreads: 4,
-  translate: false,
-} as const
+/** Whisper için desteklenen dil kodları */
+type WhisperLanguage = "tr" | "ku" | "auto"
+
+function buildTranscribeOptions(language: WhisperLanguage) {
+  return {
+    language: language === "ku" ? "auto" : language,
+    maxThreads: 4,
+    translate: false,
+  }
+}
 
 let whisperContext: WhisperContext | null = null
-let activeModelPath: string | number | null = null
+let activeModelPath: string | null = null
 let modelLoadingPromise: Promise<WhisperContext> | null = null
 
 /**
  * Whisper modelini yükler ve tekil context döndürür.
  */
-export async function loadWhisperModel(modelPath: string | number): Promise<void> {
+export async function loadWhisperModel(modelPath: string): Promise<void> {
   if (whisperContext && activeModelPath === modelPath) {
     return
   }
@@ -37,7 +42,6 @@ export async function loadWhisperModel(modelPath: string | number): Promise<void
 
     whisperContext = await initWhisper({
       filePath: modelPath,
-      isBundleAsset: typeof modelPath === "number",
       useGpu: false,
     })
     activeModelPath = modelPath
@@ -53,10 +57,13 @@ export async function loadWhisperModel(modelPath: string | number): Promise<void
 
 /**
  * Ses dosyasını transkribe eder.
+ * Base model ile en stabil sonuç için 16kHz mono giriş beklenir.
+ * WAV/PCM tercih edilir; desteklenen diğer formatları native katman decode eder.
  */
 export async function transcribeAudio(
   audioPath: string,
-  modelPath: string | number
+  modelPath: string,
+  language: WhisperLanguage = "tr"
 ): Promise<WhisperResult> {
   if (!audioPath) {
     throw new Error("Ses dosyasi bulunamadi.")
@@ -68,15 +75,28 @@ export async function transcribeAudio(
     throw new Error("Whisper modeli hazir degil.")
   }
 
-  const { promise } = whisperContext.transcribe(audioPath, TRANSCRIBE_OPTIONS)
-  const { result } = await promise
-  const text = result.trim()
+  const options = buildTranscribeOptions(language)
+  console.log("[WhisperService] Transcribe başlıyor:", {
+    audioPath,
+    language: options.language,
+  })
+
+  const { promise } = whisperContext.transcribe(audioPath, options)
+  const result = await promise
+  const text = (result.result ?? "").trim()
+
+  console.log("[WhisperService] Transcribe sonuç:", {
+    text: text || "(boş)",
+    language: result.language ?? "unknown",
+    segments: result.segments?.length ?? 0,
+    isAborted: result.isAborted ?? false,
+  })
 
   if (!text) {
     throw new Error("Ses kaydi cozumlenemedi.")
   }
 
-  return { text }
+  return { text, language: result.language }
 }
 
 /**

@@ -5,10 +5,10 @@ import {
   isModelLoaded,
   releaseWhisperModel,
 } from "../ai/whisperService"
+import { ensureWhisperModel } from "../ai/modelManager"
 import type { WhisperResult } from "../ai/whisperService"
 
-/** Model dosyası bundle asset olarak doğrudan whisper.rn'e verilir. */
-const MODEL_ASSET = require("../../assets/models/ggml-tiny.bin")
+/** Model dosyası assets'ten app storage'a kopyalanır ve gerçek path kullanılır. */
 
 function logWhisperStage(stage: string, payload: Record<string, unknown>) {
   console.log(`[VoiceSearch][Whisper][${stage}]`, payload)
@@ -24,8 +24,8 @@ interface UseWhisperState {
  * Whisper offline speech recognition hook'u.
  * Lazy load: model ilk kullanımda yüklenir.
  * Singleton: tüm uygulama tek context paylaşır.
- * Model dosyası bundle asset olarak assets/models/ggml-tiny.bin altında tutulur
- * ve whisper.rn'e doğrudan asset referansı olarak verilir.
+ * Model dosyası ilk çalıştırmada assets'ten app storage'a kopyalanır
+ * ve whisper.rn'e gerçek filesystem path olarak verilir.
  */
 export function useWhisper() {
   const [state, setState] = useState<UseWhisperState>({
@@ -34,6 +34,7 @@ export function useWhisper() {
     error: null,
   })
   const modelLoadedRef = useRef(isModelLoaded())
+  const modelPathRef = useRef<string | null>(null)
 
   /** Whisper modelini yükler (zaten yüklüyse atlar) */
   const loadModel = useCallback(async () => {
@@ -41,14 +42,18 @@ export function useWhisper() {
 
     setState((prev) => ({ ...prev, isModelLoading: true, error: null }))
     try {
+      logWhisperStage("ModelPreparing", { phase: "ensureWhisperModel" })
+      const modelPath = await ensureWhisperModel()
+      modelPathRef.current = modelPath
+
       logWhisperStage("ModelLoadRequested", {
-        source: "bundle-asset",
-        assetId: MODEL_ASSET,
+        source: "filesystem",
+        path: modelPath,
       })
-      await loadWhisperModel(MODEL_ASSET)
+      await loadWhisperModel(modelPath)
       modelLoadedRef.current = true
       logWhisperStage("ModelLoaded", {
-        source: "bundle-asset",
+        source: "filesystem",
       })
     } catch (err) {
       const message = err instanceof Error ? err.message : "Model load failed"
@@ -64,15 +69,22 @@ export function useWhisper() {
 
   /** Ses dosyasını transkribe eder. Model yüklü değilse önce yükler. */
   const transcribe = useCallback(
-    async (audioPath: string): Promise<WhisperResult> => {
+    async (audioPath: string, language?: string): Promise<WhisperResult> => {
       // Lazy load
       if (!modelLoadedRef.current) {
         await loadModel()
       }
 
+      const modelPath = modelPathRef.current
+      if (!modelPath) {
+        throw new Error("Model path bulunamadı")
+      }
+
+      const whisperLang = (language === "tr" || language === "ku") ? language : "tr"
+
       setState((prev) => ({ ...prev, isTranscribing: true, error: null }))
       try {
-        const result = await transcribeAudio(audioPath, MODEL_ASSET)
+        const result = await transcribeAudio(audioPath, modelPath, whisperLang)
         return result
       } catch (err) {
         const message = err instanceof Error ? err.message : "Transkripsiyon basarisiz oldu"

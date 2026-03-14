@@ -1,5 +1,14 @@
 import { useState, useCallback, useRef } from "react"
-import { Audio } from "expo-av"
+import {
+  Audio,
+} from "expo-av"
+import {
+  AndroidOutputFormat,
+  AndroidAudioEncoder,
+  IOSOutputFormat,
+  IOSAudioQuality,
+} from "expo-av/build/Audio/RecordingConstants"
+import type { RecordingOptions } from "expo-av/build/Audio/Recording.types"
 import { useContactsStore } from "../store/contactsStore"
 import { parseVoiceCommand } from "../ai/intentParser"
 import { findMatches } from "../ai/matchingService"
@@ -10,6 +19,34 @@ import type { Contact, VoiceSearchState } from "../types"
 
 function logVoiceStage(stage: string, payload: Record<string, unknown>) {
   console.log(`[VoiceSearch][Hook][${stage}]`, payload)
+}
+
+/** Whisper için kayıt ayarları: 16kHz, mono. iOS'ta WAV/PCM, Android'de desteklenen en yakın native format. */
+const WHISPER_RECORDING_OPTIONS: RecordingOptions = {
+  isMeteringEnabled: false,
+  android: {
+    extension: ".m4a",
+    outputFormat: AndroidOutputFormat.MPEG_4,
+    audioEncoder: AndroidAudioEncoder.AAC,
+    sampleRate: 16000,
+    numberOfChannels: 1,
+    bitRate: 64000,
+  },
+  ios: {
+    extension: ".wav",
+    outputFormat: IOSOutputFormat.LINEARPCM,
+    audioQuality: IOSAudioQuality.HIGH,
+    sampleRate: 16000,
+    numberOfChannels: 1,
+    bitRate: 256000,
+    linearPCMBitDepth: 16,
+    linearPCMIsBigEndian: false,
+    linearPCMIsFloat: false,
+  },
+  web: {
+    mimeType: "audio/webm",
+    bitsPerSecond: 128000,
+  },
 }
 
 const INITIAL_STATE: VoiceSearchState = {
@@ -28,8 +65,8 @@ export function useVoiceSearch() {
   const recordingRef = useRef<Audio.Recording | null>(null)
   const isTransitioningRef = useRef(false)
   const contacts = useContactsStore((s) => s.contacts)
-  const { t } = useI18n()
   const { transcribe, isModelReady } = useWhisper()
+  const { t, language } = useI18n()
 
   /** Mikrofon izni alır ve kaydı başlatır */
   const startListening = useCallback(async () => {
@@ -77,11 +114,11 @@ export function useVoiceSearch() {
       })
 
       const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY
+        WHISPER_RECORDING_OPTIONS
       )
       recordingRef.current = recording
       logVoiceStage("RecordingStarted", {
-        preset: "HIGH_QUALITY",
+        preset: "WHISPER_16kHz_MONO_INPUT",
       })
     } catch (error) {
       recordingRef.current = null
@@ -135,14 +172,14 @@ export function useVoiceSearch() {
           setState((prev) => ({ ...prev, status: "modelLoading", error: null }))
         }
 
-        const { text, language } = await transcribe(uri)
+        const { text, language: detectedLang } = await transcribe(uri, language)
         logVoiceStage("WhisperResult", {
           text,
-          language: language ?? "unknown",
+          language: detectedLang ?? "unknown",
         })
 
         // NLP pipeline
-        const intent = parseVoiceCommand(text, language)
+        const intent = parseVoiceCommand(text, detectedLang)
         logVoiceStage("IntentParsed", {
           detectedLanguage: intent.detectedLanguage,
           candidateNames: intent.candidateNames,
@@ -185,7 +222,7 @@ export function useVoiceSearch() {
     } finally {
       isTransitioningRef.current = false
     }
-  }, [contacts, isModelReady, state.status, t, transcribe])
+  }, [contacts, isModelReady, language, state.status, t, transcribe])
 
   /** State'i sıfırlar */
   const reset = useCallback(() => {
