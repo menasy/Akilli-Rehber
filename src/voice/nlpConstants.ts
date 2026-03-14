@@ -2,6 +2,9 @@
 // nlpConstants.ts
 // Sesli rehber uygulaması — Çok Dilli NLP Sabitleri
 // Türkçe, Kürtçe (Kurmancî) ve Arapça tam kapsamlı listeler
+// 
+// NOT: React Voice kullanarak, her dil için BAĞIMSIZ işleme yapılır.
+// Artık Kürtçe → Türkçe normalleştirme YOK!
 // Her dil kendi rehber kayıtlarıyla eşleşir.
 // ================================================================
 
@@ -451,6 +454,100 @@ export const TR_COMMAND_PATTERNS: RegExp[] = [
 // ────────────────────────────────────────────────────────────────
 
 /**
+ * KÜRTÇE YANLIŞ ALGILAMA DÜZELTMELERİ
+ * 
+ * Türkçe STT Kürtçe desteklemediği için yanlış algılar.
+ * Bu map ile düzeltme yapılır.
+ * 
+ * Kullanım: Transcript geldiğinde önce bu map ile düzelt, sonra parse et.
+ * 
+ * Örnekler:
+ * - "mikail sigara" → "mikail bi gara"
+ * - "vahap bank bike" → "wahap bang bike"
+ * - "dilan le bike" → "dilan lê bike"
+ */
+export const KU_MISHEARD_CORRECTIONS: Record<string, string> = {
+  // ── "bi gara" yanlış algılamaları ──
+  'sigara': 'bi gara',
+  'bi kara': 'bi gara',
+  'bikara': 'bi gara',
+  'bi ara': 'bi gara',
+  'biara': 'bi gara',
+  'bi ağra': 'bi gara',
+  'bi gaza': 'bi gara',
+  'si gara': 'bi gara',
+  'bigara': 'bi gara',
+  
+  // ── "bang bike" yanlış algılamaları ──
+  'bank bike': 'bang bike',
+  'banka bike': 'bang bike',
+  'bank bayık': 'bang bike',
+  'bang bayık': 'bang bike',
+  'bank pike': 'bang bike',
+  'bang pike': 'bang bike',
+  'ban bike': 'bang bike',
+  'banbike': 'bang bike',
+  'bang bayk': 'bang bike',
+  'bank bayk': 'bang bike',
+  
+  // ── "lê bike" yanlış algılamaları ──
+  'le bike': 'lê bike',
+  'lebike': 'lê bike',
+  'le bayık': 'lê bike',
+  'le pike': 'lê bike',
+  'le bayk': 'lê bike',
+  
+  // ── "pê bike" yanlış algılamaları ──
+  'pe bike': 'pê bike',
+  'pebike': 'pê bike',
+  'pe bayık': 'pê bike',
+  'pe pike': 'pê bike',
+  'pe bayk': 'pê bike',
+  
+  // ── "telefon bike" yanlış algılamaları ──
+  'telefon bayık': 'telefon bike',
+  'telefon pike': 'telefon bike',
+  'telefon bayk': 'telefon bike',
+  
+  // ── "ji kerema xwe" yanlış algılamaları ──
+  'ci kerema şve': 'ji kerema xwe',
+  'ji kerema şve': 'ji kerema xwe',
+  'ci kerema hve': 'ji kerema xwe',
+  'ji kerema hve': 'ji kerema xwe',
+  'cikerema': 'ji kerema',
+  
+  // ── "dixwazim" yanlış algılamaları ──
+  'dihvazim': 'dixwazim',
+  'dihazim': 'dixwazim',
+  'dikvazim': 'dixwazim',
+  
+  // ── Edatlar ──
+  'ci': 'ji',
+  'bi': 'bi',  // zaten doğru ama ekledik
+  'bo': 'bo',  // zaten doğru
+  
+  // ── İsimler için düzeltmeler ──
+  'vahap': 'wahap',
+  'vahab': 'wahap',
+  'vehap': 'wahap',
+  'velat': 'welat',
+  'velatê': 'welatê',
+  
+  // ── Selamlama düzeltmeleri ──
+  'silav': 'silaw',
+  'silaf': 'silaw',
+  'rojbaş': 'rojbaş',  // zaten doğru
+  'robash': 'rojbaş',
+  
+  // ── Diğer yaygın yanlış algılamalar ──
+  'xeber bide': 'xeber bide',  // doğru
+  'heber bide': 'xeber bide',
+  'biaxive': 'biaxive',  // doğru
+  'biahive': 'biaxive',
+  'biaksive': 'biaxive',
+};
+
+/**
  * KÜRTÇE EK LİSTESİ (Kurmancî)
  * İsmin sonundaki Kürtçe çekim/hitap eklerini temizler.
  * 
@@ -490,74 +587,158 @@ export const KU_SUFFIXES: Array<[RegExp, string]> = [
 /**
  * KÜRTÇE STOP WORD LİSTESİ (Kurmancî)
  * 
+ * NOT: Türkçe STT yanlış algıladığı varyantlar da dahil!
+ * 
  * Örnekler:
  * - "Wahapko bi gara" → "bi gara" kaldırılır
+ * - "Mikail sigara" → "sigara" (bi gara olarak algılandı) kaldırılır
  * - "ji kerema xwe Dîlanê bang bike" → "ji kerema xwe", "bang bike" kaldırılır
  */
 export const KU_STOP_WORDS = new Set<string>([
-  // ── Temel "ara" fiilleri ──
+  // ── Temel "ara" fiilleri (DOĞRU + YANLIŞ ALGILAMALAR) ──
+  "bugün ara",
+  "bugün al",
+  "bugural",
+  "bulgur al",
+  "bugaral",
+  'bugaran',
+  'Güler\'e',
+  'bigara',
+  'bugeran',
   'bi gara',
   'bigara',
   'gara',
+  'sigara',        // YANLIŞ ALGILAMA: "bi gara" → "sigara"
+  'bi kara',       // YANLIŞ ALGILAMA
+  'bikara',        // YANLIŞ ALGILAMA
+  'bi ara',        // YANLIŞ ALGILAMA
+  'biara',         // YANLIŞ ALGILAMA
+  'bi ağra',       // YANLIŞ ALGILAMA
+  'bi gaza',       // YANLIŞ ALGILAMA
+  'si gara',       // YANLIŞ ALGILAMA
+  
   'bang bike',
   'bangbike',
   'bang',
   'bike',
+  'bank bike',     // YANLIŞ ALGILAMA: "bang bike" → "bank bike"
+  'banka bike',    // YANLIŞ ALGILAMA
+  'bank bayık',    // YANLIŞ ALGILAMA
+  'bang bayık',    // YANLIŞ ALGILAMA
+  'bank pike',     // YANLIŞ ALGILAMA
+  'bang pike',     // YANLIŞ ALGILAMA
+  'ban bike',      // YANLIŞ ALGILAMA
+  'banbike',       // YANLIŞ ALGILAMA
+  'bang bayk',     // YANLIŞ ALGILAMA
+  'bank bayk',     // YANLIŞ ALGILAMA
+  'bayık',         // YANLIŞ ALGILAMA tek kelime
+  'pike',          // YANLIŞ ALGILAMA tek kelime
+  'bayk',          // YANLIŞ ALGILAMA tek kelime
+  
   'telefon bike',
   'telefonbike',
+  'telefon bayık', // YANLIŞ ALGILAMA
+  'telefon pike',  // YANLIŞ ALGILAMA
+  'telefon bayk',  // YANLIŞ ALGILAMA
+  
   'têkilî bike',
   'têkilîbike',
   'têkilî',
+  
   'lê bike',
   'pê bike',
   'lêbike',
   'pêbike',
+  'le bike',       // YANLIŞ ALGILAMA: "lê bike" → "le bike"
+  'lebike',        // YANLIŞ ALGILAMA
+  'le bayık',      // YANLIŞ ALGILAMA
+  'le pike',       // YANLIŞ ALGILAMA
+  'le bayk',       // YANLIŞ ALGILAMA
+  'pe bike',       // YANLIŞ ALGILAMA: "pê bike" → "pe bike"
+  'pebike',        // YANLIŞ ALGILAMA
+  'pe bayık',      // YANLIŞ ALGILAMA
+  'pe pike',       // YANLIŞ ALGILAMA
+  'pe bayk',       // YANLIŞ ALGILAMA
+  
   'bide',
   'bidê',
   'bang lê bike',
   'bang pê bike',
+  'bang le bike',  // YANLIŞ ALGILAMA
+  'bang pe bike',  // YANLIŞ ALGILAMA
+  
   'xeber bide',
   'xeberbide',
+  'heber bide',    // YANLIŞ ALGILAMA: "xeber" → "heber"
+  
   'biaxive',
   'axive',
   'biaxivim',
   'axivim',
+  'biahive',       // YANLIŞ ALGILAMA
+  'biaksive',      // YANLIŞ ALGILAMA
+  
   'pê re biaxive',
   'pêrebiaxive',
+  'pe re biaxive', // YANLIŞ ALGILAMA
 
-  // ── Nezaket ifadeleri ──
+  // ── Nezaket ifadeleri (DOĞRU + YANLIŞ ALGILAMALAR) ──
   'ji kerema xwe',
   'jikeremaxwe',
+  'ci kerema şve',   // YANLIŞ ALGILAMA: "ji" → "ci", "xwe" → "şve"
+  'ji kerema şve',   // YANLIŞ ALGILAMA
+  'ci kerema hve',   // YANLIŞ ALGILAMA: "xwe" → "hve"
+  'ji kerema hve',   // YANLIŞ ALGILAMA
+  'cikerema',        // YANLIŞ ALGILAMA
+  
   'kerem ke',
   'keremke',
   'ji kerema',
   'jikerema',
+  'ci kerema',       // YANLIŞ ALGILAMA
+  
   'xwedêro',
   'xwedê',
+  'hvede',           // YANLIŞ ALGILAMA: "xwedê" → "hvede"
+  'şvede',           // YANLIŞ ALGILAMA
+  
   'bila',
   'lê',
+  'le',              // YANLIŞ ALGILAMA: "lê" → "le"
   'ka',
   'rabe',
   'here',
   'bê',
+  'be',              // YANLIŞ ALGILAMA: "bê" → "be"
   'werin',
+  'verin',           // YANLIŞ ALGILAMA: "werin" → "verin"
   'herin',
   'rêk bixin',
+  
   'dixwazim',
   'dixwazim ku',
+  'dihvazim',        // YANLIŞ ALGILAMA: "dixwazim" → "dihvazim"
+  'dihazim',         // YANLIŞ ALGILAMA
+  'dikvazim',        // YANLIŞ ALGILAMA
+  
   'daxwaz dikim',
   'daxwaz',
   'dikim',
+  'dahvaz',          // YANLIŞ ALGILAMA
+  
   'ez dixwazim',
   'min dixwaze',
   'min jê re',
   'ji min re',
+  'ci min re',       // YANLIŞ ALGILAMA
   'jî',
+  'ci',              // YANLIŞ ALGILAMA: "jî" → "ci" VEYA "ji" → "ci"
 
   // ── Şahıs zamirleri ──
   'ez',
   'tu',
   'ew',
+  'ev',              // YANLIŞ ALGILAMA: "ew" → "ev"
   'em',
   'hûn',
   'hun',
@@ -568,16 +749,22 @@ export const KU_STOP_WORDS = new Set<string>([
   'te',
   'wî',
   'wi',
+  'vi',              // YANLIŞ ALGILAMA: "wî" → "vi"
   'wê',
   'we',
+  've',              // YANLIŞ ALGILAMA: "wê" → "ve"
   'me',
   'wan',
+  'van',             // YANLIŞ ALGILAMA: "wan" → "van"
 
-  // ── Edat/ilgeç ──
+  // ── Edat/ilgeç (DOĞRU + YANLIŞ ALGILAMALAR) ──
   'ji',
+  'ci',              // YANLIŞ ALGILAMA (tekrar - önemli)
   'bo',
   'ji bo',
   'jibo',
+  'ci bo',           // YANLIŞ ALGILAMA
+  'cibo',            // YANLIŞ ALGILAMA
   'li',
   'bi',
   'ra',
@@ -589,12 +776,16 @@ export const KU_STOP_WORDS = new Set<string>([
   'bin',
   'pêş',
   'pes',
+  'peş',             // YANLIŞ ALGILAMA: "pêş" → "peş"
   'paş',
   'pas',
+  'paş',
   'nav',
   'nava',
   'navbera',
+  'navbara',         // YANLIŞ ALGILAMA
   'tevî',
+  'tevi',
   'tevi',
   'hertî',
   'herî',
@@ -604,10 +795,12 @@ export const KU_STOP_WORDS = new Set<string>([
   'beri',
   'piştî',
   'pisti',
+  'pişti',           // YANLIŞ ALGILAMA
   'dema',
   'dema ku',
   'çawa ku',
   'cawa ku',
+  'sava ku',         // YANLIŞ ALGILAMA: "çawa" → "sava"
   'ku',
 
   // ── Bağlaçlar ──
@@ -616,7 +809,7 @@ export const KU_STOP_WORDS = new Set<string>([
   'an',
   'yan',
   'lê',
-  'le',
+  'le',              // YANLIŞ ALGILAMA (tekrar)
   'belê',
   'bele',
   'ne',
@@ -625,11 +818,15 @@ export const KU_STOP_WORDS = new Set<string>([
   'jî',
   'ji',
   'jixwe',
+  'cihve',           // YANLIŞ ALGILAMA: "jixwe" → "cihve"
   'lewre',
+  'levre',           // YANLIŞ ALGILAMA: "lewre" → "levre"
   'ji ber',
   'jiber',
+  'ci ber',          // YANLIŞ ALGILAMA
   'çimkî',
   'cimki',
+  'simki',           // YANLIŞ ALGILAMA: "çimkî" → "simki"
   'eger',
   'heke',
   'gava',
@@ -639,20 +836,25 @@ export const KU_STOP_WORDS = new Set<string>([
   'kî',
   'ki',
   'çi',
-  'ci',
+  'ci',              // YANLIŞ ALGILAMA (tekrar - "çi" → "ci")
+  'si',              // YANLIŞ ALGILAMA
   'kû',
   'ku',
   'kengê',
   'kenge',
   'çawa',
   'cawa',
+  'sava',            // YANLIŞ ALGILAMA
   'çiqas',
   'ciqas',
+  'sıkaş',           // YANLIŞ ALGILAMA
   'çend',
   'cend',
+  'send',            // YANLIŞ ALGILAMA
 
   // ── Zaman zarfları ──
   'niha',
+  'naha',
   'naha',
   'nûha',
   'êdî',
@@ -664,6 +866,7 @@ export const KU_STOP_WORDS = new Set<string>([
   'dereng',
   'piçek',
   'piçekî',
+  'pişek',           // YANLIŞ ALGILAMA: "piçek" → "pişek"
   'carekê',
   'cara',
   'îcar',
@@ -671,6 +874,7 @@ export const KU_STOP_WORDS = new Set<string>([
   'îcarê',
   'paşê',
   'pase',
+  'paşe',            // YANLIŞ ALGILAMA
   'dûre',
   'dure',
   'berê',
@@ -687,40 +891,61 @@ export const KU_STOP_WORDS = new Set<string>([
   'baş',
   'xweşe',
   'xwes',
+  'hveşe',           // YANLIŞ ALGILAMA: "xweşe" → "hveşe"
+  'şveş',            // YANLIŞ ALGILAMA
   'na',
   'nake',
   'nabin',
 
-  // ── Selamlama ──
+  // ── Selamlama (DOĞRU + YANLIŞ ALGILAMALAR) ──
   'nasai',
   'sayid',
   'ka',
   'silaw',
+  'silav',           // YANLIŞ ALGILAMA: "silaw" → "silav"
+  'silaf',           // YANLIŞ ALGILAMA
   'merheba',
   'xêr be',
   'xer be',
+  'her be',          // YANLIŞ ALGILAMA: "xêr be" → "her be"
+  'şer be',          // YANLIŞ ALGILAMA
   'rojbaş',
   'robas',
+  'robash',          // YANLIŞ ALGILAMA: "rojbaş" → "robash"
+  'rocbaş',          // YANLIŞ ALGILAMA
   'hey',
   'alo',
   'halo',
   'eywallah',
+  'eyvallah',        // YANLIŞ ALGILAMA
   'destxweş',
+  'desthveş',        // YANLIŞ ALGILAMA: "xweş" → "hveş"
+  'destşveş',        // YANLIŞ ALGILAMA
 
   // ── Çeşitli fiil kökleri ──
   'bêje',
   'beje',
+  'bice',            // YANLIŞ ALGILAMA: "bêje" → "bice"
   'bide zanîn',
   'bidezanin',
+  'bide zanin',
   'rabe',
   'here',
   'bê',
+  'be',              // YANLIŞ ALGILAMA (tekrar)
   'were',
+  'vere',            // YANLIŞ ALGILAMA: "were" → "vere"
   'bigire',
+  'bikire',          // YANLIŞ ALGILAMA
   'biparêze',
+  'bipareze',
+  'biparese',        // YANLIŞ ALGILAMA
   'bixwaze',
+  'bihvaze',         // YANLIŞ ALGILAMA
   'bixwazim',
+  'bihvazim',        // YANLIŞ ALGILAMA
   'bixwazin',
+  'bihvazin',        // YANLIŞ ALGILAMA
   'berde',
   'bihêle',
   'bihele',
@@ -730,8 +955,10 @@ export const KU_STOP_WORDS = new Set<string>([
 
 /**
  * KÜRTÇE SELAMLAMA KELİMELERİ
+ * Doğru telaffuz + Türkçe STT'nin yanlış algıladığı varyantlar
  */
 export const KU_GREETING_WORDS = new Set<string>([
+  // Doğru telaffuzlar
   'silaw',
   'merheba',
   'xêr be',
@@ -747,36 +974,105 @@ export const KU_GREETING_WORDS = new Set<string>([
   'çoni',
   'nasai',
   'sayid',
+  
+  // Yanlış algılamalar
+  'silav',           // "silaw" → "silav"
+  'silaf',           // "silaw" → "silaf"
+  'her be',          // "xêr be" → "her be"
+  'şer be',          // "xêr be" → "şer be"
+  'robash',          // "rojbaş" → "robash"
+  'rocbaş',          // "rojbaş" → "rocbaş"
+  'eyvallah',        // "eywallah" → "eyvallah"
+  'desthveş',        // "destxweş" → "desthveş"
+  'destşveş',        // "destxweş" → "destşveş"
+  'baş',             // "baş e" kısa hali
+  'bas',             // yanlış algılama
+  'hveş e',          // "xweş e" → "hveş e"
+  'şveş e',          // "xweş e" → "şveş e"
+  'savani',          // "çawanî" → "savani"
+  'soni',            // "çoni" → "soni"
 ]);
 
 /**
  * KÜRTÇE REGEX KOMUT KALIPLARI
+ * Doğru telaffuz + Türkçe STT yanlış algılamalarını yakalar
  * 
  * Örnekler:
  * - "Wahap bi gara" → grup: "Wahap"
+ * - "Mikail sigara" → grup: "Mikail" (yanlış algılama: "bi gara" → "sigara")
  * - "Li Dîlanê bang bike" → grup: "Dîlanê"
+ * - "Dilan bank bike" → grup: "Dilan" (yanlış algılama)
  */
 export const KU_COMMAND_PATTERNS: RegExp[] = [
+  // ── "bi gara" VE YANLIŞ ALGILAMALARI ──
   // "Li X bi gara"
   /^li\s+(.+?)\s+bi\s*gara/i,
   // "X bi gara"
   /^(.+?)\s+bi\s*gara/i,
+  // "X sigara" (YANLIŞ ALGILAMA: "bi gara" → "sigara")
+  /^(.+?)\s+sigara/i,
+  // "X bi kara" (YANLIŞ ALGILAMA)
+  /^(.+?)\s+bi\s*kara/i,
+  // "X si gara" (YANLIŞ ALGILAMA)
+  /^(.+?)\s+si\s*gara/i,
+  
+  // ── "bang bike" VE YANLIŞ ALGILAMALARI ──
   // "X bang bike"
   /^(.+?)\s+bang\s+bike/i,
   // "Li X bang bike"
   /^li\s+(.+?)\s+bang\s+bike/i,
+  // "X bank bike" (YANLIŞ ALGILAMA: "bang" → "bank")
+  /^(.+?)\s+bank\s+bike/i,
+  // "X banka bike" (YANLIŞ ALGILAMA)
+  /^(.+?)\s+banka\s+bike/i,
+  // "X bang bayık" (YANLIŞ ALGILAMA: "bike" → "bayık")
+  /^(.+?)\s+bang\s+bayık/i,
+  // "X bank bayık" (YANLIŞ ALGILAMA kombinasyonu)
+  /^(.+?)\s+bank\s+bayık/i,
+  // "X bang pike" (YANLIŞ ALGILAMA: "bike" → "pike")
+  /^(.+?)\s+bang\s+pike/i,
+  // "X bank pike" (YANLIŞ ALGILAMA kombinasyonu)
+  /^(.+?)\s+bank\s+pike/i,
+  
+  // ── "telefon bike" VE YANLIŞ ALGILAMALARI ──
   // "X telefon bike"
   /^(.+?)\s+telefon\s+bike/i,
-  // "ji bo min li X bi gara"
-  /ji\s+bo\s+min\s+li\s+(.+?)\s+bi\s*gara/i,
-  // "X re bang bike"
-  /(.+?)\s+re\s+bang\s+bike/i,
-  // "X ko bi gara" / "Xko bi gara"
-  /^(.+?)(?:ko|o|a|ê|î)?\s+bi\s*gara/i,
+  // "X telefon bayık" (YANLIŞ ALGILAMA)
+  /^(.+?)\s+telefon\s+bayık/i,
+  // "X telefon pike" (YANLIŞ ALGILAMA)
+  /^(.+?)\s+telefon\s+pike/i,
+  
+  // ── "lê bike" VE YANLIŞ ALGILAMALARI ──
   // "X lê bike"
   /^(.+?)\s+lê\s+bike/i,
+  // "X le bike" (YANLIŞ ALGILAMA: "lê" → "le")
+  /^(.+?)\s+le\s+bike/i,
+  // "X le bayık" (YANLIŞ ALGILAMA)
+  /^(.+?)\s+le\s+bayık/i,
+  
+  // ── "pê bike" VE YANLIŞ ALGILAMALARI ──
   // "X pê bike"
   /^(.+?)\s+pê\s+bike/i,
+  // "X pe bike" (YANLIŞ ALGILAMA: "pê" → "pe")
+  /^(.+?)\s+pe\s+bike/i,
+  // "X pe bayık" (YANLIŞ ALGILAMA)
+  /^(.+?)\s+pe\s+bayık/i,
+  
+  // ── DİĞER KALIPLAR ──
+  // "ji bo min li X bi gara"
+  /ji\s+bo\s+min\s+li\s+(.+?)\s+bi\s*gara/i,
+  // "ci bo min li X sigara" (YANLIŞ ALGILAMA: "ji" → "ci", "bi gara" → "sigara")
+  /ci\s+bo\s+min\s+li\s+(.+?)\s+sigara/i,
+  
+  // "X re bang bike"
+  /(.+?)\s+re\s+bang\s+bike/i,
+  // "X re bank bike" (YANLIŞ ALGILAMA)
+  /(.+?)\s+re\s+bank\s+bike/i,
+  
+  // "X ko bi gara" / "Xko bi gara"
+  /^(.+?)(?:ko|o|a|ê|î)?\s+bi\s*gara/i,
+  // "X ko sigara" (YANLIŞ ALGILAMA)
+  /^(.+?)(?:ko|o|a|ê|î)?\s+sigara/i,
 ];
 
 // ────────────────────────────────────────────────────────────────
@@ -1085,6 +1381,7 @@ export const TR_LANGUAGE_MARKERS = new Set<string>([
 ]);
 
 export const KU_LANGUAGE_MARKERS = new Set<string>([
+  // Doğru telaffuzlar
   'bi gara',
   'bigara',
   'bang bike',
@@ -1107,6 +1404,21 @@ export const KU_LANGUAGE_MARKERS = new Set<string>([
   'belê',
   'niha',
   'hema',
+  
+  // Yanlış algılamalar (dil tespiti için)
+  'sigara',         // "bi gara" → "sigara"
+  'bank bike',      // "bang bike" → "bank bike"
+  'bayık',          // "bike" → "bayık"
+  'ci kerema',      // "ji kerema" → "ci kerema"
+  'dihvazim',       // "dixwazim" → "dihvazim"
+  'ci',             // "ji" → "ci"
+  'le',             // "lê" → "le"
+  'pe',             // "pê" → "pe"
+  'silav',          // "silaw" → "silav"
+  'robash',         // "rojbaş" → "robash"
+  'bugaral',
+  'bugün ara',
+  "bugün al"
 ]);
 
 export const AR_LANGUAGE_MARKERS = new Set<string>([
@@ -1142,6 +1454,7 @@ export interface LanguageConstants {
   greetingWords: Set<string>;
   commandPatterns: RegExp[];
   languageMarkers: Set<string>;
+  misheardCorrections?: Record<string, string>; // Sadece Kürtçe için
 }
 
 export function getLanguageConstants(lang: SupportedLanguage): LanguageConstants {
@@ -1161,6 +1474,7 @@ export function getLanguageConstants(lang: SupportedLanguage): LanguageConstants
         greetingWords: KU_GREETING_WORDS,
         commandPatterns: KU_COMMAND_PATTERNS,
         languageMarkers: KU_LANGUAGE_MARKERS,
+        misheardCorrections: KU_MISHEARD_CORRECTIONS, // 🔥 KÜRTÇE İÇİN ÖZEL
       };
     case 'ar':
       return {
@@ -1187,7 +1501,7 @@ export function getLanguageConstants(lang: SupportedLanguage): LanguageConstants
 // ────────────────────────────────────────────────────────────────
 
 /** Fuzzy arama eşiği — düşüldükçe daha katı eşleşme */
-export const FUSE_THRESHOLD = 0.35;
+export const FUSE_THRESHOLD = 0.45;
 
 /** Güven skoru sınırları */
 export const CONFIDENCE = {
@@ -1204,3 +1518,36 @@ export const MAX_CANDIDATES = 3;
 
 /** Minimum geçerli isim uzunluğu (karakter sayısı) */
 export const MIN_NAME_LENGTH = 2;
+
+// ────────────────────────────────────────────────────────────────
+// YARDIMCI FONKSİYONLAR
+// ────────────────────────────────────────────────────────────────
+
+/**
+ * Kürtçe transcript'i düzeltir (yanlış algılamalar için)
+ * 
+ * Türkçe STT Kürtçe desteklemediği için yanlış algılar.
+ * Bu fonksiyon "mikail sigara" → "mikail bi gara" gibi düzeltmeler yapar.
+ * 
+ * @param transcript - Ham transcript (STT'den gelen)
+ * @returns Düzeltilmiş transcript
+ * 
+ * @example
+ * correctKurdishMisheard("mikail sigara")
+ * // Returns: "mikail bi gara"
+ * 
+ * correctKurdishMisheard("dilan bank bike")
+ * // Returns: "dilan bang bike"
+ */
+export function correctKurdishMisheard(transcript: string): string {
+  let corrected = transcript.toLowerCase();
+  
+  // Kelime bazında düzeltme yap
+  for (const [wrong, correct] of Object.entries(KU_MISHEARD_CORRECTIONS)) {
+    // Tam kelime eşleşmesi (word boundary ile)
+    const regex = new RegExp(`\\b${wrong}\\b`, 'gi');
+    corrected = corrected.replace(regex, correct);
+  }
+  
+  return corrected;
+}

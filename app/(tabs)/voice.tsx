@@ -166,94 +166,104 @@ export default function Voice() {
 
         {!hasResults ? (
           <View style={styles.emptyState}>
-            <View style={styles.heroBlock}>
-              {showTranscript ? (
-                <View style={{ width: "100%", marginBottom: verticalScale(18) }}>
-                  {transcriptContent}
-                </View>
-              ) : null}
-
-              <Text
+            {showTranscript ? (
+              <View
                 style={[
-                  styles.statusText,
+                  styles.emptyHeader,
                   {
-                    color: colors.textPrimary,
-                    fontSize: moderateScale(32),
-                    marginBottom: verticalScale(28),
+                    paddingTop: verticalScale(12),
+                    paddingBottom: verticalScale(12),
                   },
                 ]}
               >
-                {statusText}
-              </Text>
+                {transcriptContent}
+              </View>
+            ) : null}
 
-              <Pressable
-                onPress={handleMicPress}
-                style={({ pressed }) => [
-                  styles.micCircle,
-                  {
-                    width: scale(190),
-                    height: scale(190),
-                    borderRadius: scale(95),
-                    backgroundColor: pressed ? colors.primaryPressed : micColor,
-                  },
-                ]}
-                accessibilityLabel={isListening ? t("voice.stop") : t("voice.start")}
-                accessibilityRole="button"
-              >
-                <Ionicons name={iconName} size={moderateScale(82)} color="#FFFFFF" />
-              </Pressable>
-
-              {isProcessing ? (
-                <ActivityIndicator
-                  size="small"
-                  color={colors.primary}
-                  style={{ marginTop: verticalScale(22) }}
-                />
-              ) : null}
-
-              {showRetry ? (
-                <Pressable
-                  onPress={startVoiceSearch}
-                  style={({ pressed }) => [
-                    styles.retryButton,
+            <View style={styles.emptyBody}>
+              <View style={styles.heroBlock}>
+                <Text
+                  style={[
+                    styles.statusText,
                     {
-                      backgroundColor: pressed ? colors.card : colors.searchBackground,
-                      borderColor: colors.border,
-                      borderRadius: scale(16),
-                      marginTop: verticalScale(24),
-                      paddingHorizontal: scale(28),
-                      paddingVertical: verticalScale(14),
+                      color: colors.textPrimary,
+                      fontSize: moderateScale(32),
+                      marginBottom: verticalScale(28),
                     },
                   ]}
                 >
-                  <Text
-                    style={[
-                      styles.retryText,
+                  {statusText}
+                </Text>
+
+                <Pressable
+                  onPress={handleMicPress}
+                  style={({ pressed }) => [
+                    styles.micCircle,
+                    {
+                      width: scale(190),
+                      height: scale(190),
+                      borderRadius: scale(95),
+                      backgroundColor: pressed ? colors.primaryPressed : micColor,
+                    },
+                  ]}
+                  accessibilityLabel={isListening ? t("voice.stop") : t("voice.start")}
+                  accessibilityRole="button"
+                >
+                  <Ionicons name={iconName} size={moderateScale(82)} color="#FFFFFF" />
+                </Pressable>
+
+                {isProcessing ? (
+                  <ActivityIndicator
+                    size="small"
+                    color={colors.primary}
+                    style={{ marginTop: verticalScale(22) }}
+                  />
+                ) : null}
+
+                {showRetry ? (
+                  <Pressable
+                    onPress={startVoiceSearch}
+                    style={({ pressed }) => [
+                      styles.retryButton,
                       {
-                        color: colors.textPrimary,
-                        fontSize: moderateScale(20),
+                        backgroundColor: pressed ? colors.card : colors.searchBackground,
+                        borderColor: colors.border,
+                        borderRadius: scale(16),
+                        marginTop: verticalScale(24),
+                        paddingHorizontal: scale(28),
+                        paddingVertical: verticalScale(14),
                       },
                     ]}
                   >
-                    {t("voice.retry")}
-                  </Text>
-                </Pressable>
-              ) : null}
+                    <Text
+                      style={[
+                        styles.retryText,
+                        {
+                          color: colors.textPrimary,
+                          fontSize: moderateScale(20),
+                        },
+                      ]}
+                    >
+                      {t("voice.retry")}
+                    </Text>
+                  </Pressable>
+                ) : null}
 
-              {instructionText ? (
-                <Text
-                  style={[
-                    styles.instructionText,
-                    {
-                      color: colors.textSecondary,
-                      fontSize: moderateScale(20),
-                      marginTop: verticalScale(24),
-                    },
-                  ]}
-                >
-                  {instructionText}
-                </Text>
-              ) : null}
+                {instructionText ? (
+                  <Text
+                    style={[
+                      styles.instructionText,
+                      {
+                        color: colors.textSecondary,
+                        fontSize: moderateScale(20),
+                        marginTop: verticalScale(24),
+                      },
+                    ]}
+                  >
+                    {instructionText}
+                  </Text>
+                ) : null}
+              </View>
             </View>
           </View>
         ) : null}
@@ -288,6 +298,13 @@ const styles = StyleSheet.create({
   emptyState: {
     flex: 1,
     width: "100%",
+  },
+  emptyHeader: {
+    width: "100%",
+    alignItems: "center",
+  },
+  emptyBody: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },

@@ -1,5 +1,6 @@
 import {
   getLanguageConstants,
+  correctKurdishMisheard,
   MIN_NAME_LENGTH,
 } from "./nlpConstants"
 import type { SupportedLanguage, ParsedIntent } from "./types"
@@ -75,6 +76,12 @@ export function parseIntent(
   const original = transcript.trim()
   let text = original.toLowerCase()
   voiceLog("intent:receivedTranscript", { original, language })
+
+  // 0. Kürtçe yanlış algılamaları düzelt (diğer adımlardan ÖNCE)
+  if (language === "ku") {
+    text = correctKurdishMisheard(text)
+    voiceLog("intent:kurdishCorrected", { text })
+  }
 
   // 1. Remove greetings
   text = removeGreetings(text, constants.greetingWords)

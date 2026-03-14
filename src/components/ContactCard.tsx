@@ -10,9 +10,42 @@ import { useFavoritesStore } from "../store/favoritesStore"
 import { useSettingsStore } from "../store/settingsStore"
 
 const SIZE_CONFIG = {
-  small: { avatar: 100, buttonWRatio: 0.6, buttonH: 44, nameFont: 18, callFont: 16 },
-  medium: { avatar: 150, buttonWRatio: 0.68, buttonH: 54, nameFont: 21, callFont: 18 },
-  large: { avatar: 220, buttonWRatio: 0.78, buttonH: 68, nameFont: 26, callFont: 22 },
+  small: {
+    avatar: 100,
+    buttonWRatio: 0.6,
+    buttonH: 44,
+    nameFont: 18,
+    callFont: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    borderRadius: 16,
+    nameMarginTop: 10,
+    buttonMarginTop: 12,
+  },
+  medium: {
+    avatar: 150,
+    buttonWRatio: 0.68,
+    buttonH: 54,
+    nameFont: 21,
+    callFont: 18,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    borderRadius: 16,
+    nameMarginTop: 10,
+    buttonMarginTop: 12,
+  },
+  large: {
+    avatar: 250,
+    buttonWRatio: 0.84,
+    buttonH: 76,
+    nameFont: 30,
+    callFont: 24,
+    paddingVertical: 18,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    nameMarginTop: 14,
+    buttonMarginTop: 16,
+  },
 }
 
 interface ContactCardProps {
@@ -42,9 +75,9 @@ export default function ContactCard({ contact }: ContactCardProps) {
           borderColor: colors.border,
           marginVertical: verticalScale(8),
           marginHorizontal: scale(12),
-          paddingVertical: verticalScale(14),
-          paddingHorizontal: scale(12),
-          borderRadius: scale(16),
+          paddingVertical: verticalScale(cfg.paddingVertical),
+          paddingHorizontal: scale(cfg.paddingHorizontal),
+          borderRadius: scale(cfg.borderRadius),
         },
       ]}
     >
@@ -78,7 +111,7 @@ export default function ContactCard({ contact }: ContactCardProps) {
           {
             color: colors.textPrimary,
             fontSize: moderateScale(cfg.nameFont),
-            marginTop: verticalScale(10),
+            marginTop: verticalScale(cfg.nameMarginTop),
           },
         ]}
         numberOfLines={2}
@@ -95,7 +128,7 @@ export default function ContactCard({ contact }: ContactCardProps) {
             width: buttonWidth,
             height: buttonHeight,
             borderRadius: scale(12),
-            marginTop: verticalScale(12),
+            marginTop: verticalScale(cfg.buttonMarginTop),
           },
         ]}
       >

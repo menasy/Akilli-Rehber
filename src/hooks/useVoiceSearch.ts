@@ -15,8 +15,24 @@ import { voiceLog } from "../voice/logger"
 
 const VOICE_LOCALE_MAP: Record<SupportedLanguage, string> = {
   tr: "tr-TR",
-  ku: "ku-TR",
+  ku: "tr-TR",
   ar: "ar-SA",
+}
+
+function resolveIntentLanguage(language: SupportedLanguage, text: string) {
+  const primaryIntent = parseIntent(text, language)
+
+  if (language === "ku" && primaryIntent.intent === "unknown") {
+    return {
+      intent: parseIntent(text, "tr"),
+      intentLanguage: "tr" as SupportedLanguage,
+    }
+  }
+
+  return {
+    intent: primaryIntent,
+    intentLanguage: language,
+  }
 }
 
 export function useVoiceSearch() {
@@ -45,11 +61,12 @@ export function useVoiceSearch() {
       storeStopListening()
 
       try {
-        const intent = parseIntent(text, language)
+        const { intent, intentLanguage } = resolveIntentLanguage(language, text)
         voiceLog("processTranscript:intentParsed", {
           intent: intent.intent,
           candidateNames: intent.candidateNames,
           confidence: intent.confidence,
+          intentLanguage,
         })
 
         if (intent.intent === "unknown" || intent.candidateNames.length === 0) {
@@ -61,8 +78,8 @@ export function useVoiceSearch() {
         }
 
         const candidateName = intent.candidateNames[0]
-        voiceLog("processTranscript:candidateSelected", { candidateName })
-        const matches = findMatches(candidateName, contacts, language)
+        voiceLog("processTranscript:candidateSelected", { candidateName, intentLanguage })
+        const matches = findMatches(candidateName, contacts, intentLanguage)
         voiceLog("processTranscript:matchesFound", {
           count: matches.length,
           matches: matches.map((match) => ({
