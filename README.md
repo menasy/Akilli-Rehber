@@ -1,8 +1,21 @@
-# 📱 Akıllı Rehber
-
-**Erişilebilirlik odaklı, sesli arama destekli mobil rehber uygulaması.**
-
-Akıllı Rehber; yaşlı bireyler, görme güçlüğü çeken kişiler, okuma-yazma seviyesi düşük kullanıcılar ve teknolojiye uzak bireyler için tasarlanmış bir telefon rehberi uygulamasıdır. Standart rehber uygulamalarındaki küçük yazılar, karmaşık menüler ve metin tabanlı arama gibi zorlukları ortadan kaldırarak **sesle arama**, **büyük arayüz elemanları** ve **çok dilli destek** sunar.
+<table>
+  <tr>
+    <td valign="middle">
+      <h1>Akıllı Rehber</h1>
+      <p><strong>Erişilebilirlik odaklı, sesli arama destekli mobil rehber uygulaması.</strong></p>
+      <p>
+        Akıllı Rehber; yaşlı bireyler, görme güçlüğü çeken kişiler, okuma-yazma seviyesi düşük kullanıcılar ve
+        teknolojiye uzak bireyler için tasarlanmış bir telefon rehberi uygulamasıdır. Standart rehber
+        uygulamalarındaki küçük yazılar, karmaşık menüler ve metin tabanlı arama gibi zorlukları ortadan
+        kaldırarak <strong>sesle arama</strong>, <strong>büyük arayüz elemanları</strong> ve
+        <strong>çok dilli destek</strong> sunar.
+      </p>
+    </td>
+    <td align="right" valign="middle" width="320">
+      <img src="./assets/akilli-rehber.png" alt="Akıllı Rehber" width="280" />
+    </td>
+  </tr>
+</table>
 
 ---
 
