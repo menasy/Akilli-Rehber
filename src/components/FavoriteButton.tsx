@@ -19,7 +19,7 @@ interface FavoriteButtonProps {
   onToggle: () => void
 }
 
-export default function FavoriteButton({ isFavorite, onToggle }: FavoriteButtonProps) {
+export default React.memo(function FavoriteButton({ isFavorite, onToggle }: FavoriteButtonProps) {
   const { moderateScale, scale } = useResponsive()
 
   const favoriteProgress = useRef(new Animated.Value(isFavorite ? 1 : 0)).current
@@ -141,7 +141,7 @@ export default function FavoriteButton({ isFavorite, onToggle }: FavoriteButtonP
       ))}
     </Pressable>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {

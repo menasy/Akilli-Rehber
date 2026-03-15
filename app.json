@@ -1,34 +1,45 @@
 {
   "expo": {
-    "name": "Akılı Rehber",
-    "slug": "nasAi",
+    "name": "Akıllı Rehber",
+    "slug": "akilli-rehber",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/android-icon-foreground.png",
+    "scheme": "akillirehber",
     "userInterfaceStyle": "light",
-    "scheme": "nasai",
+
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+
     "splash": {
-      "image": "./assets/android-icon-foreground.png",
+      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
     },
+
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.nasAi",
+      "bundleIdentifier": "com.akillirehber.app",
+
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "Sesli arama için mikrofon erişimi gerekli",
-        "NSSpeechRecognitionUsageDescription": "Sesli komutları tanımak için gerekli"
+        "NSContactsUsageDescription": "Rehberinizdeki kişileri görüntülemek ve arama yapabilmek için erişim gereklidir.",
+        "NSMicrophoneUsageDescription": "Kişileri sesli komutla arayabilmeniz için mikrofon erişimi gereklidir.",
+        "NSSpeechRecognitionUsageDescription": "Sesli komutları algılayarak rehberde kişi aramak için kullanılır."
       }
     },
+
     "android": {
-      "package": "com.anonymous.nasAi",
+      "package": "com.akillirehber.app",
       "predictiveBackGestureEnabled": false,
+
       "permissions": [
         "android.permission.READ_CONTACTS",
         "android.permission.WRITE_CONTACTS",
         "android.permission.CALL_PHONE",
         "android.permission.RECORD_AUDIO"
       ],
+
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
@@ -36,14 +47,16 @@
         "backgroundColor": "#FFFFFF"
       }
     },
+
     "web": {
       "favicon": "./assets/favicon.png"
     },
+
     "plugins": [
       [
         "expo-contacts",
         {
-          "contactsPermission": "Rehberinize erişmek için izin gerekiyor."
+          "contactsPermission": "Rehberdeki kişileri görüntülemek ve arama yapabilmek için erişim gereklidir."
         }
       ],
       "expo-font",

@@ -25,7 +25,7 @@ export const useFavoritesStore = create<FavoritesState>()(
       isFavorite: (id: string) => get().favoriteIds.includes(id),
     }),
     {
-      name: "nasai-favorites",
+      name: "akilli-rehber-favorites",
       storage: mmkvStorage,
       partialize: (state) => ({ favoriteIds: state.favoriteIds }),
     }

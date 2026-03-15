@@ -36,15 +36,13 @@ function resolveIntentLanguage(language: SupportedLanguage, text: string) {
 }
 
 export function useVoiceSearch() {
-  const {
-    state,
-    startListening: storeStartListening,
-    stopListening: storeStopListening,
-    setProcessing,
-    setMatches,
-    setError,
-    reset,
-  } = useVoiceStore()
+  const voiceState = useVoiceStore((s) => s.state)
+  const storeStartListening = useVoiceStore((s) => s.startListening)
+  const storeStopListening = useVoiceStore((s) => s.stopListening)
+  const setProcessing = useVoiceStore((s) => s.setProcessing)
+  const setMatches = useVoiceStore((s) => s.setMatches)
+  const setError = useVoiceStore((s) => s.setError)
+  const reset = useVoiceStore((s) => s.reset)
 
   const contacts = useContactsStore((s) => s.contacts)
   const language = useSettingsStore((s) => s.language) as SupportedLanguage
@@ -222,11 +220,11 @@ export function useVoiceSearch() {
   )
 
   return {
-    isListening: state.isListening,
-    isProcessing: state.isProcessing,
-    matches: state.matches,
-    error: state.error,
-    showResults: state.showResults,
+    isListening: voiceState.isListening,
+    isProcessing: voiceState.isProcessing,
+    matches: voiceState.matches,
+    error: voiceState.error,
+    showResults: voiceState.showResults,
     startVoiceSearch,
     stopVoiceSearch,
     selectContact,

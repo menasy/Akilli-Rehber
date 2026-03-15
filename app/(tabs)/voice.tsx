@@ -48,6 +48,7 @@ export default function Voice() {
     : showRetry
       ? null
       : t("voice.examplePrompt")
+  const showExamplePrompt = !isListening && !showRetry && !hasResults && !isProcessing
 
   const iconName = error
     ? "mic-outline"
@@ -194,18 +195,48 @@ export default function Voice() {
                 ) : null}
 
                 {instructionText ? (
-                  <Text
-                    style={[
-                      styles.instructionText,
-                      {
-                        color: colors.textSecondary,
-                        fontSize: moderateScale(20),
-                        marginTop: verticalScale(24),
-                      },
-                    ]}
-                  >
-                    {instructionText}
-                  </Text>
+                  showExamplePrompt ? (
+                    <View
+                      style={[
+                        styles.infoRow,
+                        {
+                          marginTop: verticalScale(24),
+                          gap: scale(10),
+                        },
+                      ]}
+                    >
+                      <Ionicons
+                        name="information-circle-outline"
+                        size={moderateScale(22)}
+                        color={colors.textSecondary}
+                      />
+                      <Text
+                        style={[
+                          styles.instructionText,
+                          styles.infoText,
+                          {
+                            color: colors.textSecondary,
+                            fontSize: moderateScale(20),
+                          },
+                        ]}
+                      >
+                        {instructionText}
+                      </Text>
+                    </View>
+                  ) : (
+                    <Text
+                      style={[
+                        styles.instructionText,
+                        {
+                          color: colors.textSecondary,
+                          fontSize: moderateScale(20),
+                          marginTop: verticalScale(24),
+                        },
+                      ]}
+                    >
+                      {instructionText}
+                    </Text>
+                  )
                 ) : null}
               </View>
             </View>
@@ -281,5 +312,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "500",
     paddingHorizontal: 28,
+  },
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    maxWidth: "90%",
+  },
+  infoText: {
+    flexShrink: 1,
+    textAlign: "left",
+    paddingHorizontal: 0,
   },
 })

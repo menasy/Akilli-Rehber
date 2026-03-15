@@ -7,8 +7,7 @@
   },
   "home": {
     "title": "Akılı Rehber",
-    "call": "ARA",
-    "noContacts": "Kişi bulunamadı"
+    "call": "ARA"
   },
   "favorites": {
     "title": "Favoriler",
@@ -23,32 +22,23 @@
     "tapToStop": "Kayıt tamamlanınca aynı mikrofona tekrar dokunun",
     "pleaseWait": "Bu adım tamamlanana kadar kısa bir süre bekleyin",
     "processing": "İşleniyor...",
-    "call": "ARA",
-    "retry": "Tekrar Dene",
+    "retry": "Tekrar Konuş",
     "notFound": "Kişi bulunamadı, tekrar deneyin",
     "errorMessage": "Bir hata oluştu",
     "micPermissionDenied": "Mikrofon izni reddedildi",
-    "recordingNotFound": "Kayıt bulunamadı",
     "recordingFailed": "Kayıt başlatılamadı",
     "processingFailed": "İşlem sırasında hata oluştu",
     "speechNotAvailable": "Sesli tanıma bu cihazda kullanılamıyor",
-    "speechModuleUnavailable": "Sesli tanıma modülü uygulamaya eklenmemiş. Uygulamayı yeniden derleyin.",
     "speechServiceMissing": "Cihazda kullanılabilir bir konuşma tanıma servisi bulunamadı",
     "pressToTalk": "Aramak istediğiniz kişinin adını söyleyin",
-    "examplePrompt": "\"Mehmet'i ara\" ya da sadece \"Mehmet\" deyin.",
+    "examplePrompt": "Örnek: \"Mehmet'i ara\" ya da sadece \"Mehmet\" deyin.",
     "processingHint": "Söylediğiniz isim aranıyor.",
-    "candidates": "Birden fazla kişi bulundu",
-    "confidence": "Eşleşme güveni",
-    "high": "Yüksek",
-    "medium": "Orta",
-    "low": "Düşük"
+    "candidates": "Birden fazla kişi bulundu"
   },
   "settings": {
     "title": "Ayarlar",
     "theme": "Tema",
     "language": "Dil",
-    "light": "Açık",
-    "dark": "Koyu",
     "contactSize": "Kişi Boyutu",
     "small": "Küçük",
     "medium": "Orta",

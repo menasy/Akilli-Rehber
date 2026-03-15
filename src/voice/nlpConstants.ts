@@ -898,7 +898,7 @@ export const KU_STOP_WORDS = new Set<string>([
   'nabin',
 
   // ── Selamlama (DOĞRU + YANLIŞ ALGILAMALAR) ──
-  'nasai',
+  'merheba',
   'sayid',
   'ka',
   'silaw',
@@ -972,7 +972,7 @@ export const KU_GREETING_WORDS = new Set<string>([
   'choni',
   'çawanî',
   'çoni',
-  'nasai',
+  'hey',
   'sayid',
   
   // Yanlış algılamalar

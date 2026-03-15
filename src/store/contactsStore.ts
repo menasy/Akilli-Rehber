@@ -22,9 +22,17 @@ export const useContactsStore = create<ContactsState>()(
       },
     }),
     {
-      name: "nasai-contacts",
+      name: "akilli-rehber-contacts",
       storage: mmkvStorage,
-      partialize: (state) => ({ contacts: state.contacts }),
+      partialize: (state) => ({
+        contacts: state.contacts.map(({ id, name, phone }) => ({
+          id,
+          name,
+          phone,
+          avatar: "",
+          isFavorite: false,
+        })),
+      }),
     }
   )
 )

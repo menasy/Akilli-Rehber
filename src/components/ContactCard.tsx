@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { View, Text, Image, Pressable, StyleSheet } from "react-native"
 import { callNumber } from "../services/callService"
 import { Contact } from "../types"
@@ -52,7 +52,7 @@ interface ContactCardProps {
   contact: Contact
 }
 
-export default function ContactCard({ contact }: ContactCardProps) {
+export default React.memo(function ContactCard({ contact }: ContactCardProps) {
   const colors = useTheme()
   const { scale, verticalScale, moderateScale, width } = useResponsive()
   const { t } = useI18n()
@@ -65,6 +65,9 @@ export default function ContactCard({ contact }: ContactCardProps) {
   const avatarSize = Math.min(scale(cfg.avatar), cardWidth * 0.6)
   const buttonWidth = Math.min(scale(247), cardWidth * cfg.buttonWRatio)
   const buttonHeight = verticalScale(cfg.buttonH)
+
+  const handleToggleFavorite = useCallback(() => toggleFavorite(contact.id), [toggleFavorite, contact.id])
+  const handleCall = useCallback(() => callNumber(contact.phone), [contact.phone])
 
   return (
     <View
@@ -85,7 +88,7 @@ export default function ContactCard({ contact }: ContactCardProps) {
       <View style={styles.favoriteWrapper}>
         <FavoriteButton
           isFavorite={isFavorite}
-          onToggle={() => toggleFavorite(contact.id)}
+          onToggle={handleToggleFavorite}
         />
       </View>
 
@@ -120,7 +123,7 @@ export default function ContactCard({ contact }: ContactCardProps) {
       </Text>
 
       <Pressable
-        onPress={() => callNumber(contact.phone)}
+        onPress={handleCall}
         style={({ pressed }) => [
           styles.callButton,
           {
@@ -138,7 +141,7 @@ export default function ContactCard({ contact }: ContactCardProps) {
       </Pressable>
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   card: {

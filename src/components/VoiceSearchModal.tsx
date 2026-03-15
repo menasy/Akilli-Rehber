@@ -91,6 +91,7 @@ export default function VoiceSearchModal({ visible, onClose }: VoiceSearchModalP
         : showResults && matches.length > 0
           ? null
           : t("voice.examplePrompt")
+  const showExamplePrompt = !error && !isListening && !isProcessing && !showResults
 
   const renderContent = () => {
     const showStatusSpinner = isProcessing && !error
@@ -137,13 +138,29 @@ export default function VoiceSearchModal({ visible, onClose }: VoiceSearchModalP
                   {secondaryText}
                 </Text>
                 {helperText ? (
-                  <Text style={[styles.helperText, {
-                    color: colors.textPrimary,
-                    fontSize: moderateScale(13),
-                    marginTop: verticalScale(10),
-                  }]}>
-                    {helperText}
-                  </Text>
+                  showExamplePrompt ? (
+                    <View style={[styles.helperRow, { marginTop: verticalScale(10) }]}>
+                      <Ionicons
+                        name="information-circle-outline"
+                        size={moderateScale(16)}
+                        color={colors.textSecondary}
+                      />
+                      <Text style={[styles.helperText, styles.helperInfoText, {
+                        color: colors.textPrimary,
+                        fontSize: moderateScale(13),
+                      }]}>
+                        {helperText}
+                      </Text>
+                    </View>
+                  ) : (
+                    <Text style={[styles.helperText, {
+                      color: colors.textPrimary,
+                      fontSize: moderateScale(13),
+                      marginTop: verticalScale(10),
+                    }]}>
+                      {helperText}
+                    </Text>
+                  )
                 ) : null}
               </View>
             }
@@ -202,13 +219,29 @@ export default function VoiceSearchModal({ visible, onClose }: VoiceSearchModalP
             {secondaryText}
           </Text>
           {helperText ? (
-            <Text style={[styles.helperText, {
-              color: colors.textPrimary,
-              fontSize: moderateScale(13),
-              marginTop: verticalScale(12),
-            }]}>
-              {helperText}
-            </Text>
+            showExamplePrompt ? (
+              <View style={[styles.helperRow, { marginTop: verticalScale(12) }]}>
+                <Ionicons
+                  name="information-circle-outline"
+                  size={moderateScale(16)}
+                  color={colors.textSecondary}
+                />
+                <Text style={[styles.helperText, styles.helperInfoText, {
+                  color: colors.textPrimary,
+                  fontSize: moderateScale(13),
+                }]}>
+                  {helperText}
+                </Text>
+              </View>
+            ) : (
+              <Text style={[styles.helperText, {
+                color: colors.textPrimary,
+                fontSize: moderateScale(13),
+                marginTop: verticalScale(12),
+              }]}>
+                {helperText}
+              </Text>
+            )
           ) : null}
 
           {error ? (
@@ -329,6 +362,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontStyle: "italic",
     lineHeight: 19,
+  },
+  helperRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    maxWidth: "90%",
+    gap: 6,
+  },
+  helperInfoText: {
+    flexShrink: 1,
+    textAlign: "left",
   },
   statusCard: {
     borderWidth: 1,

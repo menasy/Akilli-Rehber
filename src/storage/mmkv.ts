@@ -2,7 +2,7 @@ import { createMMKV } from "react-native-mmkv"
 import { createJSONStorage, type StateStorage } from "zustand/middleware"
 
 export const mmkv = createMMKV({
-  id: "nasai-storage",
+  id: "akilli-rehber-storage",
 })
 
 const mmkvStateStorage: StateStorage = {

@@ -9,6 +9,24 @@ import type { Contact } from "../types"
 import type { SupportedLanguage, MatchResult } from "./types"
 import { voiceLog } from "./logger"
 
+let cachedContacts: Contact[] | null = null
+let cachedFuse: Fuse<Contact> | null = null
+let cachedThreshold: number | null = null
+
+function getFuseIndex(contacts: Contact[], threshold: number): Fuse<Contact> {
+  if (contacts !== cachedContacts || threshold !== cachedThreshold) {
+    cachedFuse = new Fuse(contacts, {
+      keys: ["name"],
+      threshold,
+      includeScore: true,
+      ignoreLocation: true,
+    })
+    cachedContacts = contacts
+    cachedThreshold = threshold
+  }
+  return cachedFuse!
+}
+
 export function findMatches(
   candidateName: string,
   contacts: Contact[],
@@ -23,12 +41,7 @@ export function findMatches(
   const threshold = contacts.length > 500 ? 0.35 : FUSE_THRESHOLD
   voiceLog("matching:thresholdSelected", { threshold })
 
-  const fuse = new Fuse(contacts, {
-    keys: ["name"],
-    threshold,
-    includeScore: true,
-    ignoreLocation: true,
-  })
+  const fuse = getFuseIndex(contacts, threshold)
 
   // 1. Fuse.js ile aday listesi oluştur
   const fuseResults = fuse.search(candidateName)

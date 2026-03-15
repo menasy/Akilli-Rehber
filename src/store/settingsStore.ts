@@ -32,7 +32,7 @@ function getInitialTheme(): ThemeName {
 }
 
 function getInitialLanguage(): Language {
-  const persisted = mmkv.getString("nasai-settings")
+  const persisted = mmkv.getString("akilli-rehber-settings")
   if (!persisted) return "tr"
 
   try {
@@ -40,6 +40,18 @@ function getInitialLanguage(): Language {
     return parsed.state?.language ?? "tr"
   } catch {
     return "tr"
+  }
+}
+
+export function getInitialDefaultScreen(): DefaultScreen {
+  const persisted = mmkv.getString("akilli-rehber-settings")
+  if (!persisted) return "index"
+
+  try {
+    const parsed = JSON.parse(persisted) as { state?: { defaultScreen?: DefaultScreen } }
+    return parsed.state?.defaultScreen ?? "index"
+  } catch {
+    return "index"
   }
 }
 
@@ -66,7 +78,7 @@ export const useSettingsStore = create<SettingsState>()(
       setContactsBootstrapped: (contactsBootstrapped) => set({ contactsBootstrapped }),
     }),
     {
-      name: "nasai-settings",
+      name: "akilli-rehber-settings",
       storage: mmkvStorage,
       partialize: (state) => ({
         theme: state.theme,

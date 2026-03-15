@@ -7,8 +7,7 @@
   },
   "home": {
     "title": "Akılı Rehber",
-    "call": "BIGIRE",
-    "noContacts": "Kes nehat dîtin"
+    "call": "BIGIRE"
   },
   "favorites": {
     "title": "Bijarte",
@@ -23,32 +22,23 @@
     "tapToStop": "Dema tomar qediya dîsa li heman mîkrofonê bide",
     "pleaseWait": "Heta vê gavê were qedandin, kêmtir piçek bisekine",
     "processing": "Tê xebitandin...",
-    "call": "BIGIRE",
     "retry": "Dîsa Biceribîne",
     "notFound": "Kes nehat dîtin, dîsa biceribîne",
     "errorMessage": "Çewtiyeke çêbû",
     "micPermissionDenied": "Destûra mîkrofonê hat redkirin",
-    "recordingNotFound": "Tomar nehat dîtin",
     "recordingFailed": "Tomar dest pê nekir",
     "processingFailed": "Di dema xebitandinê de çewtî çêbû",
     "speechNotAvailable": "Naskirina dengî li ser vê cîhazê ne peyda ye",
-    "speechModuleUnavailable": "Modula naskirina dengî li sepanê nehatiye zêdekirin. Sepanê dîsa ava bikin.",
     "speechServiceMissing": "Li ser cîhazê servîsek naskirina axaftinê ya berdest nayê dîtin",
     "pressToTalk": "Navê kesê ku hûn dixwazin lê bigerin bibêjin",
     "examplePrompt": "Mînak: \"Mehmet bigere\" an tenê \"Mehmet\" bibêjin.",
     "processingHint": "Navê ku we got tê gerîn.",
-    "candidates": "Zêdetir ji yek kes hat dîtin",
-    "confidence": "Baweriya lêhevhatinê",
-    "high": "Bilind",
-    "medium": "Navîn",
-    "low": "Nizm"
+    "candidates": "Zêdetir ji yek kes hat dîtin"
   },
   "settings": {
     "title": "Mîheng",
     "theme": "Tema",
     "language": "Ziman",
-    "light": "Ronî",
-    "dark": "Tarî",
     "contactSize": "Mezinahiya Kesê",
     "small": "Biçûk",
     "medium": "Navîn",

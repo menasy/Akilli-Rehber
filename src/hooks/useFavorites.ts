@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { useFavoritesStore } from "../store/favoritesStore"
 import { useContactsStore } from "../store/contactsStore"
 
@@ -7,7 +8,10 @@ export function useFavorites() {
   const isFavorite = useFavoritesStore((state) => state.isFavorite)
   const contacts = useContactsStore((state) => state.contacts)
 
-  const favorites = contacts.filter((c) => favoriteIds.includes(c.id))
+  const favorites = useMemo(() => {
+    const idSet = new Set(favoriteIds)
+    return contacts.filter((c) => idSet.has(c.id))
+  }, [contacts, favoriteIds])
 
   return { favorites, toggleFavorite, isFavorite }
 }

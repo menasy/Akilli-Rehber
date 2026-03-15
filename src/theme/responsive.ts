@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { PixelRatio, useWindowDimensions } from "react-native"
 
 const BASE_WIDTH = 375
@@ -40,5 +41,5 @@ export function createResponsive(width: number, height: number): Responsive {
 
 export function useResponsive(): Responsive {
   const { width, height } = useWindowDimensions()
-  return createResponsive(width, height)
+  return useMemo(() => createResponsive(width, height), [width, height])
 }

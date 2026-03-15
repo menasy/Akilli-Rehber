@@ -1,13 +1,21 @@
 import Fuse from "fuse.js"
+import type { Contact } from "../types"
 
-export function searchContacts(list: any[], query: string) {
+const FUSE_OPTIONS = {
+  keys: ["name"],
+  threshold: 0.4,
+}
 
+let cachedList: Contact[] | null = null
+let cachedFuse: Fuse<Contact> | null = null
+
+export function searchContacts(list: Contact[], query: string): Contact[] {
   if (!query) return list
 
-  const fuse = new Fuse(list, {
-    keys: ["name"],
-    threshold: 0.4
-  })
+  if (list !== cachedList) {
+    cachedFuse = new Fuse(list, FUSE_OPTIONS)
+    cachedList = list
+  }
 
-  return fuse.search(query).map(r => r.item)
+  return cachedFuse!.search(query).map((r) => r.item)
 }
