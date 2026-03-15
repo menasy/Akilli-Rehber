@@ -2,7 +2,6 @@ import React from "react"
 import { View, Text, StyleSheet, Pressable, ActivityIndicator } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { useContactsStore } from "../store/contactsStore"
-import { useSettingsStore } from "../store/settingsStore"
 
 type SettingsContactsSyncRowProps = {
   colors: any
@@ -21,13 +20,9 @@ export default function SettingsContactsSyncRow({
 }: SettingsContactsSyncRowProps) {
   const loadContacts = useContactsStore((state: any) => state.loadContacts)
   const loading = useContactsStore((state: any) => state.loading)
-  const setContactsBootstrapped = useSettingsStore(
-    (state) => state.setContactsBootstrapped
-  )
 
   const handlePress = () => {
     if (loading) return
-    setContactsBootstrapped(true)
     void loadContacts()
   }
 

@@ -1,21 +1,16 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useContactsStore } from "../store/contactsStore"
-import { useSettingsStore } from "../store/settingsStore"
 
 export function useContacts() {
   const contacts = useContactsStore((state) => state.contacts)
   const loadContacts = useContactsStore((state) => state.loadContacts)
-  const contactsBootstrapped = useSettingsStore((state) => state.contactsBootstrapped)
-  const setContactsBootstrapped = useSettingsStore(
-    (state) => state.setContactsBootstrapped
-  )
+  const loaded = useRef(false)
 
   useEffect(() => {
-    if (contactsBootstrapped) return
-
-    setContactsBootstrapped(true)
+    if (loaded.current) return
+    loaded.current = true
     void loadContacts()
-  }, [contactsBootstrapped, loadContacts, setContactsBootstrapped])
+  }, [loadContacts])
 
   return contacts
 }

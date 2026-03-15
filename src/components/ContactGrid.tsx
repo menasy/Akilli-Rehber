@@ -8,8 +8,6 @@ interface ContactGridProps {
   contacts: Contact[]
 }
 
-const ITEM_HEIGHT_ESTIMATE = 350
-
 export default function ContactGrid({ contacts }: ContactGridProps) {
   const { verticalScale } = useResponsive()
 
@@ -28,14 +26,10 @@ export default function ContactGrid({ contacts }: ContactGridProps) {
       contentContainerStyle={{ paddingBottom: verticalScale(16) }}
       showsVerticalScrollIndicator={false}
       removeClippedSubviews
-      maxToRenderPerBatch={8}
-      windowSize={5}
-      initialNumToRender={5}
-      getItemLayout={(_data, index) => ({
-        length: ITEM_HEIGHT_ESTIMATE,
-        offset: ITEM_HEIGHT_ESTIMATE * index,
-        index,
-      })}
+      maxToRenderPerBatch={4}
+      updateCellsBatchingPeriod={50}
+      windowSize={3}
+      initialNumToRender={3}
     />
   )
 }

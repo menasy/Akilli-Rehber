@@ -14,12 +14,10 @@ type SettingsState = {
   language: Language
   contactSize: ContactSize
   defaultScreen: DefaultScreen
-  contactsBootstrapped: boolean
   toggleTheme: () => void
   setLanguage: (language: Language) => void
   setContactSize: (size: ContactSize) => void
   setDefaultScreen: (screen: DefaultScreen) => void
-  setContactsBootstrapped: (value: boolean) => void
 }
 
 function getInitialTheme(): ThemeName {
@@ -64,7 +62,6 @@ export const useSettingsStore = create<SettingsState>()(
       language: initialLanguage,
       contactSize: "large",
       defaultScreen: "index",
-      contactsBootstrapped: false,
       toggleTheme: () =>
         set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
       setLanguage: (language) => {
@@ -73,7 +70,6 @@ export const useSettingsStore = create<SettingsState>()(
       },
       setContactSize: (contactSize) => set({ contactSize }),
       setDefaultScreen: (defaultScreen) => set({ defaultScreen }),
-      setContactsBootstrapped: (contactsBootstrapped) => set({ contactsBootstrapped }),
     }),
     {
       name: "akilli-rehber-settings",
@@ -83,7 +79,6 @@ export const useSettingsStore = create<SettingsState>()(
         language: state.language,
         contactSize: state.contactSize,
         defaultScreen: state.defaultScreen,
-        contactsBootstrapped: state.contactsBootstrapped,
       }),
       onRehydrateStorage: () => (state) => {
         syncRTL(state?.language ?? "tr")
