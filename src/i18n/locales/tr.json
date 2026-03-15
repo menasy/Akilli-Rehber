@@ -38,7 +38,6 @@
     "examplePrompt": "\"Mehmet'i ara\" ya da sadece \"Mehmet\" deyin.",
     "processingHint": "Söylediğiniz isim aranıyor.",
     "candidates": "Birden fazla kişi bulundu",
-    "transcript": "Algılanan metin",
     "confidence": "Eşleşme güveni",
     "high": "Yüksek",
     "medium": "Orta",

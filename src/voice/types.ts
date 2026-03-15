@@ -26,7 +26,6 @@ export interface MatchResult {
 export interface VoiceSearchState {
   isListening: boolean
   isProcessing: boolean
-  transcript: string
   error: string | null
   matches: MatchResult[]
   showResults: boolean

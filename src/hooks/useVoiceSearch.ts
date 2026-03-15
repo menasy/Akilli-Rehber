@@ -41,7 +41,6 @@ export function useVoiceSearch() {
     startListening: storeStartListening,
     stopListening: storeStopListening,
     setProcessing,
-    setTranscript,
     setMatches,
     setError,
     reset,
@@ -133,7 +132,6 @@ export function useVoiceSearch() {
     })
 
     if (transcript) {
-      setTranscript(transcript)
       if (event.isFinal) {
         processTranscript(transcript)
       }
@@ -226,7 +224,6 @@ export function useVoiceSearch() {
   return {
     isListening: state.isListening,
     isProcessing: state.isProcessing,
-    transcript: state.transcript,
     matches: state.matches,
     error: state.error,
     showResults: state.showResults,

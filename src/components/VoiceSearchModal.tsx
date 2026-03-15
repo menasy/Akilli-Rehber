@@ -27,7 +27,6 @@ export default function VoiceSearchModal({ visible, onClose }: VoiceSearchModalP
   const {
     isListening,
     isProcessing,
-    transcript,
     matches,
     error,
     showResults,
@@ -51,7 +50,7 @@ export default function VoiceSearchModal({ visible, onClose }: VoiceSearchModalP
     ? "alert-circle"
     : isListening
       ? "mic"
-      : isProcessing || transcript || showResults
+      : isProcessing || showResults
         ? "checkmark-circle"
         : "mic-outline"
 
@@ -59,7 +58,7 @@ export default function VoiceSearchModal({ visible, onClose }: VoiceSearchModalP
     ? colors.favoriteActive
     : isListening
       ? colors.favoriteActive
-      : isProcessing || transcript || showResults
+      : isProcessing || showResults
         ? colors.primary
         : colors.textDisabled
 
@@ -71,9 +70,7 @@ export default function VoiceSearchModal({ visible, onClose }: VoiceSearchModalP
         ? t("voice.processing")
         : showResults && matches.length > 0
           ? t("voice.candidates")
-          : transcript
-            ? t("voice.processingHint")
-            : t("voice.pressToTalk")
+          : t("voice.pressToTalk")
 
   const secondaryText = error
     ? t("voice.retry")
@@ -82,19 +79,17 @@ export default function VoiceSearchModal({ visible, onClose }: VoiceSearchModalP
       : isProcessing
         ? t("voice.pleaseWait")
         : showResults && matches.length > 0
-          ? t("voice.transcript")
+          ? t("voice.candidates")
           : t("voice.tapToStart")
 
   const helperText = error
     ? null
     : isListening
-      ? transcript || t("voice.stop")
+      ? t("voice.stop")
       : isProcessing
-        ? transcript || t("voice.processingHint")
+        ? t("voice.processingHint")
         : showResults && matches.length > 0
-          ? transcript
-            ? `"${transcript}"`
-            : null
+          ? null
           : t("voice.examplePrompt")
 
   const renderContent = () => {
