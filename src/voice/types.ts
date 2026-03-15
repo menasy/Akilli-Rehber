@@ -3,12 +3,6 @@ import type { SupportedLanguage } from "./nlpConstants"
 
 export type { SupportedLanguage }
 
-export interface VoiceTranscript {
-  text: string
-  confidence: number
-  language?: SupportedLanguage
-}
-
 export interface ParsedIntent {
   intent: "call" | "unknown"
   candidateNames: string[]
@@ -30,11 +24,3 @@ export interface VoiceSearchState {
   matches: MatchResult[]
   showResults: boolean
 }
-
-export type VoiceErrorCode =
-  | "PERMISSION"
-  | "NO_MATCH"
-  | "TIMEOUT"
-  | "PARSE"
-  | "SERVICE_UNAVAILABLE"
-  | "UNKNOWN"

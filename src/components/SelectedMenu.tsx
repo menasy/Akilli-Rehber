@@ -100,10 +100,10 @@ export default function SelectedMenu({
               ios: {
                 shadowColor: isSelected ? resolvedActiveBg : "#000",
                 shadowOffset: isSelected
-                  ? { width: 0, height: 3 }
-                  : { width: 3, height: 3 },
+                  ? { width: 0, height: verticalScale(3) }
+                  : { width: scale(3), height: verticalScale(3) },
                 shadowOpacity: isSelected ? 0.3 : 0.1,
-                shadowRadius: isSelected ? 8 : 6,
+                shadowRadius: isSelected ? scale(8) : scale(6),
               },
               android: {
                 elevation: isSelected ? 6 : 3,
@@ -127,6 +127,7 @@ export default function SelectedMenu({
               fontSize: resolvedLabelSize,
               color: isSelected ? resolvedActiveText : resolvedInactiveText,
               fontWeight: isSelected ? "700" : "500",
+              marginTop: verticalScale(2),
             },
             labelStyle,
           ]}
@@ -148,7 +149,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   label: {
-    marginTop: 2,
     fontFamily: "System",
   },
 })

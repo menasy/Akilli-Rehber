@@ -13,7 +13,7 @@ type Responsive = {
   fontScale: (size: number) => number
 }
 
-export function createResponsive(width: number, height: number): Responsive {
+function createResponsive(width: number, height: number): Responsive {
   const widthScale = width / BASE_WIDTH
   const heightScale = height / BASE_HEIGHT
 

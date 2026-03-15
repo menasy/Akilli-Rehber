@@ -83,11 +83,12 @@ export default React.memo(function FavoriteButton({ isFavorite, onToggle }: Favo
   const iconSize = moderateScale(28)
   const containerSize = scale(50)
   const particleDist = iconSize * 0.9
+  const particleSize = scale(5)
 
   return (
     <Pressable
       onPress={handlePress}
-      hitSlop={14}
+      hitSlop={scale(14)}
       style={[styles.container, { width: containerSize, height: containerSize }]}
     >
       {/* Outline heart */}
@@ -112,8 +113,8 @@ export default React.memo(function FavoriteButton({ isFavorite, onToggle }: Favo
           style={[
             styles.particle,
             {
-              left: containerSize / 2 - 2.5,
-              top: containerSize / 2 - 2.5,
+              left: containerSize / 2 - particleSize / 2,
+              top: containerSize / 2 - particleSize / 2,
               opacity: celebrateOpacity,
               transform: [
                 {
@@ -153,9 +154,6 @@ const styles = StyleSheet.create({
   },
   particle: {
     position: "absolute",
-    width: 5,
-    height: 5,
-    borderRadius: 2.5,
     backgroundColor: HEART_COLOR,
   },
 })

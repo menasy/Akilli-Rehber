@@ -6,7 +6,7 @@
     "settings": "Mîheng"
   },
   "home": {
-    "title": "Akılı Rehber",
+    "title": "Akıllı Rehber",
     "call": "BIGIRE"
   },
   "favorites": {
@@ -18,10 +18,6 @@
     "start": "Dest bi Axaftinê Bike",
     "listening": "Tê guhdarîkirin...",
     "stop": "Ji bo rawestandina tomarê careke din pê ve bixîne",
-    "tapToStart": "Ji bo destpêkirina tomarê carek li mîkrofonê bide",
-    "tapToStop": "Dema tomar qediya dîsa li heman mîkrofonê bide",
-    "pleaseWait": "Heta vê gavê were qedandin, kêmtir piçek bisekine",
-    "processing": "Tê xebitandin...",
     "retry": "Dîsa Biceribîne",
     "notFound": "Kes nehat dîtin, dîsa biceribîne",
     "errorMessage": "Çewtiyeke çêbû",
@@ -30,10 +26,7 @@
     "processingFailed": "Di dema xebitandinê de çewtî çêbû",
     "speechNotAvailable": "Naskirina dengî li ser vê cîhazê ne peyda ye",
     "speechServiceMissing": "Li ser cîhazê servîsek naskirina axaftinê ya berdest nayê dîtin",
-    "pressToTalk": "Navê kesê ku hûn dixwazin lê bigerin bibêjin",
-    "examplePrompt": "Mînak: \"Mehmet bigere\" an tenê \"Mehmet\" bibêjin.",
-    "processingHint": "Navê ku we got tê gerîn.",
-    "candidates": "Zêdetir ji yek kes hat dîtin"
+    "examplePrompt": "Mînak: \"Mehmet bigere\" an tenê \"Mehmet\" bibêjin."
   },
   "settings": {
     "title": "Mîheng",

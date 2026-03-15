@@ -75,7 +75,7 @@ export default function Voice() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.content, hasResults ? styles.resultsContent : null]}>
+      <View style={[styles.content, { paddingHorizontal: scale(20) }, hasResults ? styles.resultsContent : null]}>
         {hasResults ? (
           <View style={styles.resultsSection}>
             {showRetry ? (
@@ -98,6 +98,7 @@ export default function Voice() {
                         borderColor: colors.border,
                         borderRadius: scale(16),
                         marginTop: 0,
+                        minWidth: scale(180),
                         paddingHorizontal: scale(28),
                         paddingVertical: verticalScale(14),
                       },
@@ -126,13 +127,14 @@ export default function Voice() {
         {!hasResults ? (
           <View style={styles.emptyState}>
             <View style={styles.emptyBody}>
-              <View style={styles.heroBlock}>
+              <View style={[styles.heroBlock, { maxWidth: scale(420) }]}>
                 <Text
                   style={[
                     styles.statusText,
                     {
                       color: colors.textPrimary,
                       fontSize: moderateScale(32),
+                      paddingHorizontal: scale(24),
                       marginBottom: verticalScale(28),
                     },
                   ]}
@@ -149,6 +151,8 @@ export default function Voice() {
                       height: scale(190),
                       borderRadius: scale(95),
                       backgroundColor: pressed ? colors.primaryPressed : micColor,
+                      shadowOffset: { width: 0, height: verticalScale(4) },
+                      shadowRadius: scale(8),
                     },
                   ]}
                   accessibilityLabel={isListening ? t("voice.stop") : t("voice.start")}
@@ -175,6 +179,7 @@ export default function Voice() {
                         borderColor: colors.border,
                         borderRadius: scale(16),
                         marginTop: verticalScale(24),
+                        minWidth: scale(180),
                         paddingHorizontal: scale(28),
                         paddingVertical: verticalScale(14),
                       },
@@ -230,6 +235,7 @@ export default function Voice() {
                         {
                           color: colors.textSecondary,
                           fontSize: moderateScale(20),
+                          paddingHorizontal: scale(28),
                           marginTop: verticalScale(24),
                         },
                       ]}
@@ -254,7 +260,6 @@ const styles = StyleSheet.create({
   retryButton: {
     alignItems: "center",
     justifyContent: "center",
-    minWidth: 180,
     borderWidth: 1,
   },
   retryText: {
@@ -264,7 +269,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
   },
   resultsContent: {
     alignItems: "stretch",
@@ -292,26 +296,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
-    maxWidth: 420,
   },
   statusText: {
     textAlign: "center",
     fontWeight: "700",
-    paddingHorizontal: 24,
   },
   micCircle: {
     alignItems: "center",
     justifyContent: "center",
     elevation: 6,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.18,
-    shadowRadius: 8,
   },
   instructionText: {
     textAlign: "center",
     fontWeight: "500",
-    paddingHorizontal: 28,
   },
   infoRow: {
     flexDirection: "row",

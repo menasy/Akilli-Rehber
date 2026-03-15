@@ -27,7 +27,6 @@ export async function fetchContacts(): Promise<Contact[]> {
         name: c.name ?? "No Name",
         phone: phoneNumber ?? "",
         avatar: c.image?.uri ?? "",
-        isFavorite: false,
       };
     });
 

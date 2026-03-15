@@ -585,378 +585,1690 @@ export const KU_SUFFIXES: Array<[RegExp, string]> = [
 ];
 
 /**
- * KÜRTÇE STOP WORD LİSTESİ (Kurmancî)
- * 
- * NOT: Türkçe STT yanlış algıladığı varyantlar da dahil!
- * 
- * Örnekler:
- * - "Wahapko bi gara" → "bi gara" kaldırılır
- * - "Mikail sigara" → "sigara" (bi gara olarak algılandı) kaldırılır
- * - "ji kerema xwe Dîlanê bang bike" → "ji kerema xwe", "bang bike" kaldırılır
+ * KÜRTÇE STOP WORD LİSTESİ (Kurmancî) — GENİŞLETİLMİŞ SÜRÜM
+ *
+ * ═══════════════════════════════════════════════════════════════
+ * FONETİK YANLIŞ ALGILAMA HARİTASI (Türkçe STT → Kürtçe)
+ * ═══════════════════════════════════════════════════════════════
+ *
+ * Kürtçede olan ama Türkçede OLMAYAN sesler:
+ *
+ *  x  (velar frikativ)  → h, k, ş, s, z, f, g, ğ, kh, ch
+ *  xw (labio-velar)     → hv, şv, fv, kv, zv, f, v, hu, şu
+ *  ê  (uzun e)          → e, i, a, ı, ye, ya
+ *  î  (uzun i)          → i, ı, yi, yı
+ *  û  (uzun u)          → u, ü, w, v
+ *  w  (labio-velar)     → v, b, u, ü, f
+ *  q  (uvular stop)     → k, g, ğ
+ *  ç  (ts afrikat)      → c, s, ş, j, ts
+ *  j  (voiced frikativ) → y, c, z, j
+ *  '  (gırtlak sesi)    → sessiz, a, h
+ *  r  (titreşimli r)    → r, rr
+ *
+ * Ek Türkçe STT eğilimleri:
+ *  - Sözcük başı "b" bazen "p", "v", "d" → "b"
+ *  - Sözcük sonu sessizler yutulabilir
+ *  - İki sessiz yan yana gelince araya ünlü eklenebilir
+ *  - Uzun ünlüler kısaltılabilir veya ikileşebilir
+ *  - Vurgu kayması farklı hecede algılamaya yol açabilir
  */
+
 export const KU_STOP_WORDS = new Set<string>([
-  // ── Temel "ara" fiilleri (DOĞRU + YANLIŞ ALGILAMALAR) ──
-  "bugün ara",
-  "bugün al",
-  "bugural",
-  "bulgur al",
-  "bugaral",
-  'bugaran',
-  'Güler\'e',
-  'bigara',
-  'bugeran',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 1: "bi gara" — ARA / CALL
+  // Kurmancî'de "ara" anlamına gelen temel komut
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'bi gara',
   'bigara',
+  'bi ara',        // kısa varyant
+
+  // ── b → p, v, d dönüşümü ──
+  'pi gara',
+  'pigara',
+  'vi gara',
+  'vigara',
+  'di gara',
+  'digara',
+  'fi gara',
+  'figara',
+
+  // ── g → k, ğ, c dönüşümü ──
+  'bi kara',
+  'bikara',
+  'bi ğara',
+  'biğara',
+  'bi cara',
+  'bicara',
+  'bi çara',
+  'biçara',
+  'bi hara',
+  'bihara',
+
+  // ── "bi" → "si", "ci", "zi", "gi", "hi", "yi" ──
+  'si gara',
+  'sigara',        // en yaygın yanlış algılama
+  'ci gara',
+  'cigara',
+  'zi gara',
+  'zigara',
+  'gi gara',
+  'gigara',
+  'hi gara',
+  'higara',
+
+  // ── "gara" → "ğara", "ara", "ağra", "azra", "acra" ──
+  'bi ağra',
+  'biağra',
+  'bi azra',
+  'biazra',
+  'bi acra',
+  'biacra',
+  'bi agra',
+  'biagra',
+  'bi ağra',
+  'biağra',
+  'bi ağara',
+  'biağara',
+
+  // ── "bi" → "bu", "bo" + "gara" dönüşümleri ──
+  'bu gara',
+  'bugara',
+  'bu kara',
+  'bukara',
+  'bo gara',
+  'bogara',
+
+  // ── "gara" → "gazra", "gavra", "gabra" ──
+  'bi gazra',
+  'bigazra',
+  'bi gavra',
+  'bigavra',
+  'bi gabra',
+  'bigabra',
+
+  // ── Türkçe STT "bi gara"yı tek kelime gibi algılama ──
+  'bigara',
+  'bugara',
+  'buğara',
+  'bugara',
+  'buğara',
+  'bugaran',
+  'bugaral',
+  'bugural',
+  'bulgur al',
+  'bugün ara',
+  'bugün al',
+
+  // ── Diğer tek-kelime varyantlar ──
   'gara',
-  'sigara',        // YANLIŞ ALGILAMA: "bi gara" → "sigara"
-  'bi kara',       // YANLIŞ ALGILAMA
-  'bikara',        // YANLIŞ ALGILAMA
-  'bi ara',        // YANLIŞ ALGILAMA
-  'biara',         // YANLIŞ ALGILAMA
-  'bi ağra',       // YANLIŞ ALGILAMA
-  'bi gaza',       // YANLIŞ ALGILAMA
-  'si gara',       // YANLIŞ ALGILAMA
-  
+  'kara',
+  'cara',
+  'bara',
+  'para',
+  'tara',
+  'sara',
+  'zara',
+  'vara',
+  'dara',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 2: "bang bike" — ONA / ONA TELEFON ET
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'bang bike',
   'bangbike',
-  'bang',
+  'bang bike',
+
+  // ── "bang" → "bank", "ban", "bam", "pan", "pang", "beng", "bong" ──
+  'bank bike',
+  'banka bike',
+  'bankbike',
+  'ban bike',
+  'banbike',
+  'bam bike',
+  'bambike',
+  'pan bike',
+  'panbike',
+  'pang bike',
+  'pangbike',
+  'beng bike',
+  'bengbike',
+  'bong bike',
+  'bongbike',
+  'dang bike',
+  'dangbike',
+  'gang bike',
+  'gangbike',
+  'fang bike',
+  'fangbike',
+  'hang bike',
+  'hangbike',
+  'rang bike',
+  'rangbike',
+  'sang bike',
+  'sangbike',
+  'vang bike',
+  'vangbike',
+  'zang bike',
+  'zangbike',
+
+  // ── "bike" → "bayık", "pike", "bayk", "bıke", "bice", "vike", "dike" ──
+  'bang bayık',
+  'bang pike',
+  'bang bayk',
+  'bang bıke',
+  'bang bice',
+  'bang vike',
+  'bang dike',
+  'bang fike',
+  'bang gike',
+  'bang hike',
+  'bang kike',
+  'bang like',
+  'bang mike',
+  'bang nike',
+  'bang rike',
+  'bang sike',
+  'bang tike',
+  'bang vice',
+  'bang yike',
+  'bang zike',
+
+  // ── "bank" + "bike" varyantları ──
+  'bank bayık',
+  'bank pike',
+  'bank bayk',
+  'bank bıke',
+  'bank bice',
+  'bank vike',
+  'bank dike',
+
+  // ── "ban" + varyantlar ──
+  'ban bayık',
+  'ban pike',
+  'ban bayk',
+  'ban bice',
+  'ban vike',
+
+  // ── Tek kelime yanlış algılamalar ──
+  'bayık',
+  'pike',
+  'bayk',
+  'bıke',
   'bike',
-  'bank bike',     // YANLIŞ ALGILAMA: "bang bike" → "bank bike"
-  'banka bike',    // YANLIŞ ALGILAMA
-  'bank bayık',    // YANLIŞ ALGILAMA
-  'bang bayık',    // YANLIŞ ALGILAMA
-  'bank pike',     // YANLIŞ ALGILAMA
-  'bang pike',     // YANLIŞ ALGILAMA
-  'ban bike',      // YANLIŞ ALGILAMA
-  'banbike',       // YANLIŞ ALGILAMA
-  'bang bayk',     // YANLIŞ ALGILAMA
-  'bank bayk',     // YANLIŞ ALGILAMA
-  'bayık',         // YANLIŞ ALGILAMA tek kelime
-  'pike',          // YANLIŞ ALGILAMA tek kelime
-  'bayk',          // YANLIŞ ALGILAMA tek kelime
-  
+  'bice',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 3: "telefon bike" — TELEFON ET
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'telefon bike',
   'telefonbike',
-  'telefon bayık', // YANLIŞ ALGILAMA
-  'telefon pike',  // YANLIŞ ALGILAMA
-  'telefon bayk',  // YANLIŞ ALGILAMA
-  
-  'têkilî bike',
-  'têkilîbike',
-  'têkilî',
-  
+
+  // ── "bike" yanlış algılamaları (tümü) ──
+  'telefon bayık',
+  'telefon pike',
+  'telefon bayk',
+  'telefon bıke',
+  'telefon bice',
+  'telefon vike',
+  'telefon dike',
+  'telefon fike',
+  'telefon gike',
+  'telefon hike',
+  'telefon kike',
+  'telefon sike',
+  'telefon tike',
+  'telefon zike',
+
+  // ── "telefon" yanlış algılamaları ──
+  'talefon bike',
+  'tilefon bike',
+  'telfon bike',
+  'talafon bike',
+  'telifon bike',
+  'telefon bik',
+  'telefon bika',
+  'telefon biki',
+
+  // ── "telefon" → "tilefon", "talefon" + "bike" varyantları ──
+  'talefon bayık',
+  'talefon pike',
+  'tilefon bayık',
+  'tilefon pike',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 4: "lê bike" — ONA YAP / ONA ARA
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'lê bike',
-  'pê bike',
   'lêbike',
+  'le bike',
+  'lebike',
+
+  // ── "lê/le" → "li", "la", "lı", "ley", "ley" ──
+  'li bike',
+  'libike',
+  'la bike',
+  'labike',
+  'lı bike',
+  'lıbike',
+
+  // ── "bike" tüm varyantlarıyla ──
+  'lê bayık',
+  'lê pike',
+  'lê bayk',
+  'lê bıke',
+  'lê bice',
+  'lê vike',
+  'lê dike',
+  'le bayık',
+  'le pike',
+  'le bayk',
+  'le bıke',
+  'le bice',
+  'le vike',
+  'le dike',
+  'li bayık',
+  'li pike',
+  'li bayk',
+  'li bice',
+  'li vike',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 5: "pê bike" / "pê re bike" — ONUNLA YAP
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
+  'pê bike',
   'pêbike',
-  'le bike',       // YANLIŞ ALGILAMA: "lê bike" → "le bike"
-  'lebike',        // YANLIŞ ALGILAMA
-  'le bayık',      // YANLIŞ ALGILAMA
-  'le pike',       // YANLIŞ ALGILAMA
-  'le bayk',       // YANLIŞ ALGILAMA
-  'pe bike',       // YANLIŞ ALGILAMA: "pê bike" → "pe bike"
-  'pebike',        // YANLIŞ ALGILAMA
-  'pe bayık',      // YANLIŞ ALGILAMA
-  'pe pike',       // YANLIŞ ALGILAMA
-  'pe bayk',       // YANLIŞ ALGILAMA
-  
-  'bide',
-  'bidê',
+  'pe bike',
+  'pebike',
+
+  // ── "pê/pe" → "be", "bi", "pi", "de", "ve" ──
+  'be bike',
+  'bebike',
+  'pi bike',
+  'pibike',
+  'de bike',
+  'debike',
+  've bike',
+  'vebike',
+
+  // ── "bike" tüm varyantlarıyla ──
+  'pê bayık',
+  'pê pike',
+  'pê bayk',
+  'pê bıke',
+  'pê bice',
+  'pê vike',
+  'pe bayık',
+  'pe pike',
+  'pe bayk',
+  'pe bıke',
+  'pe bice',
+  'pe vike',
+  'be bayık',
+  'be pike',
+  'be bayk',
+  'be bice',
+  'be vike',
+
+  // ── "pê re bike" formları ──
+  'pê re bike',
+  'pe re bike',
+  'pê re bayık',
+  'pe re bayık',
+  'pê re pike',
+  'pe re pike',
+  'be re bike',
+  'be re bayık',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 6: "bang lê/pê bike" — ONA BAĞIR / ARA
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'bang lê bike',
   'bang pê bike',
-  'bang le bike',  // YANLIŞ ALGILAMA
-  'bang pe bike',  // YANLIŞ ALGILAMA
-  
+  'bang le bike',
+  'bang pe bike',
+
+  // ── Kombinasyonlar ──
+  'bang li bike',
+  'bang la bike',
+  'bang le bayık',
+  'bang li bayık',
+  'bang la bayık',
+  'bang le pike',
+  'bang li pike',
+  'bang pê bayık',
+  'bang pe bayık',
+  'bang pe pike',
+  'bang pê pike',
+
+  // ── "bank" versiyonları ──
+  'bank lê bike',
+  'bank le bike',
+  'bank li bike',
+  'bank pê bike',
+  'bank pe bike',
+  'bank le bayık',
+  'bank pe bayık',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 7: "xeber bide" — HABER VER
+  // x → h, k, ş, s, z, f dönüşümü
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'xeber bide',
   'xeberbide',
-  'heber bide',    // YANLIŞ ALGILAMA: "xeber" → "heber"
-  
+
+  // ── "xeber" → "heber", "keber", "şeber", "seber", "zeber", "feber", "geber", "çeber" ──
+  'heber bide',
+  'keberbide',
+  'keber bide',
+  'şeber bide',
+  'şeberbide',
+  'seber bide',
+  'seberbide',
+  'zeber bide',
+  'zeberbide',
+  'feber bide',
+  'feberbide',
+  'geber bide',
+  'geberbide',
+  'çeber bide',
+  'çeberbide',
+  'ceber bide',
+  'ceberbide',
+
+  // ── "bide" → "vide", "dide", "pide", "tide", "bide", "biyde" ──
+  'xeber vide',
+  'heber vide',
+  'xeber dide',
+  'heber dide',
+  'xeber pide',
+  'heber pide',
+  'xeber tide',
+  'heber tide',
+
+  // ── "xeber lê bide" formları ──
+  'xeber lê bide',
+  'xeber le bide',
+  'heber lê bide',
+  'heber le bide',
+  'keber le bide',
+  'şeber le bide',
+  'seber le bide',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 8: "biaxive" — ONUNLA KONUŞ
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'biaxive',
   'axive',
   'biaxivim',
   'axivim',
-  'biahive',       // YANLIŞ ALGILAMA
-  'biaksive',      // YANLIŞ ALGILAMA
-  
+
+  // ── "x" → "h", "k", "ş", "s", "z", "f" ──
+  'biahive',
+  'ahive',
+  'biakhive',
+  'biakşive',
+  'biaşive',
+  'aşive',
+  'biasive',
+  'asive',
+  'biazive',
+  'azive',
+  'biafive',
+  'afive',
+  'biaksive',
+  'aksive',
+  'biacive',
+  'acive',
+
+  // ── "bi" öneki → "pi", "vi", "di" ──
+  'piaxive',
+  'piahive',
+  'piaşive',
+  'viaxive',
+  'viahive',
+  'viaşive',
+  'diaxive',
+  'diahive',
+  'diasive',
+
+  // ── "biaxivim" varyantları ──
+  'biahivim',
+  'biaşivim',
+  'biasivim',
+  'biazivim',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 9: "pê re biaxive" — ONUNLA KONUŞ
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'pê re biaxive',
   'pêrebiaxive',
-  'pe re biaxive', // YANLIŞ ALGILAMA
+  'pe re biaxive',
 
-  // ── Nezaket ifadeleri (DOĞRU + YANLIŞ ALGILAMALAR) ──
+  // ── Tüm kombinasyonlar ──
+  'pê re biahive',
+  'pe re biahive',
+  'pê re biaşive',
+  'pe re biaşive',
+  'pê re biasive',
+  'pe re biasive',
+  'pê re biazive',
+  'pe re biazive',
+  'be re biaxive',
+  'be re biahive',
+  'be re biaşive',
+  'be re biasive',
+  'pi re biaxive',
+  'pi re biahive',
+  'di re biaxive',
+  'di re biahive',
+  've re biaxive',
+  've re biahive',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 10: "ji kerema xwe" — LÜTFEN
+  // ji → ci, zi, gi, hi, yi, si
+  // xwe → şve, hve, fve, kve, zve, ve, fe
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'ji kerema xwe',
   'jikeremaxwe',
-  'ci kerema şve',   // YANLIŞ ALGILAMA: "ji" → "ci", "xwe" → "şve"
-  'ji kerema şve',   // YANLIŞ ALGILAMA
-  'ci kerema hve',   // YANLIŞ ALGILAMA: "xwe" → "hve"
-  'ji kerema hve',   // YANLIŞ ALGILAMA
-  'cikerema',        // YANLIŞ ALGILAMA
-  
-  'kerem ke',
-  'keremke',
+
+  // ── "ji" → "ci", "zi", "gi", "hi", "yi", "si", "di" ──
+  'ci kerema xwe',
+  'zi kerema xwe',
+  'gi kerema xwe',
+  'hi kerema xwe',
+  'yi kerema xwe',
+  'si kerema xwe',
+  'di kerema xwe',
+
+  // ── "xwe" → "şve", "hve", "fve", "kve", "zve", "ve", "fe", "he", "ße" ──
+  'ji kerema şve',
+  'ji kerema hve',
+  'ji kerema fve',
+  'ji kerema kve',
+  'ji kerema zve',
+  'ji kerema ve',
+  'ji kerema fe',
+  'ji kerema he',
+  'ji kerema hfe',
+  'ji kerema şfe',
+  'ji kerema hvê',
+  'ji kerema şvê',
+  'ji kerema fvê',
+
+  // ── "ci" + "xwe" varyantları ──
+  'ci kerema şve',
+  'ci kerema hve',
+  'ci kerema fve',
+  'ci kerema kve',
+  'ci kerema ve',
+  'ci kerema he',
+
+  // ── "zi" + "xwe" varyantları ──
+  'zi kerema şve',
+  'zi kerema hve',
+  'zi kerema ve',
+
+  // ── "gi" + "xwe" varyantları ──
+  'gi kerema şve',
+  'gi kerema hve',
+  'gi kerema ve',
+
+  // ── "kerema" → "kerama", "kerema", "kırema", "krama" ──
+  'ji kerama xwe',
+  'ji kerama şve',
+  'ji kerama hve',
+  'ci kerama xwe',
+  'ci kerama şve',
+  'ci kerama hve',
+  'ji kırema xwe',
+  'ji kırema şve',
+  'ci kırema şve',
+  'ji kerem şve',
+  'ci kerem şve',
+  'ji kerem hve',
+
+  // ── Kısa formlar ──
   'ji kerema',
   'jikerema',
-  'ci kerema',       // YANLIŞ ALGILAMA
-  
-  'xwedêro',
+  'ci kerema',
+  'cikerema',
+  'zi kerema',
+  'gi kerema',
+
+  // ── "kerem ke" ──
+  'kerem ke',
+  'keremke',
+  'kerem ge',
+  'kerem ce',
+  'kerem he',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 11: "xwedê" / "xwedêro" — TANRI / YEMİN
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'xwedê',
-  'hvede',           // YANLIŞ ALGILAMA: "xwedê" → "hvede"
-  'şvede',           // YANLIŞ ALGILAMA
-  
-  'bila',
-  'lê',
-  'le',              // YANLIŞ ALGILAMA: "lê" → "le"
-  'ka',
-  'rabe',
-  'here',
-  'bê',
-  'be',              // YANLIŞ ALGILAMA: "bê" → "be"
-  'werin',
-  'verin',           // YANLIŞ ALGILAMA: "werin" → "verin"
-  'herin',
-  'rêk bixin',
-  
+  'xwedêro',
+  'xwedêje',
+
+  // ── "xw" → "hv", "şv", "fv", "kv", "zv", "f", "v", "h", "ş" ──
+  'hvede',
+  'şvede',
+  'fvede',
+  'kvede',
+  'zvede',
+  'fede',
+  'vede',
+  'hede',
+  'şede',
+  'hvedê',
+  'şvedê',
+  'fvedê',
+  'vedê',
+  'hedê',
+
+  // ── "xwedêro" varyantları ──
+  'hvedero',
+  'şvedero',
+  'fvedero',
+  'vedero',
+  'hedero',
+  'hvedêro',
+  'şvedêro',
+  'fvedêro',
+  'hvederou',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 12: "dixwazim" — İSTİYORUM
+  // dixwazim: di + xwaz + im
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'dixwazim',
   'dixwazim ku',
-  'dihvazim',        // YANLIŞ ALGILAMA: "dixwazim" → "dihvazim"
-  'dihazim',         // YANLIŞ ALGILAMA
-  'dikvazim',        // YANLIŞ ALGILAMA
-  
+  'ez dixwazim',
+
+  // ── "xw" → "hv", "şv", "fv", "kv", "h", "ş" ──
+  'dihvazim',
+  'dişvazim',
+  'difvazim',
+  'dikvazim',
+  'dihazim',
+  'dişazim',
+  'difazim',
+  'dikwazim',
+  'divazim',
+  'diuvazim',
+
+  // ── "di" → "ti", "gi", "bi", "ni", "li" ──
+  'tihvazim',
+  'tişvazim',
+  'tifvazim',
+  'tihazim',
+  'gihvazim',
+  'gişvazim',
+  'bihvazim',
+  'bişvazim',
+  'nihvazim',
+  'nişvazim',
+  'lihvazim',
+
+  // ── Kısa formlar ──
+  'dihvazim ku',
+  'dişvazim ku',
+  'difvazim ku',
+  'dihazim ku',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 13: "daxwaz dikim" — TALEP EDİYORUM
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
   'daxwaz dikim',
   'daxwaz',
   'dikim',
-  'dahvaz',          // YANLIŞ ALGILAMA
-  
-  'ez dixwazim',
-  'min dixwaze',
-  'min jê re',
-  'ji min re',
-  'ci min re',       // YANLIŞ ALGILAMA
-  'jî',
-  'ci',              // YANLIŞ ALGILAMA: "jî" → "ci" VEYA "ji" → "ci"
 
-  // ── Şahıs zamirleri ──
-  'ez',
-  'tu',
-  'ew',
-  'ev',              // YANLIŞ ALGILAMA: "ew" → "ev"
-  'em',
-  'hûn',
-  'hun',
-  'hin',
+  // ── "xw" → "hv", "şv", "fv" dönüşümleri ──
+  'dahvaz dikim',
+  'dişvaz dikim',
+  'difvaz dikim',
+  'dahvaz',
+  'dişvaz',
+  'difvaz',
+  'dakwaz',
+  'davaz',
 
-  // ── Oblique hâl zamirleri ──
-  'min',
-  'te',
-  'wî',
+  // ── "dikim" → "diğim", "dicem", "dicem", "dikin" ──
+  'daxwaz diğim',
+  'daxwaz dicem',
+  'daxwaz dikin',
+  'dahvaz diğim',
+  'dahvaz dicem',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 14: "bide zanîn" — BİLDİR / HABER VER
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
+  'bide zanîn',
+  'bide zanin',
+  'bidezanîn',
+  'bidezanin',
+
+  // ── "bide" → "vide", "dide", "pide", "gide" ──
+  'vide zanîn',
+  'vide zanin',
+  'dide zanîn',
+  'dide zanin',
+  'pide zanîn',
+  'pide zanin',
+  'gide zanîn',
+  'gide zanin',
+
+  // ── "zanîn" → "zanin", "sanin", "janin", "xanin", "yanin", "hanin", "zanın" ──
+  'bide sanîn',
+  'bide sanin',
+  'bide janîn',
+  'bide janin',
+  'bide xanin',
+  'bide hanin',
+  'bide yanin',
+  'bide zanın',
+  'bide zanen',
+  'bide zane',
+
+  // ── Kombinasyonlar ──
+  'vide sanin',
+  'vide hanin',
+  'dide sanin',
+  'pide sanin',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 15: "têkilî bike" — İLETİŞİME GEÇ
+  // ════════════════════════════════════════════════════════
+
+  // ── Doğru formlar ──
+  'têkilî bike',
+  'têkilîbike',
+  'tekili bike',
+  'tekilî bike',
+
+  // ── "ê" → "e", "a", "i" ──
+  'tekilî bike',
+  'takilî bike',
+  'tikilî bike',
+  'tekili bike',
+  'takili bike',
+  'tikili bike',
+
+  // ── "bike" tüm varyantlarıyla ──
+  'têkilî bayık',
+  'tekili bayık',
+  'têkilî pike',
+  'tekili pike',
+  'têkilî bayk',
+  'tekili bayk',
+  'têkilî bice',
+  'tekili bice',
+  'têkilî vike',
+  'tekili vike',
+
+  // ── "têkilî" → "dekili", "tekoli", "tekıli", "dıkılı" ──
+  'dekili bike',
+  'dekili bayık',
+  'tekoli bike',
+  'tekıli bike',
+  'dıkılı bike',
+  'takıla bike',
+  'takılı bike',
+
+  // ── Tek kelime ──
+  'têkilî',
+  'tekili',
+  'takilî',
+  'dekili',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 16: ŞAHıS ZAMİRLERİ
+  // ════════════════════════════════════════════════════════
+
+  // ── Yalın hâl (Nominatif) ──
+  'ez',          // ben
+  'es',          // yanlış algılama
+  'tu',          // sen
+  'du',          // yanlış
+  'tü',          // yanlış
+  'ew',          // o
+  'ev',          // yanlış / aynı zamanda "bu"
+  'ef',          // yanlış
+  'ep',          // yanlış
+  'em',          // biz
+  'hem',         // yanlış
+  'am',          // yanlış
+  'hûn',         // siz
+  'hun',         // kısa
+  'hin',         // yanlış
+  'hün',         // yanlış
+  'ün',          // yanlış (çok kısa algılama)
+  'ew',          // onlar (bağlamsal)
+
+  // ── Oblik hâl (Oblique) ──
+  'min',         // beni/benim
+  'men',         // yanlış
+  'bin',         // yanlış (önemli çünkü anlamlı kelime)
+  'mın',         // yanlış
+  'te',          // seni/senin
+  'de',          // yanlış
+  'tı',          // yanlış
+  'wî',          // onu (eril)
   'wi',
-  'vi',              // YANLIŞ ALGILAMA: "wî" → "vi"
-  'wê',
+  'vi',          // yanlış
+  'bi',          // yanlış
+  'fi',          // yanlış
+  'gi',          // yanlış
+  'wê',          // onu (dişil)
   'we',
-  've',              // YANLIŞ ALGILAMA: "wê" → "ve"
-  'me',
-  'wan',
-  'van',             // YANLIŞ ALGILAMA: "wan" → "van"
+  've',          // yanlış
+  'be',          // yanlış
+  'fe',          // yanlış
+  'me',          // bizi/bizim
+  'wan',         // onları/onların
+  'van',         // yanlış
+  'ban',         // yanlış
+  'fan',         // yanlış
+  'man',         // yanlış
+  'zan',         // yanlış
 
-  // ── Edat/ilgeç (DOĞRU + YANLIŞ ALGILAMALAR) ──
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 17: EDATLAR / İLGEÇLER
+  // ════════════════════════════════════════════════════════
+
+  // ── "ji" (dan/den/için) ──
   'ji',
-  'ci',              // YANLIŞ ALGILAMA (tekrar - önemli)
-  'bo',
+  'ci',          // yanlış (EN YAYGIN)
+  'zi',          // yanlış
+  'gi',          // yanlış
+  'hi',          // yanlış
+  'yi',          // yanlış
+  'si',          // yanlış
+  'di',          // yanlış (aynı zamanda geçerli edat)
+
+  // ── "ji bo" (için) ──
   'ji bo',
   'jibo',
-  'ci bo',           // YANLIŞ ALGILAMA
-  'cibo',            // YANLIŞ ALGILAMA
+  'ci bo',
+  'cibo',
+  'zi bo',
+  'zibo',
+  'gi bo',
+  'gibo',
+  'hi bo',
+  'hibo',
+
+  // ── "li" (de/da/te) ──
   'li',
+  'ri',          // yanlış
+  'ni',          // yanlış
+  'di',          // (geçerli edat, bu yüzden dikkatli)
+
+  // ── "bi" (ile/tarafından) ──
   'bi',
+  'pi',          // yanlış
+  'vi',          // yanlış (tekrar)
+
+  // ── Diğer edatlar ──
   'ra',
-  're',
   've',
   'de',
   'da',
+  're',
   'ser',
   'bin',
-  'pêş',
-  'pes',
-  'peş',             // YANLIŞ ALGILAMA: "pêş" → "peş"
-  'paş',
-  'pas',
-  'paş',
   'nav',
   'nava',
   'navbera',
-  'navbara',         // YANLIŞ ALGILAMA
-  'tevî',
-  'tevi',
-  'tevi',
-  'hertî',
-  'herî',
-  'heri',
-  'para',
+  'navbara',     // yanlış
+
+  // ── "pêş" (önünde) ──
+  'pêş',
+  'pes',
+  'peş',
+  'piş',
+  'pış',
+  'beş',         // yanlış
+
+  // ── "paş" (arkasında) ──
+  'paş',
+  'pas',
+  'baş',         // yanlış (aynı zamanda "iyi" anlamında)
+  'bas',         // yanlış
+
+  // ── "berî" (önce) ──
   'berî',
   'beri',
-  'piştî',
-  'pisti',
-  'pişti',           // YANLIŞ ALGILAMA
-  'dema',
-  'dema ku',
-  'çawa ku',
-  'cawa ku',
-  'sava ku',         // YANLIŞ ALGILAMA: "çawa" → "sava"
-  'ku',
+  'veri',        // yanlış
+  'peri',        // yanlış
+  'feri',        // yanlış
 
-  // ── Bağlaçlar ──
+  // ── "piştî" (sonra) ──
+  'piştî',
+  'pişti',
+  'pisti',
+  'bişti',       // yanlış
+  'vişti',       // yanlış
+
+  // ── "tevî" (beraber) ──
+  'tevî',
+  'tevi',
+  'devi',        // yanlış
+  'bevi',        // yanlış
+
+  // ── "hertî/herî" (her zaman/en) ──
+  'hertî',
+  'herti',
+  'herî',
+  'heri',
+  'heri',
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 18: BAĞLAÇLAR
+  // ════════════════════════════════════════════════════════
+
+  // ── "û" (ve) ──
   'û',
   'u',
+  'ü',
+  'v',           // yanlış (çok kısa)
+  'w',           // yanlış
+
+  // ── "an/yan" (veya) ──
   'an',
   'yan',
+  'an ku',
+  'yan ku',
+
+  // ── "lê" (ama) ──
   'lê',
-  'le',              // YANLIŞ ALGILAMA (tekrar)
+  'le',
+  'li',          // (tekrar)
+  'lê ku',
+  'le ku',
+
+  // ── "belê" (evet/ama) ──
   'belê',
   'bele',
-  'ne',
-  'ne... ne jî',
-  'hem',
+  'belê ku',
+  'bele ku',
+  'vele',        // yanlış
+  'delê',        // yanlış
+
+  // ── "jî" (da/de/aynı zamanda) ──
   'jî',
-  'ji',
-  'jixwe',
-  'cihve',           // YANLIŞ ALGILAMA: "jixwe" → "cihve"
+  'ji',          // (tekrar)
+  'ci',          // (tekrar)
+  'zi',          // (tekrar)
+  'yi',          // (tekrar)
+
+  // ── "lewre" (bu yüzden) ──
   'lewre',
-  'levre',           // YANLIŞ ALGILAMA: "lewre" → "levre"
+  'levre',       // yanlış
+  'leure',       // yanlış
+  'levre',
+  'lefre',       // yanlış
+  'lebre',       // yanlış
+
+  // ── "ji ber" / "ji ber ku" (çünkü) ──
   'ji ber',
   'jiber',
-  'ci ber',          // YANLIŞ ALGILAMA
+  'ci ber',
+  'ciber',
+  'zi ber',
+  'gi ber',
+  'ji ber ku',
+  'ci ber ku',
+  'zi ber ku',
+
+  // ── "çimkî" (çünkü) ──
   'çimkî',
   'cimki',
-  'simki',           // YANLIŞ ALGILAMA: "çimkî" → "simki"
-  'eger',
-  'heke',
-  'gava',
-  'dema',
+  'cimkî',
+  'simki',       // yanlış
+  'simkî',       // yanlış
+  'şimki',       // yanlış
+  'jimki',       // yanlış
+  'timki',       // yanlış
+  'zimki',       // yanlış
 
-  // ── Soru kelimeleri ──
+  // ── "jixwe" (zaten) ──
+  'jixwe',
+  'cihve',       // yanlış
+  'cişve',       // yanlış
+  'cifve',       // yanlış
+  'cikve',       // yanlış
+  'jihve',       // yanlış
+  'jişve',       // yanlış
+  'jifve',       // yanlış
+
+  // ── "gava/dema ku" (ne zaman) ──
+  'gava',
+  'kava',        // yanlış
+  'bava',        // yanlış
+  'dema',
+  'dema ku',
+  'gava ku',
+
+  // ── "eger/heke" (eğer) ──
+  'eger',
+  'eğer',        // Türkçe ile çakışma
+  'heke',
+  'heke ku',
+  'eke',         // yanlış
+  'geke',        // yanlış
+
+  // ── "ku" (ki/ne zaman/nerede) ──
+  'ku',
+  'gu',          // yanlış
+  'bu',          // yanlış
+  'du',          // yanlış
+  'mu',          // yanlış
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 19: SORU KELİMELERİ
+  // ════════════════════════════════════════════════════════
+
+  // ── "kî" (kim) ──
   'kî',
   'ki',
+  'gi',          // yanlış
+  'ci',          // yanlış
+  'zi',          // yanlış
+  'si',          // yanlış
+  'ji',          // yanlış
+
+  // ── "çi" (ne) ──
   'çi',
-  'ci',              // YANLIŞ ALGILAMA (tekrar - "çi" → "ci")
-  'si',              // YANLIŞ ALGILAMA
+  'ci',          // yanlış (EN YAYGIN)
+  'si',          // yanlış
+  'şi',          // yanlış
+  'ti',          // yanlış
+  'ji',          // yanlış
+
+  // ── "kû/ku" (nerede) ──
   'kû',
   'ku',
+  'gu',
+  'bu',
+
+  // ── "kengê" (ne zaman) ──
   'kengê',
   'kenge',
+  'genge',       // yanlış
+  'henge',       // yanlış
+  'senge',       // yanlış
+  'denge',       // yanlış (aynı zamanda anlamlı Türkçe kelime)
+  'tenge',       // yanlış
+  'benge',       // yanlış
+  'renge',       // yanlış
+  'lenge',       // yanlış
+  'menge',       // yanlış
+  'yenge',       // yanlış
+
+  // ── "çawa" (nasıl) ──
   'çawa',
   'cawa',
-  'sava',            // YANLIŞ ALGILAMA
+  'sawa',        // yanlış
+  'şawa',        // yanlış
+  'tawa',        // yanlış
+  'java',        // yanlış
+  'çava',        // yanlış
+  'sava',        // yanlış (EN YAYGIN)
+  'zava',        // yanlış
+  'hawa',        // yanlış
+  'bawa',        // yanlış
+  'dawa',        // yanlış
+  'fawa',        // yanlış
+  'gawa',        // yanlış
+
+  // ── "çawa ku" ──
+  'çawa ku',
+  'cawa ku',
+  'sawa ku',
+  'sava ku',
+  'şawa ku',
+
+  // ── "çiqas" (ne kadar) ──
   'çiqas',
   'ciqas',
-  'sıkaş',           // YANLIŞ ALGILAMA
+  'siqas',       // yanlış
+  'şiqas',       // yanlış
+  'tiqas',       // yanlış
+  'cikas',       // yanlış
+  'sikas',       // yanlış
+  'şikas',       // yanlış
+  'cıkas',       // yanlış
+  'sıkaş',       // yanlış
+  'çikaş',       // yanlış
+  'çiqaş',       // yanlış
+
+  // ── "çend" (kaç/ne kadar) ──
   'çend',
   'cend',
-  'send',            // YANLIŞ ALGILAMA
+  'send',        // yanlış
+  'şend',        // yanlış
+  'tend',        // yanlış
+  'zend',        // yanlış
+  'bend',        // yanlış
+  'gend',        // yanlış
+  'hend',        // yanlış
+  'jend',        // yanlış
 
-  // ── Zaman zarfları ──
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 20: ZAMAN ZARFLARI
+  // ════════════════════════════════════════════════════════
+
+  // ── "niha/naha" (şimdi) ──
   'niha',
   'naha',
-  'naha',
   'nûha',
+  'nuha',
+  'nihe',
+  'nahe',
+  'nuhe',
+  'nıha',        // yanlış
+  'mıha',        // yanlış
+  'liha',        // yanlış
+  'biha',        // yanlış
+  'diha',        // yanlış
+
+  // ── "êdî" (artık/şimdi) ──
   'êdî',
   'edi',
+  'idi',
+  'yedi',        // yanlış (Türkçe'de "7" anlamında)
+  'ede',
+  'idi',
+  'adî',
+  'adi',
+
+  // ── "hema" (hemen/neredeyse) ──
   'hema',
   'heman',
+  'bema',        // yanlış
+  'gema',        // yanlış
+  'rema',        // yanlış
+  'sema',        // yanlış
+  'tema',        // yanlış
+
+  // ── "zû" (erken/çabuk) ──
   'zû',
   'zu',
+  'su',          // yanlış
+  'yu',          // yanlış
+  'ju',          // yanlış
+  'vu',          // yanlış
+  'bu',          // yanlış
+  'du',          // yanlış
+
+  // ── "dereng" (geç) ──
   'dereng',
+  'dıreng',
+  'direng',
+  'deren',
+  'dreng',
+  'derink',
+
+  // ── "piçek/piçekî" (biraz) ──
   'piçek',
   'piçekî',
-  'pişek',           // YANLIŞ ALGILAMA: "piçek" → "pişek"
+  'picek',
+  'pişek',       // yanlış
+  'pişekî',      // yanlış
+  'bisek',       // yanlış
+  'bizek',       // yanlış
+  'misek',       // yanlış
+  'visek',       // yanlış
+  'disek',       // yanlış
+  'ficek',       // yanlış
+  'gicek',       // yanlış
+
+  // ── "carekê" (bir kez) ──
   'carekê',
+  'carek',
   'cara',
+  'careke',
+  'careki',
+  'jarekê',      // yanlış
+  'zarekê',      // yanlış
+
+  // ── "îcar/îcarê" (bu sefer) ──
   'îcar',
   'icar',
   'îcarê',
+  'icare',
+  'yicar',       // yanlış
+  'hicar',       // yanlış
+
+  // ── "paşê" (sonra) ──
   'paşê',
   'pase',
-  'paşe',            // YANLIŞ ALGILAMA
+  'paşe',
+  'basse',       // yanlış
+  'dase',        // yanlış
+  'fase',        // yanlış
+  'gase',        // yanlış
+  'kase',        // yanlış
+  'mase',        // yanlış
+  'vase',        // yanlış
+  'zase',        // yanlış
+
+  // ── "dûre" (sonra/uzak) ──
   'dûre',
   'dure',
+  'düre',        // yanlış
+  'tûre',        // yanlış
+  'ture',        // yanlış
+  'bure',        // yanlış
+  'gure',        // yanlış
+  'kure',        // yanlış
+
+  // ── "berê" (önce/daha önce) ──
   'berê',
   'bere',
+  'vere',        // yanlış
+  'pere',        // yanlış
+  'dere',        // yanlış
+  'fere',        // yanlış
+  'gere',        // yanlış
+  'here',        // "here" aynı zamanda "git" anlamında!
+  'sere',        // yanlış
+  'zere',        // yanlış
 
-  // ── Onay/ret ──
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 21: ONAY / RET
+  // ════════════════════════════════════════════════════════
+
+  // ── "erê" (evet) ──
   'erê',
   'ere',
+  'ire',         // yanlış
+  'are',         // yanlış
+  'ure',         // yanlış
+  'ırê',         // yanlış
+
+  // ── "belê" (evet) ──
   'belê',
   'bele',
+  'vele',        // yanlış
+  'delê',        // yanlış
+  'belê ku',
+
+  // ── "baş e" (tamam/iyi) ──
   'baş e',
+  'baş',
   'basê',
   'bas',
   'baş',
+  'başe',
+  'baste',       // yanlış
+  'vaste',       // yanlış
+
+  // ── "xweş e" (iyi/güzel) ──
   'xweşe',
+  'xweş',
   'xwes',
-  'hveşe',           // YANLIŞ ALGILAMA: "xweşe" → "hveşe"
-  'şveş',            // YANLIŞ ALGILAMA
+  'hveşe',       // yanlış (x → h)
+  'şveşe',       // yanlış (x → ş)
+  'fveşe',       // yanlış
+  'kveşe',       // yanlış
+  'hveş',        // yanlış
+  'şveş',        // yanlış
+  'fveş',        // yanlış
+  'heşe',        // yanlış (xw → h, tek ses)
+  'şeşe',        // yanlış
+  'feşe',        // yanlış
+
+  // ── "na" (hayır) ──
   'na',
   'nake',
   'nabin',
+  'nabe',
+  'nabe ku',
 
-  // ── Selamlama (DOĞRU + YANLIŞ ALGILAMALAR) ──
-  'merheba',
-  'sayid',
-  'ka',
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 22: SELAMLAŞMALAR (GENİŞLETİLMİŞ)
+  // ════════════════════════════════════════════════════════
+
+  // ── "silaw" (merhaba) ──
   'silaw',
-  'silav',           // YANLIŞ ALGILAMA: "silaw" → "silav"
-  'silaf',           // YANLIŞ ALGILAMA
+  'silav',       // yanlış (w → v, EN YAYGIN)
+  'silaf',       // yanlış (w → f)
+  'silam',       // yanlış (w → m)
+  'silah',       // yanlış (w → h)
+  'silab',       // yanlış (w → b)
+  'silap',       // yanlış (w → p)
+  'silay',       // yanlış (w → y)
+  'sılaw',       // yanlış (i → ı)
+  'sılab',       // yanlış
+  'sılaf',       // yanlış
+  'cilaw',       // yanlış (s → c)
+  'cilav',       // yanlış
+  'zilav',       // yanlış (s → z)
+  'gilaw',       // yanlış (s → g)
+  'gilab',       // yanlış
+  'hilaw',       // yanlış (s → h)
+  'hilav',       // yanlış
+  'yilaw',       // yanlış (s → y)
+  'şilaw',       // yanlış (s → ş)
+  'şilav',       // yanlış
+  'dilaw',       // yanlış
+  'dilav',       // yanlış
+
+  // ── "merheba" (merhaba) ──
   'merheba',
-  'xêr be',
-  'xer be',
-  'her be',          // YANLIŞ ALGILAMA: "xêr be" → "her be"
-  'şer be',          // YANLIŞ ALGILAMA
+  'merhava',     // yanlış (e → a)
+  'merheva',     // yanlış (b → v)
+  'merhela',     // yanlış (b → l)
+  'merbeba',     // yanlış (h → b)
+  'mereheba',    // yanlış (ek ünlü)
+  'merheba',
+  'merhabe',     // yanlış (son a → e)
+  'merhabi',     // yanlış
+  'merbeva',     // yanlış
+
+  // ── "rojbaş" (günaydın/iyi günler) ──
   'rojbaş',
   'robas',
-  'robash',          // YANLIŞ ALGILAMA: "rojbaş" → "robash"
-  'rocbaş',          // YANLIŞ ALGILAMA
+  'robash',      // yanlış (ş → sh)
+  'rocbaş',      // yanlış (j → c)
+  'rozbaş',      // yanlış (j → z)
+  'rocbas',      // yanlış
+  'rocbash',     // yanlış
+  'rozbas',      // yanlış
+  'rozbash',     // yanlış
+  'roşbaş',      // yanlış (j → ş)
+  'roşbas',      // yanlış
+  'roshbas',     // yanlış
+  'rojbas',      // yanlış (ş → s)
+  'roçbaş',      // yanlış (j → ç)
+  'roçbas',      // yanlış
+  'rohbaş',      // yanlış (j → h)
+  'rohbas',      // yanlış
+  'roybas',      // yanlış (j → y)
+
+  // ── "xêr be" (allahaismarladık/esenlikler) ──
+  'xêr be',
+  'xer be',
+  'her be',      // yanlış (x → h)
+  'şer be',      // yanlış (x → ş)
+  'ker be',      // yanlış (x → k)
+  'zer be',      // yanlış (x → z)
+  'fer be',      // yanlış (x → f)
+  'ger be',      // yanlış (x → g)
+  'yer be',      // yanlış (x → y)
+  'çer be',      // yanlış (x → ç)
+  'ser be',      // yanlış (x → s)
+  'der be',      // yanlış (x → d)
+  'ber be',      // yanlış (x → b)
+  'ter be',      // yanlış (x → t)
+  'mer be',      // yanlış (x → m)
+  'ner be',      // yanlış (x → n)
+  'ver be',      // yanlış (x → v)
+
+  // ── "eywallah/eyvallah" (teşekkür/allahaismarladık) ──
+  'eywallah',
+  'eyvallah',    // yanlış (w → v)
+  'eyballah',    // yanlış (w → b)
+  'eyballa',     // yanlış
+  'eyvalla',     // yanlış
+  'eywalla',     // yanlış
+  'eyuallah',    // yanlış
+  'eyualla',     // yanlış
+  'eyballah',    // yanlış
+  'eyvala',      // yanlış (kısaltma)
+  'eyvale',      // yanlış
+
+  // ── "destxweş" (aferin/bravo) ──
+  'destxweş',
+  'desthveş',    // yanlış (xw → hv)
+  'destşveş',    // yanlış (xw → şv)
+  'destfveş',    // yanlış (xw → fv)
+  'destkveş',    // yanlış (xw → kv)
+  'destzveş',    // yanlış (xw → zv)
+  'desthfeş',    // yanlış
+  'desthveş',
+  'destheş',     // yanlış (xw → h, tek ses)
+  'destşeş',     // yanlış
+  'destfeş',     // yanlış
+  'destgeş',     // yanlış
+
+  // ── "çawanî" (nasılsın) ──
+  'çawanî',
+  'cawani',
+  'savani',      // yanlış (ç → s)
+  'şawanî',      // yanlış (ç → ş)
+  'tawani',      // yanlış (ç → t)
+  'zawani',      // yanlış (ç → z)
+  'hawani',      // yanlış (ç → h)
+  'javani',      // yanlış (w → v)
+  'cavani',      // yanlış
+  'savane',      // yanlış
+  'savani',
+
+  // ── "çonî/çoni" (nasılsın, kısa form) ──
+  'çonî',
+  'çoni',
+  'coni',
+  'soni',        // yanlış
+  'şoni',        // yanlış
+  'toni',        // yanlış
+  'joni',        // yanlış
+  'zoni',        // yanlış
+
+  // ── Diğer selamlamalar ──
   'hey',
   'alo',
-  'halo',
-  'eywallah',
-  'eyvallah',        // YANLIŞ ALGILAMA
-  'destxweş',
-  'desthveş',        // YANLIŞ ALGILAMA: "xweş" → "hveş"
-  'destşveş',        // YANLIŞ ALGILAMA
+  'halo',        // yanlış
+  'sayid',       // (çeşitli yazılışlar)
+  'sayıt',       // yanlış
+  'sayt',        // yanlış
+  'sayd',        // yanlış
 
-  // ── Çeşitli fiil kökleri ──
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 23: FİİL KÖKLERİ VE EMRE FİİLLER
+  // ════════════════════════════════════════════════════════
+
+  // ── "bêje" (söyle) ──
   'bêje',
   'beje',
-  'bice',            // YANLIŞ ALGILAMA: "bêje" → "bice"
-  'bide zanîn',
-  'bidezanin',
-  'bide zanin',
+  'bice',        // yanlış (ê → i, j → c)
+  'bise',        // yanlış
+  'bize',        // yanlış
+  'bige',        // yanlış
+  'bile',        // yanlış
+  'bire',        // yanlış
+  'bive',        // yanlış
+  'bide',        // dikkat: "bide" = "ver" anlamında da var!
+  'biye',        // yanlış
+  'bıce',        // yanlış
+  'bıje',        // yanlış
+  'bıze',        // yanlış
+
+  // ── "bide" (ver) ──
+  'bide',
+  'bidê',
+  'vide',        // yanlış (b → v)
+  'dide',        // yanlış (b → d)
+  'pide',        // yanlış (b → p)
+  'gide',        // yanlış (b → g)
+  'hide',        // yanlış (b → h)
+  'tidi',        // yanlış
+  'bidi',        // yanlış
+  'bide',
+
+  // ── "rabe" (kalk/haydi) ──
   'rabe',
+  'rape',        // yanlış (b → p)
+  'rave',        // yanlış (b → v)
+  'rade',        // yanlış (b → d)
+  'race',        // yanlış
+  'rafe',        // yanlış (b → f)
+  'rage',        // yanlış (b → g)
+  'rare',        // yanlış
+  'rame',        // yanlış
+  'rate',        // yanlış
+
+  // ── "here" (git) ──
   'here',
+  'here',
+  'heri',        // yanlış (e → i)
+  'herê',        // uzun form
+  'hare',        // yanlış (e → a)
+  'hire',        // yanlış (e → i, farklı yazım)
+
+  // ── "bê/were" (gel) ──
   'bê',
-  'be',              // YANLIŞ ALGILAMA (tekrar)
+  'be',          // yanlış
+  'bi',          // yanlış
+  'pê',          // yanlış
+  'pe',          // yanlış
+  'vê',          // yanlış
+  've',          // yanlış
   'were',
-  'vere',            // YANLIŞ ALGILAMA: "were" → "vere"
+  'vere',        // yanlış (w → v)
+  'bere',        // yanlış (w → b)
+  'dere',        // yanlış (w → d)
+  'gere',        // yanlış (w → g)
+  'fere',        // yanlış (w → f)
+  'kere',        // yanlış (w → k)
+  'sere',        // yanlış (w → s)
+  'zere',        // yanlış (w → z)
+  'yere',        // yanlış (w → y)
+  'nere',        // yanlış (w → n)
+
+  // ── "werin" (gelin, çoğul) ──
+  'werin',
+  'verin',       // yanlış (w → v)
+  'berin',       // yanlış
+  'derin',       // yanlış
+  'gerin',       // yanlış
+  'ferin',       // yanlış
+  'kerin',       // yanlış
+  'serin',       // yanlış
+  'zerin',       // yanlış
+  'yerin',       // yanlış
+  'nerin',       // yanlış
+
+  // ── "herin" (gidin, çoğul) ──
+  'herin',
+  'erin',        // yanlış (h düşmesi)
+  'gerin',       // yanlış (h → g)
+  'ferin',       // yanlış (h → f)
+  'kerin',       // yanlış (h → k)
+  'serin',       // yanlış (h → s)
+  'zerin',       // yanlış (h → z)
+
+  // ── "rêk bixin" (düzenleyin) ──
+  'rêk bixin',
+  'rek bixin',
+  'rek bikin',   // yanlış
+  'reyk bixin',  // yanlış
+  'rek bıçin',   // yanlış
+  'rek biçin',   // yanlış
+  'rek bışın',   // yanlış
+  'rek bışin',   // yanlış
+
+  // ── "bila" (bırak/olsun) ──
+  'bila',
+  'bıla',        // yanlış
+  'bila',
+  'pila',        // yanlış (b → p)
+  'vila',        // yanlış (b → v)
+  'dila',        // yanlış (b → d)
+  'hila',        // yanlış (b → h)
+  'gila',        // yanlış (b → g)
+  'mila',        // yanlış (b → m)
+
+  // ── "bigire" (tut/al) ──
   'bigire',
-  'bikire',          // YANLIŞ ALGILAMA
+  'bikire',      // yanlış (g → k)
+  'bigira',      // yanlış (e → a)
+  'bigiri',      // yanlış (e → i)
+  'vigire',      // yanlış (b → v)
+  'vikire',      // yanlış
+  'pigire',      // yanlış (b → p)
+  'digire',      // yanlış (b → d)
+
+  // ── "biparêze" (koru) ──
   'biparêze',
   'bipareze',
-  'biparese',        // YANLIŞ ALGILAMA
+  'biparese',    // yanlış (ê → e, z → s)
+  'biparöze',    // yanlış
+  'bipareze',
+  'biparöse',    // yanlış
+  'vipareze',    // yanlış (b → v)
+  'pipareze',    // yanlış (b → p)
+
+  // ── "bixwaze" (istesin) ──
   'bixwaze',
-  'bihvaze',         // YANLIŞ ALGILAMA
+  'bihvaze',     // yanlış (xw → hv)
+  'bişvaze',     // yanlış (xw → şv)
+  'bifvaze',     // yanlış (xw → fv)
+  'bikvaze',     // yanlış (xw → kv)
+  'bihaze',      // yanlış (xw → h)
+  'bişaze',      // yanlış (xw → ş)
+
+  // ── "bixwazim" (isteyeyim) ──
   'bixwazim',
-  'bihvazim',        // YANLIŞ ALGILAMA
+  'bihvazim',
+  'bişvazim',
+  'bifvazim',
+  'bikvazim',
+  'bihazim',
+  'bişazim',
+
+  // ── "bixwazin" (istesinler) ──
   'bixwazin',
-  'bihvazin',        // YANLIŞ ALGILAMA
+  'bihvazin',
+  'bişvazin',
+  'bifvazin',
+  'bikvazin',
+  'bihazin',
+  'bişazin',
+
+  // ── "berde" (bırak) ──
   'berde',
+  'verde',       // yanlış (b → v)
+  'perde',       // yanlış (b → p)
+  'derde',       // yanlış (b → d)
+  'berda',       // yanlış (e → a)
+  'berdi',       // yanlış (e → i)
+
+  // ── "bihêle" (bırak/izin ver) ──
   'bihêle',
   'bihele',
+  'bihale',      // yanlış (ê → a)
+  'bihıle',      // yanlış (ê → ı)
+  'vihele',      // yanlış (b → v)
+  'pihele',      // yanlış (b → p)
+  'gihele',      // yanlış (b → g)
+  'sihele',      // yanlış (b → s)
+  'zihele',      // yanlış (b → z)
+  'nihele',      // yanlış (b → n)
+  'dihele',      // yanlış (b → d)
+
+  // ── "bimîne" (kal) ──
   'bimîne',
   'bimine',
+  'bimina',      // yanlış (e → a)
+  'bimini',      // yanlış (e → i)
+  'vimîne',      // yanlış (b → v)
+  'vimine',      // yanlış
+  'pimîne',      // yanlış (b → p)
+  'pimine',      // yanlış
+  'dimîne',      // yanlış (b → d)
+
+  // ════════════════════════════════════════════════════════
+  // BÖLÜM 24: EK KALIPLAR VE BAĞLAM İFADELERİ
+  // ════════════════════════════════════════════════════════
+
+  // ── "min jê re" (ona benim için) ──
+  'min jê re',
+  'min je re',
+  'min ci re',   // yanlış (j → c)
+  'min zi re',   // yanlış (j → z)
+  'min ye re',   // yanlış (j → y)
+
+  // ── "ji min re" (benim için) ──
+  'ji min re',
+  'ci min re',   // yanlış (j → c)
+  'zi min re',   // yanlış
+  'gi min re',   // yanlış
+
+  // ── "min dixwaze" (o benden istiyor / benim istediğim) ──
+  'min dixwaze',
+  'min dihvaze',
+  'min dişvaze',
+  'min difvaze',
+  'min dihaze',
+
+  // ── "ez dixwazim ku" ──
+  'ez dixwazim ku',
+  'ez dihvazim ku',
+  'ez dişvazim ku',
+  'es dixwazim ku',  // yanlış (ez → es)
+  'es dihvazim ku',
+
+  // ── "ka" (haydi/bakalım) ──
+  'ka',
+  'ga',          // yanlış
+  'ha',          // yanlış
+  'da',          // yanlış
+  'ba',          // yanlış
+  'pa',          // yanlış
+
+  // ── "lê" (ama / ona) ──
+  'lê',
+  'le',          // yanlış
+  'li',          // yanlış
+
+  // ── "jî" (da/de) ──
+  'jî',
+  'ji',
+  'ci',          // yanlış
+
+  // ── "ne" (değil) ──
+  'ne',
+  'ni',          // yanlış (bağlamsal)
+  'na',          // yanlış
+
+  // ── "hem" (hem) ──
+  'hem',
+  'hım',         // yanlış
+  'am',          // yanlış
+
+  // ── "werin" tekrar ──
+  'werin',
+  'verin',
+
+  // ── Türkçe kelimelerin Kürtçe komut yerine algılanması ──
+  'Güler\'e',    // "bi gara" → "Güler'e" (özel isim yanlış algılaması)
+  'sigara',      // "bi gara" → "sigara" (EN YAYGIN)
+  'denge',       // "kengê" → "denge" (Türkçe kelime)
+  'yendi',       // "êdî" → "yendi" yanlış
+  'eğer',        // "eger" ile Türkçe çakışması
+  'bende',       // "berde" → "bende" yanlış
+  'buna',        // "bida" yanlış
+  'bunu',        // yanlış algılama
+  'bana',        // "bide" → "bana" yanlış
+  'sana',        // yanlış algılama
 ]);
 
-/**
- * KÜRTÇE SELAMLAMA KELİMELERİ
- * Doğru telaffuz + Türkçe STT'nin yanlış algıladığı varyantlar
- */
+// ════════════════════════════════════════════════════════
+// KÜRTÇE SELAMLAMA KELİMELERİ (GENİŞLETİLMİŞ)
+// ════════════════════════════════════════════════════════
+
 export const KU_GREETING_WORDS = new Set<string>([
   // Doğru telaffuzlar
   'silaw',
@@ -965,7 +2277,7 @@ export const KU_GREETING_WORDS = new Set<string>([
   'xer be',
   'rojbaş',
   'robas',
-  'eyvallah',
+  'eywallah',
   'destxweş',
   'baş e',
   'xweş e',
@@ -974,107 +2286,312 @@ export const KU_GREETING_WORDS = new Set<string>([
   'çoni',
   'hey',
   'sayid',
-  
-  // Yanlış algılamalar
-  'silav',           // "silaw" → "silav"
-  'silaf',           // "silaw" → "silaf"
-  'her be',          // "xêr be" → "her be"
-  'şer be',          // "xêr be" → "şer be"
-  'robash',          // "rojbaş" → "robash"
-  'rocbaş',          // "rojbaş" → "rocbaş"
-  'eyvallah',        // "eywallah" → "eyvallah"
-  'desthveş',        // "destxweş" → "desthveş"
-  'destşveş',        // "destxweş" → "destşveş"
-  'baş',             // "baş e" kısa hali
-  'bas',             // yanlış algılama
-  'hveş e',          // "xweş e" → "hveş e"
-  'şveş e',          // "xweş e" → "şveş e"
-  'savani',          // "çawanî" → "savani"
-  'soni',            // "çoni" → "soni"
+  'ka',
+
+  // ── "silaw" yanlış algılamaları ──
+  'silav',
+  'silaf',
+  'silam',
+  'silah',
+  'silab',
+  'silap',
+  'silay',
+  'sılaw',
+  'cilaw',
+  'cilav',
+  'zilav',
+  'gilaw',
+  'hilaw',
+  'yilaw',
+  'şilaw',
+  'şilav',
+  'dilaw',
+  'dilav',
+
+  // ── "rojbaş" yanlış algılamaları ──
+  'robash',
+  'rocbaş',
+  'rozbaş',
+  'rocbas',
+  'rocbash',
+  'rozbas',
+  'rozbash',
+  'roşbaş',
+  'roşbas',
+  'roshbas',
+  'rojbas',
+  'roçbaş',
+  'rohbaş',
+  'roybas',
+
+  // ── "xêr be" yanlış algılamaları ──
+  'her be',
+  'şer be',
+  'ker be',
+  'zer be',
+  'fer be',
+  'ger be',
+  'yer be',
+  'ser be',
+  'der be',
+  'ber be',
+  'ter be',
+  'ver be',
+
+  // ── "eywallah" yanlış algılamaları ──
+  'eyvallah',
+  'eyballah',
+  'eyballa',
+  'eyvalla',
+  'eywalla',
+  'eyuallah',
+  'eyualla',
+  'eyvala',
+  'eyvale',
+
+  // ── "destxweş" yanlış algılamaları ──
+  'desthveş',
+  'destşveş',
+  'destfveş',
+  'destkveş',
+  'destzveş',
+  'desthfeş',
+  'destheş',
+  'destşeş',
+  'destfeş',
+  'destgeş',
+
+  // ── Kısa / yaygın formlar ──
+  'baş',
+  'bas',
+  'xweş',
+  'hveş e',
+  'şveş e',
+  'hveş',
+  'şveş',
+
+  // ── "çawanî" yanlış algılamaları ──
+  'savani',
+  'şawanî',
+  'tawani',
+  'zawani',
+  'hawani',
+  'javani',
+  'cavani',
+  'savane',
+  'cawani',
+
+  // ── "çoni/çonî" yanlış algılamaları ──
+  'coni',
+  'soni',
+  'şoni',
+  'toni',
+  'joni',
+  'zoni',
+
+  // ── "merheba" yanlış algılamaları ──
+  'merhava',
+  'merheva',
+  'merhela',
+  'merbeba',
+  'mereheba',
+  'merhabe',
+  'merhabi',
+  'merbeva',
 ]);
 
-/**
- * KÜRTÇE REGEX KOMUT KALIPLARI
- * Doğru telaffuz + Türkçe STT yanlış algılamalarını yakalar
- * 
- * Örnekler:
- * - "Wahap bi gara" → grup: "Wahap"
- * - "Mikail sigara" → grup: "Mikail" (yanlış algılama: "bi gara" → "sigara")
- * - "Li Dîlanê bang bike" → grup: "Dîlanê"
- * - "Dilan bank bike" → grup: "Dilan" (yanlış algılama)
- */
-export const KU_COMMAND_PATTERNS: RegExp[] = [
-  // ── "bi gara" VE YANLIŞ ALGILAMALARI ──
-  // "Li X bi gara"
-  /^li\s+(.+?)\s+bi\s*gara/i,
-  // "X bi gara"
-  /^(.+?)\s+bi\s*gara/i,
-  // "X sigara" (YANLIŞ ALGILAMA: "bi gara" → "sigara")
-  /^(.+?)\s+sigara/i,
-  // "X bi kara" (YANLIŞ ALGILAMA)
-  /^(.+?)\s+bi\s*kara/i,
-  // "X si gara" (YANLIŞ ALGILAMA)
-  /^(.+?)\s+si\s*gara/i,
-  
-  // ── "bang bike" VE YANLIŞ ALGILAMALARI ──
-  // "X bang bike"
-  /^(.+?)\s+bang\s+bike/i,
-  // "Li X bang bike"
-  /^li\s+(.+?)\s+bang\s+bike/i,
-  // "X bank bike" (YANLIŞ ALGILAMA: "bang" → "bank")
-  /^(.+?)\s+bank\s+bike/i,
-  // "X banka bike" (YANLIŞ ALGILAMA)
-  /^(.+?)\s+banka\s+bike/i,
-  // "X bang bayık" (YANLIŞ ALGILAMA: "bike" → "bayık")
-  /^(.+?)\s+bang\s+bayık/i,
-  // "X bank bayık" (YANLIŞ ALGILAMA kombinasyonu)
-  /^(.+?)\s+bank\s+bayık/i,
-  // "X bang pike" (YANLIŞ ALGILAMA: "bike" → "pike")
-  /^(.+?)\s+bang\s+pike/i,
-  // "X bank pike" (YANLIŞ ALGILAMA kombinasyonu)
-  /^(.+?)\s+bank\s+pike/i,
-  
-  // ── "telefon bike" VE YANLIŞ ALGILAMALARI ──
-  // "X telefon bike"
-  /^(.+?)\s+telefon\s+bike/i,
-  // "X telefon bayık" (YANLIŞ ALGILAMA)
-  /^(.+?)\s+telefon\s+bayık/i,
-  // "X telefon pike" (YANLIŞ ALGILAMA)
-  /^(.+?)\s+telefon\s+pike/i,
-  
-  // ── "lê bike" VE YANLIŞ ALGILAMALARI ──
-  // "X lê bike"
-  /^(.+?)\s+lê\s+bike/i,
-  // "X le bike" (YANLIŞ ALGILAMA: "lê" → "le")
-  /^(.+?)\s+le\s+bike/i,
-  // "X le bayık" (YANLIŞ ALGILAMA)
-  /^(.+?)\s+le\s+bayık/i,
-  
-  // ── "pê bike" VE YANLIŞ ALGILAMALARI ──
-  // "X pê bike"
-  /^(.+?)\s+pê\s+bike/i,
-  // "X pe bike" (YANLIŞ ALGILAMA: "pê" → "pe")
-  /^(.+?)\s+pe\s+bike/i,
-  // "X pe bayık" (YANLIŞ ALGILAMA)
-  /^(.+?)\s+pe\s+bayık/i,
-  
-  // ── DİĞER KALIPLAR ──
-  // "ji bo min li X bi gara"
-  /ji\s+bo\s+min\s+li\s+(.+?)\s+bi\s*gara/i,
-  // "ci bo min li X sigara" (YANLIŞ ALGILAMA: "ji" → "ci", "bi gara" → "sigara")
-  /ci\s+bo\s+min\s+li\s+(.+?)\s+sigara/i,
-  
-  // "X re bang bike"
-  /(.+?)\s+re\s+bang\s+bike/i,
-  // "X re bank bike" (YANLIŞ ALGILAMA)
-  /(.+?)\s+re\s+bank\s+bike/i,
-  
-  // "X ko bi gara" / "Xko bi gara"
-  /^(.+?)(?:ko|o|a|ê|î)?\s+bi\s*gara/i,
-  // "X ko sigara" (YANLIŞ ALGILAMA)
-  /^(.+?)(?:ko|o|a|ê|î)?\s+sigara/i,
-];
+// ════════════════════════════════════════════════════════
+// KÜRTÇE REGEX KOMUT KALIPLARI (GENİŞLETİLMİŞ)
+// ════════════════════════════════════════════════════════
 
+export const KU_COMMAND_PATTERNS: RegExp[] = [
+
+  // ══════════════════════════════════════
+  // "bi gara" VE TÜM YANLIŞ ALGILAMALARI
+  // ══════════════════════════════════════
+
+  // Doğru formlar
+  /^(?:li\s+)?(.+?)\s+bi\s*gara/i,
+  /^(.+?)\s+bi\s*gara/i,
+
+  // "sigara" (EN YAYGIN: "bi gara" → "sigara")
+  /^(.+?)\s+sigara/i,
+  /^(?:li\s+)?(.+?)\s+sigara/i,
+
+  // b → p, v, d, f
+  /^(.+?)\s+pi\s*gara/i,
+  /^(.+?)\s+vi\s*gara/i,
+  /^(.+?)\s+di\s*gara/i,
+  /^(.+?)\s+fi\s*gara/i,
+
+  // g → k, c, h, ğ, ç
+  /^(.+?)\s+bi\s*kara/i,
+  /^(.+?)\s+bi\s*cara/i,
+  /^(.+?)\s+bi\s*hara/i,
+  /^(.+?)\s+bi\s*ğara/i,
+  /^(.+?)\s+bi\s*çara/i,
+
+  // "bi" → "si", "ci", "zi", "gi"
+  /^(.+?)\s+si\s*gara/i,
+  /^(.+?)\s+ci\s*gara/i,
+  /^(.+?)\s+zi\s*gara/i,
+  /^(.+?)\s+gi\s*gara/i,
+
+  // "gara" → "ağra", "azra", "agra"
+  /^(.+?)\s+bi\s*ağra/i,
+  /^(.+?)\s+bi\s*azra/i,
+  /^(.+?)\s+bi\s*agra/i,
+  /^(.+?)\s+bi\s*gazra/i,
+  /^(.+?)\s+bi\s*gavra/i,
+  /^(.+?)\s+bi\s*gaza/i,
+
+  // Tek kelime "gara" varyantları sonda
+  /^(.+?)\s+(?:kara|cara|bara|para|tara|sara|zara|vara|dara)$/i,
+
+  // ══════════════════════════════════════
+  // "bang bike" VE TÜM YANLIŞ ALGILAMALARI
+  // ══════════════════════════════════════
+
+  // Doğru
+  /^(?:li\s+)?(.+?)\s+bang\s+bike/i,
+  /^(.+?)\s+bang\s+bike/i,
+
+  // "bang" → "bank", "ban", "bam", "pan", "pang", "beng", "bong", "dang", vb.
+  /^(.+?)\s+bank\s+bike/i,
+  /^(.+?)\s+banka\s+bike/i,
+  /^(.+?)\s+ban\s+bike/i,
+  /^(.+?)\s+pang\s+bike/i,
+  /^(.+?)\s+pan\s+bike/i,
+  /^(.+?)\s+beng\s+bike/i,
+  /^(.+?)\s+bong\s+bike/i,
+  /^(.+?)\s+dang\s+bike/i,
+  /^(.+?)\s+gang\s+bike/i,
+  /^(.+?)\s+hang\s+bike/i,
+  /^(.+?)\s+rang\s+bike/i,
+  /^(.+?)\s+sang\s+bike/i,
+  /^(.+?)\s+vang\s+bike/i,
+  /^(.+?)\s+zang\s+bike/i,
+  /^(.+?)\s+fang\s+bike/i,
+
+  // "bike" → "bayık", "pike", "bayk", "bıke", "bice", "vike", "dike"
+  /^(.+?)\s+bang\s+(?:bayık|pike|bayk|bıke|bice|vike|dike|fike|sike|tike|zike)/i,
+  /^(.+?)\s+bank\s+(?:bayık|pike|bayk|bıke|bice|vike|dike|fike)/i,
+  /^(.+?)\s+ban\s+(?:bayık|pike|bayk|bice|vike)/i,
+  /^(.+?)\s+beng\s+(?:bayık|pike|bayk|bice)/i,
+  /^(.+?)\s+pang\s+(?:bayık|pike|bayk|bice)/i,
+
+  // ══════════════════════════════════════
+  // "telefon bike" VE YANLIŞ ALGILAMALARI
+  // ══════════════════════════════════════
+
+  /^(.+?)\s+telefon\s+bike/i,
+  /^(.+?)\s+telefon\s+(?:bayık|pike|bayk|bıke|bice|vike|dike|fike|sike|tike|zike)/i,
+  /^(.+?)\s+(?:talefon|tilefon|telfon)\s+bike/i,
+  /^(.+?)\s+(?:talefon|tilefon|telfon)\s+(?:bayık|pike|bayk|bice)/i,
+
+  // ══════════════════════════════════════
+  // "lê bike" / "le bike" VE YANLIŞ ALGILAMALARI
+  // ══════════════════════════════════════
+
+  /^(.+?)\s+lê\s+bike/i,
+  /^(.+?)\s+le\s+bike/i,
+  /^(.+?)\s+li\s+bike/i,
+  /^(.+?)\s+la\s+bike/i,
+  /^(.+?)\s+lê\s+(?:bayık|pike|bayk|bıke|bice|vike)/i,
+  /^(.+?)\s+le\s+(?:bayık|pike|bayk|bıke|bice|vike)/i,
+  /^(.+?)\s+li\s+(?:bayık|pike|bayk|bice|vike)/i,
+
+  // ══════════════════════════════════════
+  // "pê bike" / "pe bike" VE YANLIŞ ALGILAMALARI
+  // ══════════════════════════════════════
+
+  /^(.+?)\s+pê\s+bike/i,
+  /^(.+?)\s+pe\s+bike/i,
+  /^(.+?)\s+be\s+bike/i,
+  /^(.+?)\s+pê\s+(?:bayık|pike|bayk|bıke|bice|vike)/i,
+  /^(.+?)\s+pe\s+(?:bayık|pike|bayk|bıke|bice|vike)/i,
+  /^(.+?)\s+be\s+(?:bayık|pike|bayk|bice|vike)/i,
+
+  // ══════════════════════════════════════
+  // "bang lê/pê bike" KOMBİNASYONLARI
+  // ══════════════════════════════════════
+
+  /^(.+?)\s+bang\s+(?:lê|le|li|pê|pe|be)\s+bike/i,
+  /^(.+?)\s+bang\s+(?:lê|le|li|pê|pe|be)\s+(?:bayık|pike|bayk|bice)/i,
+  /^(.+?)\s+bank\s+(?:lê|le|li|pê|pe|be)\s+bike/i,
+  /^(.+?)\s+bank\s+(?:lê|le|li|pê|pe|be)\s+(?:bayık|pike|bayk|bice)/i,
+
+  // ══════════════════════════════════════
+  // "xeber bide" VE YANLIŞ ALGILAMALARI
+  // ══════════════════════════════════════
+
+  /^(.+?)\s+xeber\s+bide/i,
+  /^(.+?)\s+(?:heber|keber|şeber|seber|zeber|feber|geber|çeber|ceber)\s+bide/i,
+  /^(.+?)\s+xeber\s+(?:vide|dide|pide|tide)/i,
+  /^(.+?)\s+(?:heber|keber|şeber|seber)\s+(?:vide|dide|pide)/i,
+
+  // xeber lê bide
+  /^(.+?)\s+xeber\s+(?:lê|le|li)\s+bide/i,
+  /^(.+?)\s+(?:heber|keber|şeber|seber)\s+(?:lê|le|li)\s+bide/i,
+
+  // ══════════════════════════════════════
+  // "biaxive" VE YANLIŞ ALGILAMALARI
+  // ══════════════════════════════════════
+
+  /^(?:pê|pe|be|pi|vi|di)\s+re\s+biaxive\s+(.+)/i,
+  /^(?:pê|pe|be|pi|vi|di)\s+re\s+bi(?:a|ah|aş|as|az|af|ak)(?:x|h|ş|s|z|f|k)ive\s+(.+)/i,
+
+  // ══════════════════════════════════════
+  // "bide zanîn" VE YANLIŞ ALGILAMALARI
+  // ══════════════════════════════════════
+
+  /^(.+?)\s+bide\s+zanîn/i,
+  /^(.+?)\s+bide\s+zanin/i,
+  /^(.+?)\s+bide\s+(?:sanin|janin|hanin|yanin|zanın)/i,
+  /^(.+?)\s+vide\s+(?:zanîn|zanin|sanin|janin)/i,
+
+  // ══════════════════════════════════════
+  // "têkilî bike" VE YANLIŞ ALGILAMALARI
+  // ══════════════════════════════════════
+
+  /^(.+?)\s+têkilî\s+bike/i,
+  /^(.+?)\s+tekili\s+bike/i,
+  /^(.+?)\s+(?:takilî|tikilî|takili|tikili|dekili|tekoli)\s+bike/i,
+  /^(.+?)\s+têkilî\s+(?:bayık|pike|bayk|bice|vike)/i,
+  /^(.+?)\s+tekili\s+(?:bayık|pike|bayk|bice|vike)/i,
+
+  // ══════════════════════════════════════
+  // DOLAYILI KOMUTLAR (ji bo min / ez dixwazim)
+  // ══════════════════════════════════════
+
+  // "ji bo min li X bi gara"
+  /(?:ji|ci|zi|gi)\s+bo\s+min\s+li\s+(.+?)\s+bi\s*gara/i,
+  /(?:ji|ci|zi|gi)\s+bo\s+min\s+li\s+(.+?)\s+sigara/i,
+  /(?:ji|ci|zi|gi)\s+bo\s+min\s+li\s+(.+?)\s+bi\s*kara/i,
+
+  // "ez dixwazim / dihvazim ku X bi gara"
+  /ez\s+di(?:x|hv|şv|fv|h|ş)waz(?:im)?\s+ku\s+(.+?)\s+bi\s*gara/i,
+  /ez\s+di(?:x|hv|şv|fv|h|ş)waz(?:im)?\s+ku\s+(.+?)\s+(?:sigara|bang\s+bike|bank\s+bike)/i,
+
+  // ══════════════════════════════════════
+  // İSİM SONEKI KALIPLARI
+  // Kürtçe isimler ezafe/vakayla gelir: Ahmedê, Dîlanê, Wahabo, vb.
+  // ══════════════════════════════════════
+
+  // "-ê/-î/-a/-an/-o" son eki + komut
+  /^(.+?)(?:ê|î|a|an|o|e)\s+bi\s*gara/i,
+  /^(.+?)(?:ê|î|a|an|o|e)\s+sigara/i,
+  /^(.+?)(?:ê|î|a|an|o|e)\s+bang\s+bike/i,
+  /^(.+?)(?:ê|î|a|an|o|e)\s+bank\s+bike/i,
+  /^(.+?)(?:ê|î|a|an|o|e)\s+telefon\s+bike/i,
+
+  // "re" bağlacı ile: "X re bang bike"
+  /(.+?)\s+re\s+bang\s+bike/i,
+  /(.+?)\s+re\s+bank\s+bike/i,
+  /(.+?)\s+re\s+bi\s*gara/i,
+  /(.+?)\s+re\s+sigara/i,
+  /(.+?)\s+re\s+telefon\s+bike/i,
+];
 // ────────────────────────────────────────────────────────────────
 // ARAPÇA SABITLERI
 // ────────────────────────────────────────────────────────────────
@@ -1347,114 +2864,15 @@ export const AR_COMMAND_PATTERNS: RegExp[] = [
 ];
 
 // ────────────────────────────────────────────────────────────────
-// DİL ALGILAMA İŞARETLEYİCİLERİ
-// ────────────────────────────────────────────────────────────────
-
-/**
- * NOT: React Voice zaten dil bilgisi sağlıyorsa bu işaretleyiciler
- * gereksiz olabilir. Ancak fallback veya güvenlik kontrolü için tutulabilir.
- */
-
-export const TR_LANGUAGE_MARKERS = new Set<string>([
-  'ara',
-  'arar',
-  'ararmısın',
-  'ararmisin',
-  'lütfen',
-  'lutfen',
-  'istiyorum',
-  'senden',
-  'benden',
-  'zahmet',
-  'çağır',
-  'telefon et',
-  'telefon',
-  'mısın',
-  'misin',
-  'tamam',
-  'acaba',
-  'bana',
-  'beni',
-  'şunu',
-  'bunu',
-  'onu',
-]);
-
-export const KU_LANGUAGE_MARKERS = new Set<string>([
-  // Doğru telaffuzlar
-  'bi gara',
-  'bigara',
-  'bang bike',
-  'bang',
-  'bike',
-  'ji kerema xwe',
-  'kerem ke',
-  'dixwazim',
-  'ji',
-  'bo',
-  'li',
-  'bi',
-  'û',
-  'gara',
-  'lê',
-  'pê',
-  'erê',
-  'silaw',
-  'merheba',
-  'belê',
-  'niha',
-  'hema',
-  
-  // Yanlış algılamalar (dil tespiti için)
-  'sigara',         // "bi gara" → "sigara"
-  'bank bike',      // "bang bike" → "bank bike"
-  'bayık',          // "bike" → "bayık"
-  'ci kerema',      // "ji kerema" → "ci kerema"
-  'dihvazim',       // "dixwazim" → "dihvazim"
-  'ci',             // "ji" → "ci"
-  'le',             // "lê" → "le"
-  'pe',             // "pê" → "pe"
-  'silav',          // "silaw" → "silav"
-  'robash',         // "rojbaş" → "robash"
-  'bugaral',
-  'bugün ara',
-  "bugün al"
-]);
-
-export const AR_LANGUAGE_MARKERS = new Set<string>([
-  'اتصل',
-  'نادي',
-  'ابحث',
-  'من فضلك',
-  'لو سمحت',
-  'أريد',
-  'بدي',
-  'عايز',
-  'ب',
-  'في',
-  'من',
-  'إلى',
-  'على',
-  'الهاتف',
-  'هاتف',
-  'مرحبا',
-  'أهلا',
-]);
-
-// ────────────────────────────────────────────────────────────────
 // DİL-SPESIFIK SABITLERE KOLAY ERİŞİM
 // ────────────────────────────────────────────────────────────────
 
-/**
- * Dil bazında sabitleri toplu olarak almak için yardımcı fonksiyon
- */
 export interface LanguageConstants {
   suffixes: Array<[RegExp, string]>;
   stopWords: Set<string>;
   greetingWords: Set<string>;
   commandPatterns: RegExp[];
-  languageMarkers: Set<string>;
-  misheardCorrections?: Record<string, string>; // Sadece Kürtçe için
+  misheardCorrections?: Record<string, string>;
 }
 
 export function getLanguageConstants(lang: SupportedLanguage): LanguageConstants {
@@ -1465,7 +2883,6 @@ export function getLanguageConstants(lang: SupportedLanguage): LanguageConstants
         stopWords: TR_STOP_WORDS,
         greetingWords: TR_GREETING_WORDS,
         commandPatterns: TR_COMMAND_PATTERNS,
-        languageMarkers: TR_LANGUAGE_MARKERS,
       };
     case 'ku':
       return {
@@ -1473,8 +2890,7 @@ export function getLanguageConstants(lang: SupportedLanguage): LanguageConstants
         stopWords: KU_STOP_WORDS,
         greetingWords: KU_GREETING_WORDS,
         commandPatterns: KU_COMMAND_PATTERNS,
-        languageMarkers: KU_LANGUAGE_MARKERS,
-        misheardCorrections: KU_MISHEARD_CORRECTIONS, // 🔥 KÜRTÇE İÇİN ÖZEL
+        misheardCorrections: KU_MISHEARD_CORRECTIONS,
       };
     case 'ar':
       return {
@@ -1482,16 +2898,13 @@ export function getLanguageConstants(lang: SupportedLanguage): LanguageConstants
         stopWords: AR_STOP_WORDS,
         greetingWords: AR_GREETING_WORDS,
         commandPatterns: AR_COMMAND_PATTERNS,
-        languageMarkers: AR_LANGUAGE_MARKERS,
       };
     default:
-      // Fallback to Turkish
       return {
         suffixes: TR_SUFFIXES,
         stopWords: TR_STOP_WORDS,
         greetingWords: TR_GREETING_WORDS,
         commandPatterns: TR_COMMAND_PATTERNS,
-        languageMarkers: TR_LANGUAGE_MARKERS,
       };
   }
 }

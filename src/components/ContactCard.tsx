@@ -85,7 +85,7 @@ export default React.memo(function ContactCard({ contact }: ContactCardProps) {
       ]}
     >
       {/* Favori butonu - sağ üst */}
-      <View style={styles.favoriteWrapper}>
+      <View style={[styles.favoriteWrapper, { top: verticalScale(10), right: scale(10) }]}>
         <FavoriteButton
           isFavorite={isFavorite}
           onToggle={handleToggleFavorite}
@@ -150,8 +150,6 @@ const styles = StyleSheet.create({
   },
   favoriteWrapper: {
     position: "absolute",
-    top: 10,
-    right: 10,
     zIndex: 10,
   },
   avatar: {},

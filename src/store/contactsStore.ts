@@ -30,7 +30,6 @@ export const useContactsStore = create<ContactsState>()(
           name,
           phone,
           avatar: "",
-          isFavorite: false,
         })),
       }),
     }

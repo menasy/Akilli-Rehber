@@ -6,7 +6,7 @@
     "settings": "Ayarlar"
   },
   "home": {
-    "title": "Akılı Rehber",
+    "title": "Akıllı Rehber",
     "call": "ARA"
   },
   "favorites": {
@@ -18,10 +18,6 @@
     "start": "Konuşmaya Başla",
     "listening": "Dinleniyor...",
     "stop": "Kaydı bitirmek için tekrar dokunun",
-    "tapToStart": "Kaydı başlatmak için mikrofona bir kez dokunun",
-    "tapToStop": "Kayıt tamamlanınca aynı mikrofona tekrar dokunun",
-    "pleaseWait": "Bu adım tamamlanana kadar kısa bir süre bekleyin",
-    "processing": "İşleniyor...",
     "retry": "Tekrar Konuş",
     "notFound": "Kişi bulunamadı, tekrar deneyin",
     "errorMessage": "Bir hata oluştu",
@@ -30,10 +26,7 @@
     "processingFailed": "İşlem sırasında hata oluştu",
     "speechNotAvailable": "Sesli tanıma bu cihazda kullanılamıyor",
     "speechServiceMissing": "Cihazda kullanılabilir bir konuşma tanıma servisi bulunamadı",
-    "pressToTalk": "Aramak istediğiniz kişinin adını söyleyin",
-    "examplePrompt": "Örnek: \"Mehmet'i ara\" ya da sadece \"Mehmet\" deyin.",
-    "processingHint": "Söylediğiniz isim aranıyor.",
-    "candidates": "Birden fazla kişi bulundu"
+    "examplePrompt": "Örnek: \"Mehmet'i ara\" ya da sadece \"Mehmet\" deyin."
   },
   "settings": {
     "title": "Ayarlar",

@@ -37,14 +37,17 @@ export default function BottomTabBar({ state, descriptors, navigation }: TabBarP
             ...Platform.select({
               ios: {
                 shadowColor: "#000",
-                shadowOffset: { width: 5, height: 5 },
+                shadowOffset: { width: scale(5), height: verticalScale(5) },
                 shadowOpacity: 0.15,
-                shadowRadius: 15,
+                shadowRadius: scale(15),
               },
               android: {
                 elevation: 8,
               },
             }),
+          },
+          {
+            gap: scale(6),
           },
         ]}
       >
@@ -90,6 +93,5 @@ export default function BottomTabBar({ state, descriptors, navigation }: TabBarP
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    gap: 6,
   },
 })

@@ -17,7 +17,7 @@ interface ThemeSwitchProps {
 }
 
 export default function ThemeSwitch({ isDark, onToggle }: ThemeSwitchProps) {
-  const { scale: s } = useResponsive()
+  const { scale: s, verticalScale: vs } = useResponsive()
   const anim = useRef(new Animated.Value(isDark ? 1 : 0)).current
 
   useEffect(() => {
@@ -83,6 +83,8 @@ export default function ThemeSwitch({ isDark, onToggle }: ThemeSwitchProps) {
             height: H,
             borderRadius: H / 2,
             backgroundColor: trackBg,
+            shadowOffset: { width: 0, height: vs(2) },
+            shadowRadius: s(4),
           },
         ]}
       >
@@ -192,6 +194,8 @@ export default function ThemeSwitch({ isDark, onToggle }: ThemeSwitchProps) {
               borderRadius: CIRCLE / 2,
               backgroundColor: circleBg,
               transform: [{ translateX: circleX }],
+              shadowOffset: { width: 0, height: vs(2) },
+              shadowRadius: s(4),
             },
           ]}
         >
@@ -245,9 +249,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     elevation: 4,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
-    shadowRadius: 4,
   },
   star: {
     position: "absolute",
@@ -261,9 +263,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     elevation: 6,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
-    shadowRadius: 4,
     overflow: "hidden",
   },
   spot: {

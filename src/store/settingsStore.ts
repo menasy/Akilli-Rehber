@@ -15,7 +15,6 @@ type SettingsState = {
   contactSize: ContactSize
   defaultScreen: DefaultScreen
   contactsBootstrapped: boolean
-  setTheme: (theme: ThemeName) => void
   toggleTheme: () => void
   setLanguage: (language: Language) => void
   setContactSize: (size: ContactSize) => void
@@ -66,7 +65,6 @@ export const useSettingsStore = create<SettingsState>()(
       contactSize: "large",
       defaultScreen: "index",
       contactsBootstrapped: false,
-      setTheme: (theme) => set({ theme }),
       toggleTheme: () =>
         set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
       setLanguage: (language) => {
