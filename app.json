@@ -7,39 +7,32 @@
     "icon": "./assets/android-icon-foreground.png",
     "scheme": "akillirehber",
     "userInterfaceStyle": "light",
-
     "runtimeVersion": {
       "policy": "appVersion"
     },
-
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
     },
-
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.akillirehber.app",
-
       "infoPlist": {
         "NSContactsUsageDescription": "Rehberinizdeki kişileri görüntülemek ve arama yapabilmek için erişim gereklidir.",
         "NSMicrophoneUsageDescription": "Kişileri sesli komutla arayabilmeniz için mikrofon erişimi gereklidir.",
         "NSSpeechRecognitionUsageDescription": "Sesli komutları algılayarak rehberde kişi aramak için kullanılır."
       }
     },
-
     "android": {
       "package": "com.akillirehber.app",
       "predictiveBackGestureEnabled": false,
-
       "permissions": [
         "android.permission.READ_CONTACTS",
         "android.permission.WRITE_CONTACTS",
         "android.permission.CALL_PHONE",
         "android.permission.RECORD_AUDIO"
       ],
-
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
@@ -47,11 +40,9 @@
         "backgroundColor": "#FFFFFF"
       }
     },
-
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "plugins": [
       [
         "expo-contacts",
@@ -61,6 +52,11 @@
       ],
       "expo-font",
       "expo-speech-recognition"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "9007d10c-e469-4fe0-b728-97bb3d05e02d"
+      }
+    }
   }
 }
