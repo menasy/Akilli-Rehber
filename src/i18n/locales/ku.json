@@ -45,5 +45,11 @@
   },
   "search": {
     "placeholder": "Kesekî bigere..."
+  },
+  "edit": {
+    "title": "Kesê Biguherîne",
+    "name": "Nav",
+    "changePhoto": "Wêneyê Biguherîne",
+    "save": "Tomar Bike"
   }
 }

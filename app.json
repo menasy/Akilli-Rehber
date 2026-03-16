@@ -51,7 +51,13 @@
         }
       ],
       "expo-font",
-      "expo-speech-recognition"
+      "expo-speech-recognition",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Kişilere fotoğraf atamak için galeri erişimi gereklidir."
+        }
+      ]
     ],
     "extra": {
       "eas": {

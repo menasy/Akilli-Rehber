@@ -3,6 +3,7 @@ import { FlatList } from "react-native"
 import ContactCard from "./ContactCard"
 import { Contact } from "../types"
 import { useResponsive } from "../theme/responsive"
+import { useSettingsStore } from "../store/settingsStore"
 
 interface ContactGridProps {
   contacts: Contact[]
@@ -10,6 +11,7 @@ interface ContactGridProps {
 
 export default function ContactGrid({ contacts }: ContactGridProps) {
   const { verticalScale } = useResponsive()
+  const contactSize = useSettingsStore((state) => state.contactSize)
 
   const renderItem = useCallback(
     ({ item }: { item: Contact }) => <ContactCard contact={item} />,
@@ -20,6 +22,7 @@ export default function ContactGrid({ contacts }: ContactGridProps) {
 
   return (
     <FlatList
+      key={contactSize}
       data={contacts}
       keyExtractor={keyExtractor}
       renderItem={renderItem}

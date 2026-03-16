@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react"
 import { useContactsStore } from "../store/contactsStore"
+import { useMergedContacts } from "./useMergedContacts"
 
 export function useContacts() {
-  const contacts = useContactsStore((state) => state.contacts)
   const loadContacts = useContactsStore((state) => state.loadContacts)
   const loaded = useRef(false)
 
@@ -12,5 +12,5 @@ export function useContacts() {
     void loadContacts()
   }, [loadContacts])
 
-  return contacts
+  return useMergedContacts()
 }

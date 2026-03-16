@@ -45,5 +45,11 @@
   },
   "search": {
     "placeholder": "Kişi ara..."
+  },
+  "edit": {
+    "title": "Kişiyi Düzenle",
+    "name": "İsim",
+    "changePhoto": "Fotoğrafı Değiştir",
+    "save": "Kaydet"
   }
 }

@@ -1,11 +1,11 @@
 import { useMemo } from "react"
 import { useFavoritesStore } from "../store/favoritesStore"
-import { useContactsStore } from "../store/contactsStore"
+import { useMergedContacts } from "./useMergedContacts"
 
 export function useFavorites() {
   const favoriteIds = useFavoritesStore((state) => state.favoriteIds)
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite)
-  const contacts = useContactsStore((state) => state.contacts)
+  const contacts = useMergedContacts()
 
   const favorites = useMemo(() => {
     const idSet = new Set(favoriteIds)

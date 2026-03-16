@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from "react"
 import { View, Text, Image, Pressable, StyleSheet } from "react-native"
+import { router } from "expo-router"
 import { callNumber } from "../services/callService"
 import { Contact } from "../types"
 import { useTheme } from "../hooks/useTheme"
@@ -70,6 +71,9 @@ export default React.memo(function ContactCard({ contact }: ContactCardProps) {
 
   const handleToggleFavorite = useCallback(() => toggleFavorite(contact.id), [toggleFavorite, contact.id])
   const handleCall = useCallback(() => callNumber(contact.phone), [contact.phone])
+  const handleEditContact = useCallback(() => {
+    router.push({ pathname: "/edit-contact", params: { id: contact.id } })
+  }, [contact.id])
 
   const imageSource = useMemo(
     () => (contact.avatar && contact.avatar.length > 0 ? { uri: contact.avatar } : DEFAULT_ICON),
@@ -144,13 +148,15 @@ export default React.memo(function ContactCard({ contact }: ContactCardProps) {
         />
       </View>
 
-      <Image
-        source={imageSource}
-        defaultSource={DEFAULT_ICON}
-        fadeDuration={0}
-        resizeMode="cover"
-        style={avatarStyle}
-      />
+      <Pressable onPress={handleEditContact}>
+        <Image
+          source={imageSource}
+          defaultSource={DEFAULT_ICON}
+          fadeDuration={0}
+          resizeMode="cover"
+          style={avatarStyle}
+        />
+      </Pressable>
 
       <Text style={nameStyle} numberOfLines={2}>
         {contact.name}
