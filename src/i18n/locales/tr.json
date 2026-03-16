@@ -41,7 +41,12 @@
     "defaultScreen": "Başlangıç Ekranı",
     "screenHome": "Ana Sayfa",
     "screenFavorites": "Favoriler",
-    "screenVoice": "Sesli"
+    "screenVoice": "Sesli",
+    "about": "Hakkında",
+    "appVersion": "Uygulama Sürümü",
+    "developer": "Geliştirici",
+    "website": "Web Sitesi",
+    "github": "GitHub"
   },
   "search": {
     "placeholder": "Kişi ara..."

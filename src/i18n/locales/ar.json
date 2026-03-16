@@ -41,7 +41,12 @@
 "defaultScreen": "الشاشة الافتراضية",
 "screenHome": "الرئيسية",
 "screenFavorites": "المفضلة",
-"screenVoice": "الصوت"
+"screenVoice": "الصوت",
+"about": "حول التطبيق",
+"appVersion": "إصدار التطبيق",
+"developer": "المطور",
+"website": "الموقع الإلكتروني",
+"github": "GitHub"
 },
 "search": {
 "placeholder": "ابحث عن جهة اتصال..."

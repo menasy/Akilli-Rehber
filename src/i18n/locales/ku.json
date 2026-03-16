@@ -41,7 +41,12 @@
     "defaultScreen": "Rûpela Destpêkê",
     "screenHome": "Sereke",
     "screenFavorites": "Bijarte",
-    "screenVoice": "Dengî"
+    "screenVoice": "Dengî",
+    "about": "Derbarê de",
+    "appVersion": "Guhertoya Sepanê",
+    "developer": "Pêşdebir",
+    "website": "Malpera Webê",
+    "github": "GitHub"
   },
   "search": {
     "placeholder": "Kesekî bigere..."

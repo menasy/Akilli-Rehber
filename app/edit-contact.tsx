@@ -149,22 +149,6 @@ export default function EditContact() {
               style={{ width: avatarSize, height: avatarSize }}
               resizeMode="cover"
             />
-            <View
-              style={[
-                styles.cameraOverlay,
-                {
-                  width: scale(44),
-                  height: scale(44),
-                  borderRadius: scale(22),
-                },
-              ]}
-            >
-              <Ionicons
-                name="camera"
-                size={moderateScale(22)}
-                color="#FFFFFF"
-              />
-            </View>
           </View>
           <Text
             style={[
@@ -266,14 +250,6 @@ const styles = StyleSheet.create({
   avatarSection: {
     alignItems: "center",
     marginTop: 24,
-  },
-  cameraOverlay: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    backgroundColor: "rgba(0,0,0,0.6)",
-    alignItems: "center",
-    justifyContent: "center",
   },
   changePhotoText: {
     fontWeight: "600",
