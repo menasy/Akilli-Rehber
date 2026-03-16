@@ -66,6 +66,60 @@ Akıllı Rehber, bu kullanıcı gruplarının bir kişiyi bulup aramasını **te
 
 ---
 
+## 📱 Ekranlar
+
+### Tüm Uygulama Akışı
+
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/menasy/Project_icons/main/akilli-rehber/akilli-rehber.png"
+    alt="Akıllı Rehber uygulamasının tüm ekranlarını gösteren Figma mockup"
+    width="100%"
+  />
+</p>
+
+### Ana Sayfa ve Favoriler
+
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/menasy/Project_icons/main/akilli-rehber/home-favorites.png"
+    alt="Ana sayfa ve favoriler ekranları"
+    width="720"
+  />
+</p>
+
+### Kişi Güncelleme ve Sesli Arama Sonucu
+
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/menasy/Project_icons/main/akilli-rehber/result-update.png"
+    alt="Kişi güncelleme ve sesli arama sonuç ekranları"
+    width="720"
+  />
+</p>
+
+### Ayarlar: Light ve Dark Tema
+
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/menasy/Project_icons/main/akilli-rehber/settings.png"
+    alt="Ayarlar ekranının light ve dark tema görünümleri"
+    width="720"
+  />
+</p>
+
+### Ses Kaydetme Ekranları
+
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/menasy/Project_icons/main/akilli-rehber/voice.png"
+    alt="Ses kaydetme ekranları"
+    width="720"
+  />
+</p>
+
+---
+
 ## 🏗️ Mimari
 
 ### Genel Yapı
