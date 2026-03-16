@@ -43,6 +43,7 @@ Akıllı Rehber, bu kullanıcı gruplarının bir kişiyi bulup aramasını **te
 ### 👥 Kişi Yönetimi
 - Cihaz rehberinden kişileri okuma ve listeleme
 - Bulanık metin araması (fuzzy search) ile hızlı kişi bulma
+- Kişi adı ve fotoğrafını uygulama içinden güncelleme
 - Üç farklı kart boyutu: küçük, orta, büyük
 - Tek dokunuşla arama başlatma
 
@@ -76,6 +77,7 @@ app/                        # Expo Router — Dosya tabanlı navigasyon
     favorites.tsx           # Favoriler ekranı
     voice.tsx               # Sesli arama ekranı
     settings.tsx            # Ayarlar ekranı
+  edit-contact.tsx          # Kişi adı ve fotoğrafı düzenleme ekranı
 
 src/
   components/               # Yeniden kullanılabilir UI bileşenleri
@@ -91,11 +93,12 @@ src/
 
 ### Durum Yönetimi
 
-Uygulama **Zustand** ile yönetilen dört bağımsız store kullanır:
+Uygulama **Zustand** ile yönetilen beş bağımsız store kullanır:
 
 | Store | Sorumluluk | Kalıcı |
 |-------|-----------|--------|
 | `contactsStore` | Kişi listesi ve yükleme durumu | ✅ |
+| `contactEditsStore` | Kişi adı ve fotoğraf düzenleme verileri | ✅ |
 | `favoritesStore` | Favori kişi ID'leri | ✅ |
 | `settingsStore` | Tema, dil, boyut, varsayılan ekran | ✅ |
 | `voiceStore` | Sesli arama geçici durumu | ❌ |

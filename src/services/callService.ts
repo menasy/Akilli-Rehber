@@ -1,6 +1,19 @@
-import { Linking, Platform } from "react-native"
+import { Linking, Platform, PermissionsAndroid } from "react-native"
+import * as IntentLauncher from "expo-intent-launcher"
 
-export function callNumber(phone: string) {
-  const url = Platform.OS === "android" ? `tel:${phone}` : `telprompt:${phone}`
-  Linking.openURL(url)
+export async function callNumber(phone: string) {
+  if (Platform.OS === "android") {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CALL_PHONE
+    )
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      await IntentLauncher.startActivityAsync("android.intent.action.CALL", {
+        data: `tel:${phone}`,
+      })
+    } else {
+      Linking.openURL(`tel:${phone}`)
+    }
+  } else {
+    Linking.openURL(`telprompt:${phone}`)
+  }
 }
