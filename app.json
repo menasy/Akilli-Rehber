@@ -1,10 +1,10 @@
-{
-  "expo": {
+ {
+   "expo": {
     "name": "Akıllı Rehber",
     "slug": "akilli-rehber",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/android-icon-foreground.png",
+    "icon": "./assets/icon.png",
     "scheme": "akillirehber",
     "userInterfaceStyle": "light",
     "runtimeVersion": {
@@ -26,12 +26,16 @@
     },
     "android": {
       "package": "com.akillirehber.app",
+      "versionCode": 3,
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.READ_CONTACTS",
         "android.permission.WRITE_CONTACTS",
         "android.permission.CALL_PHONE",
         "android.permission.RECORD_AUDIO"
+      ],
+      "blockedPermissions": [
+        "android.permission.CAMERA"
       ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",

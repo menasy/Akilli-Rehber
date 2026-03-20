@@ -152,14 +152,14 @@ export default function Settings() {
             >
               {t("settings.website")}
             </Text>
-            <Pressable onPress={() => handleOpenUrl("https://menasy.me")}>
+            <Pressable onPress={() => handleOpenUrl("https://menasy.me/privacy-policy")}>
               <Text
                 style={[
                   styles.infoLink,
                   { color: colors.primary, fontSize: moderateScale(14) },
                 ]}
               >
-                menasy.me
+                menasy.me/privacy-policy
               </Text>
             </Pressable>
           </View>
