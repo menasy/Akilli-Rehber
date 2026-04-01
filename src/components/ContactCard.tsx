@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from "react"
 import { View, Text, Image, Pressable, StyleSheet } from "react-native"
 import { router } from "expo-router"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { callNumber } from "../services/callService"
 import { Contact } from "../types"
 import { useTheme } from "../hooks/useTheme"
@@ -68,6 +69,8 @@ export default React.memo(function ContactCard({ contact }: ContactCardProps) {
   const avatarSize = Math.min(scale(cfg.avatar), cardWidth * 0.6)
   const buttonWidth = Math.min(scale(247), cardWidth * cfg.buttonWRatio)
   const buttonHeight = verticalScale(cfg.buttonH)
+  const editButtonSize = scale(contactSize === "large" ? 42 : contactSize === "medium" ? 36 : 34)
+  const editIconSize = moderateScale(contactSize === "large" ? 23 : contactSize === "medium" ? 20 : 18)
 
   const handleToggleFavorite = useCallback(() => toggleFavorite(contact.id), [toggleFavorite, contact.id])
   const handleCall = useCallback(() => callNumber(contact.phone), [contact.phone])
@@ -141,6 +144,32 @@ export default React.memo(function ContactCard({ contact }: ContactCardProps) {
 
   return (
     <View style={cardStyle}>
+      <Pressable
+        onPress={handleEditContact}
+        accessibilityRole="button"
+        accessibilityLabel={t("edit.title")}
+        hitSlop={scale(8)}
+        style={({ pressed }) => [
+          styles.editWrapper,
+          {
+            top: verticalScale(10),
+            left: scale(10),
+            width: editButtonSize,
+            height: editButtonSize,
+            borderRadius: editButtonSize / 2,
+            borderWidth: 1,
+            borderColor: colors.border,
+            backgroundColor: pressed ? colors.border : colors.searchBackground,
+          },
+        ]}
+      >
+        <MaterialCommunityIcons
+          name="account-edit-outline"
+          size={editIconSize}
+          color={colors.textSecondary}
+        />
+      </Pressable>
+
       <View style={[styles.favoriteWrapper, { top: verticalScale(10), right: scale(10) }]}>
         <FavoriteButton
           isFavorite={isFavorite}
@@ -148,15 +177,13 @@ export default React.memo(function ContactCard({ contact }: ContactCardProps) {
         />
       </View>
 
-      <Pressable onPress={handleEditContact}>
-        <Image
-          source={imageSource}
-          defaultSource={DEFAULT_ICON}
-          fadeDuration={0}
-          resizeMode="cover"
-          style={avatarStyle}
-        />
-      </Pressable>
+      <Image
+        source={imageSource}
+        defaultSource={DEFAULT_ICON}
+        fadeDuration={0}
+        resizeMode="cover"
+        style={avatarStyle}
+      />
 
       <Text style={nameStyle} numberOfLines={2}>
         {contact.name}
@@ -179,6 +206,12 @@ const styles = StyleSheet.create({
   favoriteWrapper: {
     position: "absolute",
     zIndex: 10,
+  },
+  editWrapper: {
+    position: "absolute",
+    zIndex: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   avatar: {},
   name: {
