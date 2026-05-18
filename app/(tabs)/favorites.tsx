@@ -9,6 +9,7 @@ import { useContacts } from "../../src/hooks/useContacts"
 import { Ionicons } from "@expo/vector-icons"
 import SearchBar from "../../src/components/SearchBar"
 import ContactGrid from "../../src/components/ContactGrid"
+import { useSettingsStore } from "../../src/store/settingsStore"
 
 export default function Favorites() {
   const colors = useTheme()
@@ -19,10 +20,11 @@ export default function Favorites() {
   useContacts()
   const { favorites } = useFavorites()
   const { query, setQuery, results } = useSearch(favorites)
+  const contactNameSearch = useSettingsStore((state) => state.contactNameSearch)
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <SearchBar value={query} onChangeText={setQuery} />
+      {contactNameSearch && <SearchBar value={query} onChangeText={setQuery} />}
       {favorites.length === 0 ? (
         <View style={styles.emptyState}>
           <Ionicons

@@ -5,15 +5,17 @@ import { useSearch } from "../../src/hooks/useSearch"
 import ContactGrid from "../../src/components/ContactGrid"
 import SearchBar from "../../src/components/SearchBar"
 import { useTheme } from "../../src/hooks/useTheme"
+import { useSettingsStore } from "../../src/store/settingsStore"
 
 export default function Home() {
   const contacts = useContacts()
   const colors = useTheme()
   const { query, setQuery, results } = useSearch(contacts)
+  const contactNameSearch = useSettingsStore((state) => state.contactNameSearch)
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <SearchBar value={query} onChangeText={setQuery} />
+      {contactNameSearch && <SearchBar value={query} onChangeText={setQuery} />}
       <ContactGrid contacts={results} />
     </View>
   )

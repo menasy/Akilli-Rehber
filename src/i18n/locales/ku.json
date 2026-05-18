@@ -42,6 +42,10 @@
     "screenHome": "Sereke",
     "screenFavorites": "Bijarte",
     "screenVoice": "Dengî",
+    "contactNameSearch": {
+      "title": "Çarçoveya Lêgerînê",
+      "description": "Gava hûn vê mîhengê bigrin, çarçoveya lêgerînê ya li jor tê veşartin. Gava hûn vekin, ew vedigere."
+    },
     "about": "Derbarê de",
     "appVersion": "Guhertoya Sepanê",
     "developer": "Pêşdebir",

@@ -42,6 +42,10 @@
 "screenHome": "الرئيسية",
 "screenFavorites": "المفضلة",
 "screenVoice": "الصوت",
+"contactNameSearch": {
+"title": "شريط البحث",
+"description": "عند إيقاف هذا الإعداد، سيتم إخفاء شريط البحث العلوي. وعند تشغيله، سيعود شريط البحث."
+},
 "about": "حول التطبيق",
 "appVersion": "إصدار التطبيق",
 "developer": "المطور",

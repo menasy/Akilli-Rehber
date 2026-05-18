@@ -49,6 +49,7 @@ export default function SearchBar({ value, onChangeText }: SearchBarProps) {
         value={value}
         onChangeText={onChangeText}
         autoCorrect={false}
+        autoFocus={false}
         returnKeyType="search"
       />
       {value.length > 0 && (

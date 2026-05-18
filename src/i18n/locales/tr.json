@@ -42,6 +42,10 @@
     "screenHome": "Ana Sayfa",
     "screenFavorites": "Favoriler",
     "screenVoice": "Sesli",
+    "contactNameSearch": {
+      "title": "Arama Çubuğu",
+      "description": "Bu ayarı kapattığınızda üstteki arama çubuğu gizlenir. Açtığınızda ise arama çubuğu geri gelir."
+    },
     "about": "Hakkında",
     "appVersion": "Uygulama Sürümü",
     "developer": "Geliştirici",

@@ -12,9 +12,6 @@ function hideNavigationBar() {
   if (Platform.OS !== "android") return
   try {
     const NavigationBar = require("expo-navigation-bar")
-    NavigationBar.setPositionAsync("absolute")
-    NavigationBar.setBackgroundColorAsync("transparent")
-    NavigationBar.setBehaviorAsync("overlay-swipe")
     NavigationBar.setVisibilityAsync("hidden")
   } catch {}
 }

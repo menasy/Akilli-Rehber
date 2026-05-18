@@ -10,6 +10,7 @@ import SettingsLanguageRow from "../../src/components/SettingsLanguageRow"
 import SettingsContactSizeRow from "../../src/components/SettingsContactSizeRow"
 import SettingsDefaultScreenRow from "../../src/components/SettingsDefaultScreenRow"
 import SettingsContactsSyncRow from "../../src/components/SettingsContactsSyncRow"
+import SettingsContactNameSearchRow from "../../src/components/SettingsContactNameSearchRow"
 
 export default function Settings() {
   const colors = useTheme()
@@ -25,6 +26,8 @@ export default function Settings() {
     setContactSize,
     defaultScreen,
     setDefaultScreen,
+    contactNameSearch,
+    setContactNameSearch,
   } = useSettingsStore()
 
   const handleOpenUrl = (url: string) => {
@@ -78,6 +81,15 @@ export default function Settings() {
         moderateScale={moderateScale}
         defaultScreen={defaultScreen}
         setDefaultScreen={setDefaultScreen}
+      />
+      <SettingsContactNameSearchRow
+        colors={colors}
+        t={t}
+        scale={scale}
+        verticalScale={verticalScale}
+        moderateScale={moderateScale}
+        contactNameSearch={contactNameSearch}
+        setContactNameSearch={setContactNameSearch}
       />
       <View
         style={[
