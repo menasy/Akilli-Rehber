@@ -10,6 +10,8 @@ import { useI18n } from "../i18n"
 import FavoriteButton from "./FavoriteButton"
 import { useFavoritesStore } from "../store/favoritesStore"
 import { useSettingsStore } from "../store/settingsStore"
+import { openWhatsAppContact } from "../services/communicationService"
+import { Alert } from "react-native"
 
 const SIZE_CONFIG = {
   small: {
@@ -63,6 +65,7 @@ export default React.memo(function ContactCard({ contact }: ContactCardProps) {
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite)
   const isFavorite = useFavoritesStore((state) => state.favoriteIds.includes(contact.id))
   const contactSize = useSettingsStore((state) => state.contactSize)
+  const communicationMethod = useSettingsStore((state) => state.communicationMethod)
 
   const cfg = SIZE_CONFIG[contactSize]
   const cardWidth = width - scale(24)
@@ -74,6 +77,12 @@ export default React.memo(function ContactCard({ contact }: ContactCardProps) {
 
   const handleToggleFavorite = useCallback(() => toggleFavorite(contact.id), [toggleFavorite, contact.id])
   const handleCall = useCallback(() => callNumber(contact.phone), [contact.phone])
+  const handleWhatsApp = useCallback(async () => {
+    const result = await openWhatsAppContact(contact.phone)
+    if (!result.success && result.errorKey) {
+      Alert.alert(t("home.title"), t(result.errorKey), [{ text: t("error.ok") }])
+    }
+  }, [contact.phone, t])
   const handleEditContact = useCallback(() => {
     router.push({ pathname: "/edit-contact", params: { id: contact.id } })
   }, [contact.id])
@@ -133,13 +142,24 @@ export default React.memo(function ContactCard({ contact }: ContactCardProps) {
 
   const callButtonStyle = useCallback(
     ({ pressed }: { pressed: boolean }) => [
-      styles.callButton,
+      styles.actionButton,
       {
         ...callButtonBaseStyle,
         backgroundColor: pressed ? colors.primaryPressed : colors.primary,
       },
     ],
     [callButtonBaseStyle, colors.primaryPressed, colors.primary]
+  )
+
+  const whatsappButtonStyle = useCallback(
+    ({ pressed }: { pressed: boolean }) => [
+      styles.actionButton,
+      {
+        ...callButtonBaseStyle,
+        backgroundColor: pressed ? "#1EBE5C" : "#25D366", // WhatsApp Green
+      },
+    ],
+    [callButtonBaseStyle]
   )
 
   return (
@@ -189,11 +209,29 @@ export default React.memo(function ContactCard({ contact }: ContactCardProps) {
         {contact.name}
       </Text>
 
-      <Pressable onPress={handleCall} style={callButtonStyle}>
-        <Text style={callTextStyle}>
-          {t("home.call")}
-        </Text>
-      </Pressable>
+      <View style={{ alignItems: "center", width: "100%" }}>
+        {(communicationMethod === "phone" || communicationMethod === "both") && (
+          <Pressable onPress={handleCall} style={callButtonStyle}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+              <MaterialCommunityIcons name="phone" size={moderateScale(cfg.callFont + 2)} color="#FFFFFF" />
+              <Text style={callTextStyle}>
+                {t("home.call")}
+              </Text>
+            </View>
+          </Pressable>
+        )}
+
+        {(communicationMethod === "whatsapp" || communicationMethod === "both") && (
+          <Pressable onPress={handleWhatsApp} style={whatsappButtonStyle}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+              <MaterialCommunityIcons name="whatsapp" size={moderateScale(cfg.callFont + 2)} color="#FFFFFF" />
+              <Text style={callTextStyle}>
+                {t("contactCard.whatsapp")}
+              </Text>
+            </View>
+          </Pressable>
+        )}
+      </View>
     </View>
   )
 })
@@ -218,7 +256,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
   },
-  callButton: {
+  actionButton: {
     alignItems: "center",
     justifyContent: "center",
   },

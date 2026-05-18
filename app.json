@@ -2,7 +2,7 @@
    "expo": {
     "name": "Akıllı Rehber",
     "slug": "akilli-rehber",
-    "version": "1.0.3",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "akillirehber",
@@ -26,7 +26,7 @@
     },
     "android": {
       "package": "com.akillirehber.app",
-      "versionCode": 3,
+      "versionCode": 11,
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.READ_CONTACTS",

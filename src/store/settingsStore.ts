@@ -2,7 +2,7 @@ import { Appearance } from "react-native"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { ThemeName } from "../theme/colors"
-import { ContactSize } from "../types"
+import { ContactSize, CommunicationMethod } from "../types"
 import { mmkv, mmkvStorage } from "../storage/mmkv"
 import { syncRTL } from "../i18n/rtl"
 
@@ -14,11 +14,13 @@ type SettingsState = {
   language: Language
   contactSize: ContactSize
   defaultScreen: DefaultScreen
+  communicationMethod: CommunicationMethod
   contactNameSearch: boolean
   toggleTheme: () => void
   setLanguage: (language: Language) => void
   setContactSize: (size: ContactSize) => void
   setDefaultScreen: (screen: DefaultScreen) => void
+  setCommunicationMethod: (method: CommunicationMethod) => void
   setContactNameSearch: (enabled: boolean) => void
 }
 
@@ -64,6 +66,7 @@ export const useSettingsStore = create<SettingsState>()(
       language: initialLanguage,
       contactSize: "large",
       defaultScreen: "index",
+      communicationMethod: "phone",
       contactNameSearch: true,
       toggleTheme: () =>
         set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
@@ -73,6 +76,7 @@ export const useSettingsStore = create<SettingsState>()(
       },
       setContactSize: (contactSize) => set({ contactSize }),
       setDefaultScreen: (defaultScreen) => set({ defaultScreen }),
+      setCommunicationMethod: (communicationMethod) => set({ communicationMethod }),
       setContactNameSearch: (contactNameSearch) => set({ contactNameSearch }),
     }),
     {
@@ -83,6 +87,7 @@ export const useSettingsStore = create<SettingsState>()(
         language: state.language,
         contactSize: state.contactSize,
         defaultScreen: state.defaultScreen,
+        communicationMethod: state.communicationMethod,
         contactNameSearch: state.contactNameSearch,
       }),
       onRehydrateStorage: () => (state) => {

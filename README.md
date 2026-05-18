@@ -43,6 +43,7 @@ Akıllı Rehber, bu kullanıcı gruplarının bir kişiyi bulup aramasını **te
 ### 👥 Kişi Yönetimi
 - Cihaz rehberinden kişileri okuma ve listeleme
 - Bulanık metin araması (fuzzy search) ile hızlı kişi bulma
+- Arama çubuğunu isteğe bağlı olarak gizleyebilme (yaşlılar için yanlışlıkla klavye açılmasını önler)
 - Kişi adı ve fotoğrafını uygulama içinden güncelleme
 - Üç farklı kart boyutu: küçük, orta, büyük
 - Tek dokunuşla arama başlatma
@@ -61,6 +62,7 @@ Akıllı Rehber, bu kullanıcı gruplarının bir kişiyi bulup aramasını **te
 ### ⚙️ Ayarlar
 - Dil seçimi
 - Kişi kartı boyutu ayarı
+- Arama çubuğu görünürlüğü ayarı (Açma / Kapatma)
 - Varsayılan başlangıç ekranı seçimi (Ana Sayfa / Favoriler / Sesli Arama)
 - Rehber senkronizasyonu
 

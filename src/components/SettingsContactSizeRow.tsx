@@ -64,6 +64,20 @@ export default function SettingsContactSizeRow({
           {t("settings.contactSize")}
         </Text>
       </View>
+
+      <Text
+        style={[
+          styles.description,
+          {
+            color: colors.textSecondary,
+            fontSize: moderateScale(14),
+            marginTop: verticalScale(8),
+          },
+        ]}
+      >
+        {t("settings.contactSizeDesc")}
+      </Text>
+
       <View
         style={[
           styles.sizeRow,
@@ -119,6 +133,9 @@ const styles = StyleSheet.create({
   },
   rowLabel: {
     fontWeight: "600",
+  },
+  description: {
+    fontWeight: "400",
   },
   sizeRow: {
     flexDirection: "row",

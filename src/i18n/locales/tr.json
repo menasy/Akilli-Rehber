@@ -31,14 +31,19 @@
   "settings": {
     "title": "Ayarlar",
     "theme": "Tema",
+    "themeDesc": "Uygulamanın genel renk temasını aydınlık veya karanlık olarak ayarlayın.",
     "language": "Dil",
+    "languageDesc": "Uygulama dilini Türkçe, Kürtçe veya Arapça olarak değiştirin.",
     "contactSize": "Kişi Boyutu",
+    "contactSizeDesc": "Rehberdeki kişi kartlarının ve yazıların büyüklüğünü ayarlayın.",
     "small": "Küçük",
     "medium": "Orta",
     "large": "Büyük",
     "contacts": "Rehber",
     "fetchContacts": "Rehberi Çek",
+    "fetchContactsDesc": "Telefon rehberinizdeki yeni kişileri veya güncellemeleri uygulamaya aktarın.",
     "defaultScreen": "Başlangıç Ekranı",
+    "defaultScreenDesc": "Uygulama açıldığında ilk olarak hangi sayfanın gösterileceğini seçin.",
     "screenHome": "Ana Sayfa",
     "screenFavorites": "Favoriler",
     "screenVoice": "Sesli",
@@ -46,11 +51,28 @@
       "title": "Arama Çubuğu",
       "description": "Bu ayarı kapattığınızda üstteki arama çubuğu gizlenir. Açtığınızda ise arama çubuğu geri gelir."
     },
+    "communicationMethod": {
+      "title": "Varsayılan İletişim Yöntemi",
+      "description": "Kişi kartlarında hangi iletişim seçeneklerinin gösterileceğini seçin.",
+      "phone": "Normal Arama",
+      "whatsapp": "WhatsApp",
+      "both": "İkisini de Göster"
+    },
     "about": "Hakkında",
     "appVersion": "Uygulama Sürümü",
     "developer": "Geliştirici",
     "website": "Gizlilik Politikası",
     "github": "GitHub"
+  },
+  "contactCard": {
+    "whatsapp": "WHATSAPP"
+  },
+  "error": {
+    "whatsappNotOpened": "WhatsApp açılamadı.",
+    "whatsappNotInstalled": "Lütfen WhatsApp'ın bu cihazda yüklü olduğundan emin olun.",
+    "invalidPhone": "Bu kişi için geçerli bir telefon numarası bulunamadı.",
+    "changeSettings": "İletişim yöntemini Ayarlar'dan değiştirebilirsiniz.",
+    "ok": "Tamam"
   },
   "search": {
     "placeholder": "Kişi ara..."

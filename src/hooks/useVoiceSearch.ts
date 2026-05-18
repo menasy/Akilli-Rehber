@@ -9,6 +9,7 @@ import { findMatches } from "../voice/matchingService"
 import { useContactsStore } from "../store/contactsStore"
 import { useSettingsStore } from "../store/settingsStore"
 import { callNumber } from "../services/callService"
+import { openWhatsAppContact } from "../services/communicationService"
 import type { Contact } from "../types"
 import type { SupportedLanguage } from "../voice/types"
 import { voiceLog } from "../voice/logger"
@@ -46,6 +47,7 @@ export function useVoiceSearch() {
 
   const contacts = useContactsStore((s) => s.contacts)
   const language = useSettingsStore((s) => s.language) as SupportedLanguage
+  const communicationMethod = useSettingsStore((s) => s.communicationMethod)
   const processingRef = useRef(false)
 
   const processTranscript = useCallback(
@@ -94,16 +96,30 @@ export function useVoiceSearch() {
           return
         }
 
-        // Single high-confidence match -> auto-call
+        // Single high-confidence match -> auto-action
         if (matches.length === 1 && matches[0].confidence === "high") {
-          voiceLog("processTranscript:autoCall", {
-            contactId: matches[0].contact.id,
-            contactName: matches[0].contact.name,
-          })
-          callNumber(matches[0].contact.phone)
-          reset()
-          processingRef.current = false
-          return
+          const matchedContact = matches[0].contact
+
+          if (communicationMethod === "phone") {
+            voiceLog("processTranscript:autoCall", {
+              contactId: matchedContact.id,
+              contactName: matchedContact.name,
+            })
+            callNumber(matchedContact.phone)
+            reset()
+            processingRef.current = false
+            return
+          } else if (communicationMethod === "whatsapp") {
+            voiceLog("processTranscript:autoWhatsApp", {
+              contactId: matchedContact.id,
+              contactName: matchedContact.name,
+            })
+            void openWhatsAppContact(matchedContact.phone)
+            reset()
+            processingRef.current = false
+            return
+          }
+          // If "both", fall through to show results
         }
 
         voiceLog("processTranscript:showResults", { count: matches.length })
@@ -117,7 +133,7 @@ export function useVoiceSearch() {
         processingRef.current = false
       }
     },
-    [language, contacts, setProcessing, storeStopListening, setMatches, setError, reset]
+    [language, communicationMethod, contacts, setProcessing, storeStopListening, setMatches, setError, reset]
   )
 
   // expo-speech-recognition event hooks

@@ -9,6 +9,7 @@ import SettingsThemeRow from "../../src/components/SettingsThemeRow"
 import SettingsLanguageRow from "../../src/components/SettingsLanguageRow"
 import SettingsContactSizeRow from "../../src/components/SettingsContactSizeRow"
 import SettingsDefaultScreenRow from "../../src/components/SettingsDefaultScreenRow"
+import SettingsCommunicationMethodRow from "../../src/components/SettingsCommunicationMethodRow"
 import SettingsContactsSyncRow from "../../src/components/SettingsContactsSyncRow"
 import SettingsContactNameSearchRow from "../../src/components/SettingsContactNameSearchRow"
 
@@ -26,6 +27,8 @@ export default function Settings() {
     setContactSize,
     defaultScreen,
     setDefaultScreen,
+    communicationMethod,
+    setCommunicationMethod,
     contactNameSearch,
     setContactNameSearch,
   } = useSettingsStore()
@@ -66,13 +69,6 @@ export default function Settings() {
         contactSize={contactSize}
         setContactSize={setContactSize}
       />
-      <SettingsContactsSyncRow
-        colors={colors}
-        t={t}
-        scale={scale}
-        verticalScale={verticalScale}
-        moderateScale={moderateScale}
-      />
       <SettingsDefaultScreenRow
         colors={colors}
         t={t}
@@ -82,6 +78,15 @@ export default function Settings() {
         defaultScreen={defaultScreen}
         setDefaultScreen={setDefaultScreen}
       />
+      <SettingsCommunicationMethodRow
+        colors={colors}
+        t={t}
+        scale={scale}
+        verticalScale={verticalScale}
+        moderateScale={moderateScale}
+        communicationMethod={communicationMethod}
+        setCommunicationMethod={setCommunicationMethod}
+      />
       <SettingsContactNameSearchRow
         colors={colors}
         t={t}
@@ -90,6 +95,13 @@ export default function Settings() {
         moderateScale={moderateScale}
         contactNameSearch={contactNameSearch}
         setContactNameSearch={setContactNameSearch}
+      />
+      <SettingsContactsSyncRow
+        colors={colors}
+        t={t}
+        scale={scale}
+        verticalScale={verticalScale}
+        moderateScale={moderateScale}
       />
       <View
         style={[

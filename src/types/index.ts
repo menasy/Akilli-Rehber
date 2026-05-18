@@ -6,3 +6,5 @@ export interface Contact {
 }
 
 export type ContactSize = "small" | "medium" | "large"
+
+export type CommunicationMethod = "phone" | "whatsapp" | "both"

@@ -2,33 +2,33 @@ import React from "react"
 import { View, Text, StyleSheet } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import SelectedMenu from "./SelectedMenu"
-import { DefaultScreen } from "../store/settingsStore"
+import { CommunicationMethod } from "../types"
 
-const SCREENS: { key: DefaultScreen; icon: string; labelKey: string }[] = [
-  { key: "index", icon: "home-outline", labelKey: "settings.screenHome" },
-  { key: "favorites", icon: "heart-outline", labelKey: "settings.screenFavorites" },
-  { key: "voice", icon: "mic-outline", labelKey: "settings.screenVoice" },
+const METHODS: { key: CommunicationMethod; icon: string; labelKey: string }[] = [
+  { key: "phone", icon: "call-outline", labelKey: "settings.communicationMethod.phone" },
+  { key: "whatsapp", icon: "logo-whatsapp", labelKey: "settings.communicationMethod.whatsapp" },
+  { key: "both", icon: "layers-outline", labelKey: "settings.communicationMethod.both" },
 ]
 
-type SettingsDefaultScreenRowProps = {
+type SettingsCommunicationMethodRowProps = {
   colors: any
   t: (key: string) => string
   scale: (n: number) => number
   verticalScale: (n: number) => number
   moderateScale: (n: number, f?: number) => number
-  defaultScreen: DefaultScreen
-  setDefaultScreen: (screen: DefaultScreen) => void
+  communicationMethod: CommunicationMethod
+  setCommunicationMethod: (method: CommunicationMethod) => void
 }
 
-export default function SettingsDefaultScreenRow({
+export default function SettingsCommunicationMethodRow({
   colors,
   t,
   scale,
   verticalScale,
   moderateScale,
-  defaultScreen,
-  setDefaultScreen,
-}: SettingsDefaultScreenRowProps) {
+  communicationMethod,
+  setCommunicationMethod,
+}: SettingsCommunicationMethodRowProps) {
   return (
     <View
       style={[
@@ -43,7 +43,7 @@ export default function SettingsDefaultScreenRow({
       ]}
     >
       <View style={styles.rowLeft}>
-        <Ionicons name="apps-outline" size={moderateScale(28)} color={colors.primary} />
+        <Ionicons name="call-outline" size={moderateScale(28)} color={colors.primary} />
         <Text
           style={[
             styles.rowLabel,
@@ -54,7 +54,7 @@ export default function SettingsDefaultScreenRow({
             },
           ]}
         >
-          {t("settings.defaultScreen")}
+          {t("settings.communicationMethod.title")}
         </Text>
       </View>
 
@@ -68,7 +68,7 @@ export default function SettingsDefaultScreenRow({
           },
         ]}
       >
-        {t("settings.defaultScreenDesc")}
+        {t("settings.communicationMethod.description")}
       </Text>
 
       <View
@@ -77,22 +77,22 @@ export default function SettingsDefaultScreenRow({
           { marginTop: verticalScale(14), gap: scale(8) },
         ]}
       >
-        {SCREENS.map((screen) => (
+        {METHODS.map((method) => (
           <SelectedMenu
-            key={screen.key}
-            isSelected={defaultScreen === screen.key}
-            iconName={screen.icon}
-            label={t(screen.labelKey)}
-            onPress={() => setDefaultScreen(screen.key)}
+            key={method.key}
+            isSelected={communicationMethod === method.key}
+            iconName={method.icon}
+            label={t(method.labelKey)}
+            onPress={() => setCommunicationMethod(method.key)}
             colors={colors}
             scale={scale}
             verticalScale={verticalScale}
             moderateScale={moderateScale}
             iconSize={moderateScale(22)}
-            labelSize={moderateScale(13)}
+            labelSize={moderateScale(11)}
             activeTextColor="#FFFFFF"
             inactiveTextColor={colors.textSecondary}
-            activeBgColor={colors.primary}
+            activeBgColor={method.key === "whatsapp" ? "#25D366" : colors.primary}
             inactiveBgColor={colors.tabBarItemBg}
             pressableStyle={styles.screenChip}
             innerStyle={{

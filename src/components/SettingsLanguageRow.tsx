@@ -55,7 +55,21 @@ export default function SettingsLanguageRow({
           {t("settings.language")}
         </Text>
       </View>
-      <View style={[styles.langRow, { gap: scale(8), marginTop: verticalScale(12) }]}>
+
+      <Text
+        style={[
+          styles.description,
+          {
+            color: colors.textSecondary,
+            fontSize: moderateScale(14),
+            marginTop: verticalScale(8),
+          },
+        ]}
+      >
+        {t("settings.languageDesc")}
+      </Text>
+
+      <View style={[styles.langRow, { gap: scale(8), marginTop: verticalScale(14) }]}>
         <SelectedMenu
           isSelected={language === "tr"}
           label="Türkçe"
@@ -136,6 +150,9 @@ const styles = StyleSheet.create({
   },
   rowLabel: {
     fontWeight: "600",
+  },
+  description: {
+    fontWeight: "400",
   },
   langRow: {
     flexDirection: "row",

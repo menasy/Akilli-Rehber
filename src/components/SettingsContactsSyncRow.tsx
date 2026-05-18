@@ -31,66 +31,81 @@ export default function SettingsContactsSyncRow({
   return (
     <View
       style={[
-        styles.row,
+        styles.card,
         {
           backgroundColor: colors.card,
           borderRadius: scale(16),
           marginHorizontal: scale(14),
           marginTop: verticalScale(14),
           padding: scale(20),
-          minHeight: verticalScale(72),
         },
       ]}
     >
-      <View style={styles.rowLeft}>
-        <Ionicons name="refresh" size={moderateScale(28)} color={colors.primary} />
-        <Text
-          style={[
-            styles.rowLabel,
+      <View style={styles.headerRow}>
+        <View style={styles.rowLeft}>
+          <Ionicons name="refresh" size={moderateScale(28)} color={colors.primary} />
+          <Text
+            style={[
+              styles.rowLabel,
+              {
+                color: colors.textPrimary,
+                fontSize: moderateScale(20),
+                marginLeft: scale(14),
+              },
+            ]}
+          >
+            {t("settings.contacts")}
+          </Text>
+        </View>
+        <Pressable
+          onPress={handlePress}
+          disabled={loading}
+          style={({ pressed }) => [
+            styles.button,
             {
-              color: colors.textPrimary,
-              fontSize: moderateScale(20),
-              marginLeft: scale(14),
+              backgroundColor: loading ? colors.tabBarItemBg : colors.primary,
+              borderRadius: scale(12),
+              paddingHorizontal: scale(16),
+              paddingVertical: verticalScale(10),
+              opacity: loading ? 0.7 : pressed ? 0.85 : 1,
             },
           ]}
         >
-          {t("settings.contacts")}
-        </Text>
+          <View style={[styles.buttonContent, { gap: scale(6) }]}>
+            {loading ? (
+              <ActivityIndicator size="small" color={buttonLabelColor} />
+            ) : null}
+            <Text
+              style={[
+                styles.buttonText,
+                { color: buttonLabelColor, fontSize: moderateScale(14) },
+              ]}
+            >
+              {t("settings.fetchContacts")}
+            </Text>
+          </View>
+        </Pressable>
       </View>
-      <Pressable
-        onPress={handlePress}
-        disabled={loading}
-        style={({ pressed }) => [
-          styles.button,
+
+      <Text
+        style={[
+          styles.description,
           {
-            backgroundColor: loading ? colors.tabBarItemBg : colors.primary,
-            borderRadius: scale(12),
-            paddingHorizontal: scale(16),
-            paddingVertical: verticalScale(10),
-            opacity: loading ? 0.7 : pressed ? 0.85 : 1,
+            color: colors.textSecondary,
+            fontSize: moderateScale(14),
+            marginTop: verticalScale(8),
           },
         ]}
       >
-        <View style={[styles.buttonContent, { gap: scale(6) }]}>
-          {loading ? (
-            <ActivityIndicator size="small" color={buttonLabelColor} />
-          ) : null}
-          <Text
-            style={[
-              styles.buttonText,
-              { color: buttonLabelColor, fontSize: moderateScale(14) },
-            ]}
-          >
-            {t("settings.fetchContacts")}
-          </Text>
-        </View>
-      </Pressable>
+        {t("settings.fetchContactsDesc")}
+      </Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  row: {
+  card: {},
+  headerRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -102,6 +117,9 @@ const styles = StyleSheet.create({
   },
   rowLabel: {
     fontWeight: "600",
+  },
+  description: {
+    fontWeight: "400",
   },
   button: {
     alignSelf: "center",

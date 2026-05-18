@@ -31,14 +31,19 @@
   "settings": {
     "title": "Mîheng",
     "theme": "Tema",
+    "themeDesc": "Temaya giştî ya rengê sepanê wekî ronî an tarî mîheng bike.",
     "language": "Ziman",
+    "languageDesc": "Zimanê sepanê wekî Tirkî, Kurdî an Erebî biguherîne.",
     "contactSize": "Mezinahiya Kesê",
+    "contactSizeDesc": "Mezinahiya kartên kesan û nivîsan di rehberê de mîheng bike.",
     "small": "Biçûk",
     "medium": "Navîn",
     "large": "Mezin",
     "contacts": "Rehber",
     "fetchContacts": "Rehberê Bikişîne",
+    "fetchContactsDesc": "Kesên nû an nûvekirinên di rehbera telefona xwe de bo sepanê veguhezîne.",
     "defaultScreen": "Rûpela Destpêkê",
+    "defaultScreenDesc": "Hilbijêre ka gava sepan vedibe kîjan rûpel yekem car were nîşandan.",
     "screenHome": "Sereke",
     "screenFavorites": "Bijarte",
     "screenVoice": "Dengî",
@@ -46,11 +51,28 @@
       "title": "Çarçoveya Lêgerînê",
       "description": "Gava hûn vê mîhengê bigrin, çarçoveya lêgerînê ya li jor tê veşartin. Gava hûn vekin, ew vedigere."
     },
+    "communicationMethod": {
+      "title": "Rêbaza Têkiliyê",
+      "description": "Hilbijêrin ka kîjan vebijarkên têkiliyê li ser kartên kesan werin nîşandan.",
+      "phone": "Lêgerîna Normal",
+      "whatsapp": "WhatsApp",
+      "both": "Herduyan Nîşan Bide"
+    },
     "about": "Derbarê de",
     "appVersion": "Guhertoya Sepanê",
     "developer": "Pêşdebir",
     "website": "Siyaseta Taybetî",
     "github": "GitHub"
+  },
+  "contactCard": {
+    "whatsapp": "WHATSAPP"
+  },
+  "error": {
+    "whatsappNotOpened": "WhatsApp nehat vekirin.",
+    "whatsappNotInstalled": "Ji kerema xwe pê bawer bin ku WhatsApp li ser vê cîhazê hatîye sazkirin.",
+    "invalidPhone": "Ji bo vî kesî hejmareke telefonê ya derbasdar nehat dîtin.",
+    "changeSettings": "Hûn dikarin rêbaza têkiliyê ji Mîhengan biguherînin.",
+    "ok": "Temam"
   },
   "search": {
     "placeholder": "Kesekî bigere..."
